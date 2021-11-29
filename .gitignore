@@ -1,0 +1,10 @@
+*.egg-info/
+*.swp
+.junk/
+.make.out
+.pytest_cache/
+__pycache__/
+build/
+dist/
+sample-files/
+tags

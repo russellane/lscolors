@@ -1,0 +1,73 @@
+[tool.poetry]
+name = "rlane-lscolors"
+version = "0.1.1"
+description = "dircolors utilities"
+license = "MIT"
+authors = ["Russel Lane <russel@rlane.com>"]
+readme = "README.md"
+homepage = "https://github.com/russellane/lscolors"
+keywords = ["dircolors", "xterm-256color", "color-scheme", "terminal", "shell", "ls", "tree"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: End Users/Desktop",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Topic :: System :: Console Fonts",
+    "Topic :: System :: Filesystems",
+    "Topic :: System :: Shells",
+    "Topic :: Terminals",
+    "Topic :: Utilities"
+]
+packages = [
+    { include = "lscolors" },
+]
+
+[tool.poetry.dependencies]
+python = "^3.8"
+argcomplete = "^1.12.3"
+pyyaml = "^6.0"
+
+[tool.poetry.dev-dependencies]
+black = "^21.10b0"
+isort = "^5.10.1"
+flake8 = "^4.0.1"
+pydocstyle = "^6.1.1"
+pylint = "^2.11.1"
+rlane-mandown = "^0.1.0"
+
+[tool.poetry.scripts]
+lscolors = "lscolors.cli:main"
+
+[tool.black]
+line-length = "97"
+
+[tool.isort]
+line_length = "97"
+profile = "black"
+
+[tool.pylint.format]
+max-line-length = "97"
+
+[tool.pylint.messages_control]
+enable = ["useless-suppression"]
+fail-on = ["I0021"]             # useless-suppression
+disable = [
+    "C0330", "C0326",           # black
+]
+
+[tool.pydocstyle]
+convention = "google"
+add-ignore = [
+    "D105",     # pep257 numpy google   # Missing docstring in magic method
+    "D202",     # pep257 numpy google   # No blank lines allowed after function docstring
+]
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
+
+[[tool.poetry.source]]
+name = "private"
+url = "http://localhost:9080/simple/"
+
+# vim: set ts=4 sw=4 et:

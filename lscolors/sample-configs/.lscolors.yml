@@ -1,0 +1,73 @@
+# dircolors required items
+#
+# specific filesystem objects that must be described in a dircolors
+# database.
+#
+# `check-dircolors.py` prints warnings and fails if any required item is
+# not in the database.
+#
+# `mk-sample-files.py` creates a directory of all required items for
+# testing with `ls`, `tree`, etc.
+
+required_filenames:
+  - '*LICENSE'
+  - '*Makefile'
+  - '*NOTES'
+  - '*Pipfile'
+  - '*Pipfile.lock'
+  - '*README'
+  - '*poetry.lock'
+  - '*tags'
+  - .Xdefaults
+  - .bash_aliases
+  - .bash_history
+  - .bash_logout
+  - .bashrc
+  - .conf
+  - .dircolors
+  - .flake8
+  - .gitconfig
+  - .gitignore
+  - .gitmodules
+  - .inputrc
+  - .lesshst
+  - .make.out
+  - .npmrc
+  - .profile
+  - .psql_history
+  - .pylintrc
+  - .pypirc
+  - .python_history
+  - .toml
+  - .viminfo
+  - .vimrc
+  - .wget-hsts
+
+required_directories:
+  - .git
+  - .pylint.d
+  - .junk
+
+required_extensions:
+  - .cfg
+  - .css
+  - .csv
+  - .db
+  - .html
+  - .in
+  - .js
+  - .json
+  - .md
+  - .mk
+  - .pdf
+  - .pl
+  - .py
+  - .rb
+  - .service
+  - .sh
+  - .sql
+  - .txt
+  - .vim
+  - .vpk
+  - .whl
+  - .yml

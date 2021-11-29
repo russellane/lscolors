@@ -1,0 +1,89 @@
+usage: lscolors [-h] COMMAND ...
+
+Utilities for `dircolors(1)` and `dir_colors(5)`.
+
+optional arguments:
+  -h, --help  show this help message and exit
+
+Specify one of:
+  COMMAND
+    chart     print color chart.
+    check     check database for required items.
+    configs   print path to sample configuration files.
+    report    print colorized database report.
+    samples   create directory of sample filesystem items.
+    sort      sort lines of database file by color.
+    help      same as `--help`.
+
+See `lscolors COMMAND --help` for help on a specific command.
+
+---------------------------------------------------------------------- lscolors README
+
+usage: lscolors check [-h] [-q] [--config CONFIG] [DIR_COLORS]
+
+Check database in `$LS_COLORS` for required items.
+
+positional arguments:
+  DIR_COLORS       read file `DIR_COLORS` instead of `$LS_COLORS`.
+
+optional arguments:
+  -h, --help       show this help message and exit
+  -q, --quiet      suppress warning if default `CONFIG` cannot be found.
+  --config CONFIG  require filenames, directories and extensions specified in
+                   `CONFIG` file. (default: '.lscolors.yml')
+
+Exit Status: zero indicates success, nonzero indicates failure.
+
+---------------------------------------------------------------------- lscolors README
+
+usage: lscolors configs [-h]
+
+Print path to sample `.lscolors.yml` and `.dircolors` configuration files.
+
+optional arguments:
+  -h, --help  show this help message and exit
+
+---------------------------------------------------------------------- lscolors README
+
+usage: lscolors report [-h] [--left | --right] [DIR_COLORS]
+
+Print colorized report for database in `$LS_COLORS` to `stdout`.
+
+positional arguments:
+  DIR_COLORS  read file `DIR_COLORS` instead of `$LS_COLORS`.
+
+optional arguments:
+  -h, --help  show this help message and exit
+  --left      format report for display in left window.
+  --right     format report for display in right window.
+
+A default format is produced when `--left/--right` is not given.
+
+---------------------------------------------------------------------- lscolors README
+
+usage: lscolors samples [-h] [-q] [--config CONFIG] [--directory DIR] [-f]
+                        [DIR_COLORS]
+
+Create directory and populate with sample files, directories, etc., for each
+item in `$LS_COLORS`, and all required items in configuration file `CONFIG`.
+
+positional arguments:
+  DIR_COLORS       read file `DIR_COLORS` instead of `$LS_COLORS`.
+
+optional arguments:
+  -h, --help       show this help message and exit
+  -q, --quiet      suppress warning if default `CONFIG` cannot be found.
+  --config CONFIG  require filenames, directories and extensions specified in
+                   `CONFIG` file. (default: '.lscolors.yml')
+  --directory DIR  create directory `DIR`. (default: 'lscolors-samples')
+  -f, --force      destroy `DIR` if it exists.
+
+---------------------------------------------------------------------- lscolors README
+
+usage: lscolors sort [-h]
+
+Filter `stdin` to `stdout` sorting lines of a `DIR_COLORS` file by color then
+filetype. Blank lines and comments are unsorted and moved to the end.
+
+optional arguments:
+  -h, --help  show this help message and exit
