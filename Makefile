@@ -24,8 +24,8 @@ PKG-README:
 README:
 		{ \
 			$(PYTHON) -m lscolors --help; \
-			for cmd in check configs report samples sort; do \
-				echo "\n$(BAR)\n"; \
+			for cmd in chart check configs report samples sort; do \
+				echo "\n$(BAR2)\n"; \
 				$(PYTHON) -m lscolors $$cmd --help; \
 			done; \
 		} >$@
@@ -36,6 +36,7 @@ README:
 README.md:
 		{ for cmd in \
 			'lscolors' \
+			'lscolors chart' \
 			'lscolors check' \
 			'lscolors configs' \
 			'lscolors report' \

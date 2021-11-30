@@ -50,6 +50,7 @@ DEBUG_PAGER	:= 2>&1 | more
 .SUFFIXES:
 
 BAR		= ---------------------------------------------------------------------- $(PACKAGE) $@
+BAR2		:= --------------------------------------------------------------------------------
 PYTHON		:= poetry run python
 SRC_ALL		:= $(shell git ls-files '*.py')
 SRC_APP		:= $(filter-out setup.py, $(SRC_ALL))
@@ -153,6 +154,7 @@ publish:	publisher build
 publisher:
 		@echo $(BAR)
 		poetry version patch
+		echo '"""Version."""'"\n\n__version__ = \""`poetry version --short`'"' >$(PACKAGE)/__version__.py
 
 #-------------------------------------------------------------------------------
 # 6) make install

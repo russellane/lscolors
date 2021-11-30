@@ -1,9 +1,6 @@
-"""lscolors report."""
-# -------------------------------------------------------------------------------
+"""lscolors `report` command."""
 
 import lscolors.colors
-
-# -------------------------------------------------------------------------------
 
 
 def add_parser(subs):
@@ -11,29 +8,25 @@ def add_parser(subs):
 
     parser = subs.add_parser(
         "report",
-        help="print colorized database report.",
+        help="print colorized database report",
         description="Print colorized report for database in `$LS_COLORS` to `stdout`.",
         epilog="A default format is produced when `--left/--right` is not given.",
     )
 
-    parser.set_defaults(cmd=report, prog="lscolors report")
+    parser.set_defaults(cmd=_handle, prog="lscolors report")
 
     grp = parser.add_mutually_exclusive_group()
     grp.add_argument(
-        "--left", action="store_true", help="format report for display in left window."
+        "--left", action="store_true", help="format report for display in left window"
     )
     grp.add_argument(
-        "--right", action="store_true", help="format report for display in right window."
+        "--right", action="store_true", help="format report for display in right window"
     )
 
     lscolors.colors.add_arguments(parser)
 
 
-# -------------------------------------------------------------------------------
-
-
-def report(args):
-    """`lscolors report` command."""
+def _handle(args):
 
     codes = {
         "no": ("NORMAL", "- Normal (nonfilename) text"),
@@ -88,6 +81,3 @@ def report(args):
                 print(f"{type_color} {text:40}")
             else:
                 print(f"{type_color} [{color}m{text:40}[0m")
-
-
-# -------------------------------------------------------------------------------

@@ -1,10 +1,7 @@
-"""lscolors sort."""
-# -------------------------------------------------------------------------------
+"""lscolors `sort` command."""
 
 import sys
 from collections import defaultdict
-
-# -------------------------------------------------------------------------------
 
 
 def add_parser(subs):
@@ -12,19 +9,16 @@ def add_parser(subs):
 
     parser = subs.add_parser(
         "sort",
-        help="sort lines of database file by color.",
+        help="sort lines of database file by color",
         description="""Filter `stdin` to `stdout` sorting
         lines of a `DIR_COLORS` file by color then filetype.
         Blank lines and comments are unsorted and moved to the end.""",
     )
 
-    parser.set_defaults(cmd=sort_, prog="lscolors sort")
+    parser.set_defaults(cmd=_handle, prog="lscolors sort")
 
 
-# -------------------------------------------------------------------------------
-
-
-def sort_(args):
+def _handle(args):
     """`lscolors sort` command."""
 
     _ = args  # unused
@@ -61,6 +55,3 @@ def sort_(args):
 
     for line in comments:
         print(line)
-
-
-# -------------------------------------------------------------------------------

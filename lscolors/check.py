@@ -1,10 +1,7 @@
-"""lscolors check."""
-# -------------------------------------------------------------------------------
+"""lscolors `check` command."""
 
 import lscolors.colors
 import lscolors.config
-
-# -------------------------------------------------------------------------------
 
 
 def add_parser(subs):
@@ -12,21 +9,17 @@ def add_parser(subs):
 
     parser = subs.add_parser(
         "check",
-        help="check database for required items.",
+        help="check database for required items",
         description="Check database in `$LS_COLORS` for required items.",
         epilog="Exit Status: zero indicates success, nonzero indicates failure.",
     )
 
-    parser.set_defaults(cmd=check, prog="lscolors check")
+    parser.set_defaults(cmd=_handle, prog="lscolors check")
     lscolors.config.add_arguments(parser)
     lscolors.colors.add_arguments(parser)
 
 
-# -------------------------------------------------------------------------------
-
-
-def check(args):
-    """`lscolors check` command."""
+def _handle(args):
 
     config, meta_config = lscolors.config.load(args)
 
@@ -61,6 +54,3 @@ def check(args):
         f"{required}/{required} required.\n"
         f"{args.prog}: {meta_colors}; {meta_config}"
     )
-
-
-# -------------------------------------------------------------------------------

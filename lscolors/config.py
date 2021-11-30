@@ -1,13 +1,10 @@
 """lscolors config."""
-# -------------------------------------------------------------------------------
 
 import os
 
 import yaml
 
 _DEFAULT_CONFIG_FILE = ".lscolors.yml"
-
-# -------------------------------------------------------------------------------
 
 
 def add_arguments(parser):
@@ -19,7 +16,7 @@ def add_arguments(parser):
         "-q",
         "--quiet",
         action="store_true",
-        help="suppress warning if default `CONFIG` cannot be found.",
+        help="suppress warning if default `CONFIG` cannot be found",
     )
 
     parser.add_argument(
@@ -28,9 +25,6 @@ def add_arguments(parser):
         "specified in `CONFIG` file. "
         f"(default: {_DEFAULT_CONFIG_FILE!r})",
     )
-
-
-# -------------------------------------------------------------------------------
 
 
 def load(args):
@@ -77,6 +71,3 @@ def load(args):
         "required_directories": [],
         "required_extensions": [],
     }, "<no config>"
-
-
-# -------------------------------------------------------------------------------

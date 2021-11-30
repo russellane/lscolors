@@ -1,5 +1,4 @@
-"""lscolors samples."""
-# -------------------------------------------------------------------------------
+"""lscolors `samples` command."""
 
 import os
 import shutil
@@ -12,22 +11,20 @@ import lscolors.config
 # pylint: disable=consider-using-with
 # pylint: disable=unspecified-encoding
 
-# -------------------------------------------------------------------------------
-
 
 def add_parser(subs):
     """Add command parser."""
 
     parser = subs.add_parser(
         "samples",
-        help="create directory of sample filesystem items.",
+        help="create directory of sample filesystem items",
         description="""Create directory and populate with sample files,
         directories, etc., for each item in `$LS_COLORS`,
         and all required items in configuration file `CONFIG`.""",
     )
 
     _default_sampledir = "lscolors-samples"
-    parser.set_defaults(cmd=samples, prog="lscolors samples", directory=_default_sampledir)
+    parser.set_defaults(cmd=_handle, prog="lscolors samples", directory=_default_sampledir)
 
     lscolors.colors.add_arguments(parser)
     lscolors.config.add_arguments(parser)
@@ -37,14 +34,10 @@ def add_parser(subs):
         metavar="DIR",
         help="create directory `DIR`. " f"(default: {_default_sampledir!r})",
     )
-    parser.add_argument("-f", "--force", action="store_true", help="destroy `DIR` if it exists.")
+    parser.add_argument("-f", "--force", action="store_true", help="destroy `DIR` if it exists")
 
 
-# -------------------------------------------------------------------------------
-
-
-def samples(args):
-    """`lscolors samples` command."""
+def _handle(args):
 
     colors, meta_colors = lscolors.colors.load(args)
     config, meta_config = lscolors.config.load(args)
@@ -77,9 +70,6 @@ def samples(args):
     _samples(colors, config, "x{name}.{color}{name}")
 
 
-# -------------------------------------------------------------------------------
-
-
 def _samples(colors, config, fmt):
 
     for name in config["required_filenames"]:
@@ -101,9 +91,6 @@ def _samples(colors, config, fmt):
         os.mkdir(f"required.{alpha}-directory")
     for alpha in [".A", ".z", "A"]:
         os.mkdir(f"{alpha}-directory")
-
-
-# -------------------------------------------------------------------------------
 
 
 def _create_basic_filetypes():
@@ -263,8 +250,6 @@ def _create_basic_filetypes():
     os.symlink(exec_file, _fname("LINK-symlink-to-exec_file"))
 
 
-# -------------------------------------------------------------------------------
-
 _SEQNO = 0
 
 
@@ -272,9 +257,6 @@ def _fname(name):
     global _SEQNO  # pylint: disable=global-statement
     _SEQNO += 1
     return f"{_SEQNO:02}-{name}"
-
-
-# -------------------------------------------------------------------------------
 
 
 def _create_extension_samples(colors, fmt):
@@ -310,6 +292,3 @@ def _create_extension_samples(colors, fmt):
             os.stat(filename)
         except FileNotFoundError:
             open(filename, mode="w")
-
-
-# -------------------------------------------------------------------------------

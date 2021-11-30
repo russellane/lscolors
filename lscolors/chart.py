@@ -1,5 +1,4 @@
-"""lscolors chart."""
-# -------------------------------------------------------------------------------
+"""lscolors `chart` command."""
 
 
 def add_parser(subs):
@@ -7,19 +6,16 @@ def add_parser(subs):
 
     parser = subs.add_parser(
         "chart",
-        help="print color chart.",
+        help="print color chart",
         description="Print color-chart to `stdout`.",
     )
 
-    parser.set_defaults(cmd=lambda x: chart(), prog="lscolors chart")
+    parser.set_defaults(cmd=_handle, prog="lscolors chart")
 
 
-# -------------------------------------------------------------------------------
+def _handle(args):
 
-
-def chart():
-    """`lscolors chart` command."""
-
+    _ = args  # unused
     offset = 16
     nlines, ncols = 36, 6
     maxcolor = nlines * ncols + offset - 1
@@ -37,23 +33,15 @@ def chart():
         print(line)
 
 
-# -------------------------------------------------------------------------------
+def _handle2():
 
-
-def chart2():
-    """`lscolors chart` command."""
-
-    for square in six_squares():
+    for square in _six_squares():
         print(square)
         for ansi in [f"38;05;{color:03}" for color in square]:
             print(f"[{ansi}m{ansi}[0m")
 
 
-# -------------------------------------------------------------------------------
-
-
-def six_squares():
-    """docstring."""
+def _six_squares():
 
     squares = [[], [], [], [], [], []]
     j = 0
@@ -62,10 +50,3 @@ def six_squares():
             j = (j + 1) % 6
         squares[j].append(16 + i)
     return squares
-
-
-# -------------------------------------------------------------------------------
-
-if __name__ == "__main__":
-    # from pprint import pprint
-    print(six_squares())

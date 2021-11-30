@@ -1,11 +1,8 @@
 """lscolors database."""
-# -------------------------------------------------------------------------------
 
 import os
 import subprocess
 import sys
-
-# -------------------------------------------------------------------------------
 
 
 def add_arguments(parser):
@@ -15,11 +12,8 @@ def add_arguments(parser):
         "dir_colors",
         nargs="?",
         metavar="DIR_COLORS",
-        help="read file `DIR_COLORS` instead of `$LS_COLORS`.",
+        help="read file `DIR_COLORS` instead of `$LS_COLORS`",
     )
-
-
-# -------------------------------------------------------------------------------
 
 
 def load(args):
@@ -54,9 +48,6 @@ def load(args):
     return colors, meta
 
 
-# -------------------------------------------------------------------------------
-
-
 def _compile_dir_colors(args, meta):
     """Run system `dircolors` (/usr/bin/dircolors) and return value of `LS_COLORS`."""
 
@@ -79,6 +70,3 @@ def _compile_dir_colors(args, meta):
         ls_colors = ls_colors[len1:-len2]
 
     return ls_colors
-
-
-# -------------------------------------------------------------------------------

@@ -9,20 +9,31 @@ Utilities for `dircolors(1)` and `dir_colors(5)`.
 
 ##### Optional Arguments
 	  -h, --help     show this help message and exit
-	  -V, --version  print version and exit
+	  -V, --version  show program's version number and exit
 
 ##### Commands
-	    chart        print color chart.
-	    check        check database for required items.
-	    configs      print path to sample configuration files.
-	    report       print colorized database report.
-	    samples      create directory of sample filesystem items.
-	    sort         sort lines of database file by color.
-	    help         same as `--help`.
+	    chart        print color chart
+	    check        check database for required items
+	    configs      print path to sample configuration files
+	    report       print colorized database report
+	    samples      create directory of sample filesystem items
+	    sort         sort lines of database file by color
+	    help         same as `--help`
 
 ##### Notes
 
 See `lscolors COMMAND --help` for help on a specific command.
+### Lscolors Chart
+
+#### Synopsis
+	lscolors chart [-h]
+
+#### Description
+
+Print color-chart to `stdout`.
+
+##### Optional Arguments
+	  -h, --help  show this help message and exit
 ### Lscolors Check
 
 #### Synopsis
@@ -33,11 +44,11 @@ See `lscolors COMMAND --help` for help on a specific command.
 Check database in `$LS_COLORS` for required items.
 
 ##### Positional Arguments
-	  DIR_COLORS       read file `DIR_COLORS` instead of `$LS_COLORS`.
+	  DIR_COLORS       read file `DIR_COLORS` instead of `$LS_COLORS`
 
 ##### Optional Arguments
 	  -h, --help       show this help message and exit
-	  -q, --quiet      suppress warning if default `CONFIG` cannot be found.
+	  -q, --quiet      suppress warning if default `CONFIG` cannot be found
 	  --config CONFIG  require filenames, directories and extensions specified in
 	                   `CONFIG` file. (default: '.lscolors.yml')
 
@@ -65,12 +76,12 @@ Print path to sample `.lscolors.yml` and `.dircolors` configuration files.
 Print colorized report for database in `$LS_COLORS` to `stdout`.
 
 ##### Positional Arguments
-	  DIR_COLORS  read file `DIR_COLORS` instead of `$LS_COLORS`.
+	  DIR_COLORS  read file `DIR_COLORS` instead of `$LS_COLORS`
 
 ##### Optional Arguments
 	  -h, --help  show this help message and exit
-	  --left      format report for display in left window.
-	  --right     format report for display in right window.
+	  --left      format report for display in left window
+	  --right     format report for display in right window
 
 ##### Notes
 
@@ -87,15 +98,15 @@ Create directory and populate with sample files, directories, etc., for each
 item in `$LS_COLORS`, and all required items in configuration file `CONFIG`.
 
 ##### Positional Arguments
-	  DIR_COLORS       read file `DIR_COLORS` instead of `$LS_COLORS`.
+	  DIR_COLORS       read file `DIR_COLORS` instead of `$LS_COLORS`
 
 ##### Optional Arguments
 	  -h, --help       show this help message and exit
-	  -q, --quiet      suppress warning if default `CONFIG` cannot be found.
+	  -q, --quiet      suppress warning if default `CONFIG` cannot be found
 	  --config CONFIG  require filenames, directories and extensions specified in
 	                   `CONFIG` file. (default: '.lscolors.yml')
 	  --directory DIR  create directory `DIR`. (default: 'lscolors-samples')
-	  -f, --force      destroy `DIR` if it exists.
+	  -f, --force      destroy `DIR` if it exists
 ### Lscolors Sort
 
 #### Synopsis
