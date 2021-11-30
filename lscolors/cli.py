@@ -1,6 +1,7 @@
 """Command line interface."""
 
 import argparse
+import importlib.metadata
 import os.path
 import sys
 
@@ -11,6 +12,11 @@ import lscolors.check
 import lscolors.report
 import lscolors.samples
 import lscolors.sort
+
+try:
+    __version__ = importlib.metadata.version("rlane-lscolors")
+except importlib.metadata.PackageNotFoundError:
+    __version__ = "not installed"
 
 
 def main():
@@ -23,6 +29,7 @@ def main():
         description="Utilities for `dircolors(1)` and `dir_colors(5)`.",
         epilog=f"See `{prog} COMMAND --help` for help on a specific command.",
     )
+    parser.add_argument("-V", "--version", action="store_true", help="print version and exit")
 
     subs = parser.add_subparsers(metavar="COMMAND", dest="command", title="Specify one of")
     parser.set_defaults(cmd=None, prog=prog)
@@ -49,6 +56,11 @@ def main():
 
     argcomplete.autocomplete(parser)
     args = parser.parse_args()
+
+    if args.version:
+        print(__version__)
+        return
+
     if not args.cmd:
         parser.print_help()
         parser.exit(2, "error: Missing COMMAND\n")
