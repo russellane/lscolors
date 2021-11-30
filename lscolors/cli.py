@@ -18,7 +18,7 @@ def main():
     """Entry point."""
 
     parser = argparse.ArgumentParser(
-        prog="lscolors",
+        prog=__package__,
         description="Utilities for `dircolors(1)` and `dir_colors(5)`.",
         epilog="See `%(prog)s COMMAND --help` for help on a specific command.",
     )

@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "rlane-lscolors"
-version = "0.1.12"
+version = "0.1.15"
 description = "dircolors utilities"
 license = "MIT"
 authors = ["Russel Lane <russel@rlane.com>"]
