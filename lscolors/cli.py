@@ -1,5 +1,4 @@
-"""lscolors command line interface."""
-# -------------------------------------------------------------------------------
+"""Command line interface."""
 
 import argparse
 import os.path
@@ -13,14 +12,9 @@ import lscolors.report
 import lscolors.samples
 import lscolors.sort
 
-# -------------------------------------------------------------------------------
-
 
 def main():
-    """Command line interface entry point.
-
-    See setuptools.setup(entry_points={'console_scripts': ['lscolors=lscolors.cli:main']})
-    """
+    """Entry point."""
 
     prog = "lscolors"
 
@@ -64,6 +58,3 @@ def main():
     except SyntaxError as err:
         print(err, file=sys.stderr)
         sys.exit(1)
-
-
-# -------------------------------------------------------------------------------

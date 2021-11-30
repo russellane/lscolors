@@ -1,2 +1,1 @@
-"""lscolors - Utilities for dircolors(1) and dir_colors(5)."""
-# -------------------------------------------------------------------------------
+"""dircolors utilities."""
