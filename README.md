@@ -31,7 +31,7 @@ See `lscolors COMMAND --help` for help on a specific command.
 
 --------------------------------------------------------------------------------
 
-#### Synopsis
+### Lscolors Chart
 	lscolors chart [-h]
 
 #### Description
@@ -43,7 +43,7 @@ Print color-chart to `stdout`.
 
 --------------------------------------------------------------------------------
 
-#### Synopsis
+### Lscolors Check
 	lscolors check [-h] [-q] [--config CONFIG] [DIR_COLORS]
 
 #### Description
@@ -65,7 +65,7 @@ Exit Status: zero indicates success, nonzero indicates failure.
 
 --------------------------------------------------------------------------------
 
-#### Synopsis
+### Lscolors Configs
 	lscolors configs [-h]
 
 #### Description
@@ -77,7 +77,7 @@ Print path to sample `.lscolors.yml` and `.dircolors` configuration files.
 
 --------------------------------------------------------------------------------
 
-#### Synopsis
+### Lscolors Report
 	lscolors report [-h] [--left | --right] [DIR_COLORS]
 
 #### Description
@@ -98,7 +98,7 @@ A default format is produced when `--left/--right` is not given.
 
 --------------------------------------------------------------------------------
 
-#### Synopsis
+### Lscolors Samples
 	lscolors samples [-h] [-q] [--config CONFIG] [--directory DIR] [-f]
 	                 [DIR_COLORS]
 
@@ -120,7 +120,7 @@ item in `$LS_COLORS`, and all required items in configuration file `CONFIG`.
 
 --------------------------------------------------------------------------------
 
-#### Synopsis
+### Lscolors Samples
 	lscolors sort [-h]
 
 #### Description

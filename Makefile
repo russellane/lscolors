@@ -37,17 +37,23 @@ README.md:
 	{ \
 		$(PYTHON) -m lscolors --help | $(PYTHON) -m mandown \
 			--name "$(PACKAGE)" \
-			--title "$(PACKAGE_DESC)" $(MANDOWN_OPTS) \
+			--title "$(PACKAGE_DESC)" \
 			--no-footer; \
 		for cmd in chart check configs report samples; do \
 			echo "\n$(BAR2)\n"; \
 			$(PYTHON) -m lscolors $$cmd --help | $(PYTHON) -m mandown \
-				--no-manpage-title --no-name-section --no-footer; \
+				--name "$(PACKAGE) $$cmd" \
+				--title "$(PACKAGE) $$cmd" \
+				--no-manpage-title \
+				--no-name \
+				--no-footer; \
 		done; \
 		echo "\n$(BAR2)\n"; \
 		$(PYTHON) -m lscolors sort --help | $(PYTHON) -m mandown \
+			--name "$(PACKAGE) $$cmd" \
+			--title "$(PACKAGE) $$cmd" \
 			--no-manpage-title \
-			--no-name-section; \
+			--no-name; \
        } >$@
 
 #-------------------------------------------------------------------------------
