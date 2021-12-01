@@ -294,7 +294,7 @@ reference = "private"
 
 [[package]]
 name = "rlane-mandown"
-version = "0.1.8"
+version = "0.1.11"
 description = "argparse help text to markdown"
 category = "dev"
 optional = false
@@ -550,7 +550,7 @@ regex = [
     {file = "regex-2021.11.10.tar.gz", hash = "sha256:f341ee2df0999bfdf7a95e448075effe0db212a59387de1a70690e4acb03d4c6"},
 ]
 rlane-mandown = [
-    {file = "rlane_mandown-0.1.8-py3-none-any.whl", hash = "md5:dcfbc79c4fa9e9ca63c113dafb369ef7"},
+    {file = "rlane_mandown-0.1.11-py3-none-any.whl", hash = "md5:77c3ecd98a6c90cc3c4fea69d4495f16"},
 ]
 snowballstemmer = [
     {file = "snowballstemmer-2.2.0-py2.py3-none-any.whl", hash = "sha256:c8e1716e83cc398ae16824e5572ae04e0d9fc2c6b985fb0f900f5f0c96ecba1a"},
