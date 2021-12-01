@@ -120,7 +120,7 @@ item in `$LS_COLORS`, and all required items in configuration file `CONFIG`.
 
 --------------------------------------------------------------------------------
 
-### Lscolors Samples
+### Lscolors Sort
 	lscolors sort [-h]
 
 #### Description

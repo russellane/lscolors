@@ -49,7 +49,8 @@ README.md:
 				--no-footer; \
 		done; \
 		echo "\n$(BAR2)\n"; \
-		$(PYTHON) -m lscolors sort --help | $(PYTHON) -m mandown \
+		cmd=sort; \
+		$(PYTHON) -m lscolors $$cmd --help | $(PYTHON) -m mandown \
 			--name "$(PACKAGE) $$cmd" \
 			--title "$(PACKAGE) $$cmd" \
 			--no-manpage-title \
