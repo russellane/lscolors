@@ -1,4 +1,9 @@
-### Lscolors
+### Dircolors Utilities
+	LSCOLORS(1)                      User commands                       LSCOLORS(1)
+
+#### Name
+
+lscolors - dircolors utilities
 
 #### Synopsis
 	lscolors [-h] [-V] COMMAND ...
@@ -23,7 +28,8 @@ Utilities for `dircolors(1)` and `dir_colors(5)`.
 ##### Notes
 
 See `lscolors COMMAND --help` for help on a specific command.
-### Lscolors Chart
+
+--------------------------------------------------------------------------------
 
 #### Synopsis
 	lscolors chart [-h]
@@ -34,7 +40,8 @@ Print color-chart to `stdout`.
 
 ##### Optional Arguments
 	  -h, --help  show this help message and exit
-### Lscolors Check
+
+--------------------------------------------------------------------------------
 
 #### Synopsis
 	lscolors check [-h] [-q] [--config CONFIG] [DIR_COLORS]
@@ -55,7 +62,8 @@ Check database in `$LS_COLORS` for required items.
 ##### Notes
 
 Exit Status: zero indicates success, nonzero indicates failure.
-### Lscolors Configs
+
+--------------------------------------------------------------------------------
 
 #### Synopsis
 	lscolors configs [-h]
@@ -66,7 +74,8 @@ Print path to sample `.lscolors.yml` and `.dircolors` configuration files.
 
 ##### Optional Arguments
 	  -h, --help  show this help message and exit
-### Lscolors Report
+
+--------------------------------------------------------------------------------
 
 #### Synopsis
 	lscolors report [-h] [--left | --right] [DIR_COLORS]
@@ -86,7 +95,8 @@ Print colorized report for database in `$LS_COLORS` to `stdout`.
 ##### Notes
 
 A default format is produced when `--left/--right` is not given.
-### Lscolors Samples
+
+--------------------------------------------------------------------------------
 
 #### Synopsis
 	lscolors samples [-h] [-q] [--config CONFIG] [--directory DIR] [-f]
@@ -107,7 +117,8 @@ item in `$LS_COLORS`, and all required items in configuration file `CONFIG`.
 	                   `CONFIG` file. (default: '.lscolors.yml')
 	  --directory DIR  create directory `DIR`. (default: 'lscolors-samples')
 	  -f, --force      destroy `DIR` if it exists
-### Lscolors Sort
+
+--------------------------------------------------------------------------------
 
 #### Synopsis
 	lscolors sort [-h]
@@ -119,5 +130,6 @@ filetype. Blank lines and comments are unsorted and moved to the end.
 
 ##### Optional Arguments
 	  -h, --help  show this help message and exit
+
 ----------------------------------------------------------
 [page by [mandown](https://github.com/russellane/mandown)]

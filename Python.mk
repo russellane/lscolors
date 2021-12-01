@@ -54,7 +54,8 @@ BAR2		:= -----------------------------------------------------------------------
 PYTHON		:= poetry run python
 SRC_ALL		:= $(shell git ls-files '*.py')
 SRC_APP		:= $(filter-out setup.py, $(SRC_ALL))
-PACKAGE_NAME	:= $(shell sed -ne "/^\[tool.poetry\]/ {n; s/[[:space:]]*name[[:space:]]*=[[:space:]]*\([^[:space:]]*\).*/\1/p}" pyproject.toml)
+PACKAGE_NAME	:= $(shell python -c 'import tomlkit; t = tomlkit.loads(open("pyproject.toml").read()); print(t["tool"]["poetry"]["name"])')
+PACKAGE_DESC	:= $(shell python -c 'import tomlkit; t = tomlkit.loads(open("pyproject.toml").read()); print(t["tool"]["poetry"]["description"])')
 PIPX		:= $(shell grep -q "^\[tool.poetry.scripts\]" pyproject.toml && echo pipx || echo 'echo no console_scripts to')
 
 #-------------------------------------------------------------------------------
@@ -286,6 +287,14 @@ black:
 isort:
 		@echo $(BAR)
 		$(PYTHON) -m isort $(SRC_ALL)
+
+#-------------------------------------------------------------------------------
+
+.PHONY:		README.md
+README.md:
+		$(PYTHON) -m $(PACKAGE) --help | $(PYTHON) -m mandown \
+			--name "$(PACKAGE)" \
+			--title "$(PACKAGE_DESC)" $(MANDOWN_OPTS) >$@
 
 #-------------------------------------------------------------------------------
 # vim: set ts=8 sw=8 noet:
