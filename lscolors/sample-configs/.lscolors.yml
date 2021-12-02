@@ -10,14 +10,6 @@
 # testing with `ls`, `tree`, etc.
 
 required_filenames:
-  - '*LICENSE'
-  - '*Makefile'
-  - '*NOTES'
-  - '*Pipfile'
-  - '*Pipfile.lock'
-  - '*README'
-  - '*poetry.lock'
-  - '*tags'
   - .Xdefaults
   - .bash_aliases
   - .bash_history
@@ -25,23 +17,21 @@ required_filenames:
   - .bashrc
   - .conf
   - .dircolors
-  - .flake8
   - .gitconfig
   - .gitignore
   - .gitmodules
   - .inputrc
   - .lesshst
-  - .make.out
   - .npmrc
   - .profile
-  - .psql_history
   - .pylintrc
   - .pypirc
-  - .python_history
-  - .toml
-  - .viminfo
   - .vimrc
-  - .wget-hsts
+  - '*LICENSE'
+  - '*Makefile'
+  - '*NOTES'
+  - '*Pipfile'
+  - '*README'
 
 required_directories:
   - .git

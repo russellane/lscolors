@@ -19,4 +19,4 @@ def add_parser(subs):
 def _handle(args):
 
     _ = args  # unused
-    print(os.path.join(os.path.dirname(__file__), "sample-configs"))
+    print(os.path.join(os.path.dirname(os.path.dirname(__file__)), "sample-configs"))
