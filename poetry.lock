@@ -246,7 +246,7 @@ reference = "private"
 
 [[package]]
 name = "pylint"
-version = "2.12.1"
+version = "2.12.2"
 description = "python code static checker"
 category = "dev"
 optional = false
@@ -294,7 +294,7 @@ reference = "private"
 
 [[package]]
 name = "rlane-mandown"
-version = "0.1.16"
+version = "0.1.17"
 description = "argparse help text to markdown"
 category = "dev"
 optional = false
@@ -376,7 +376,7 @@ reference = "private"
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.8"
-content-hash = "e3004025559fdbf1a2ca987cef0d610b7df8a810d6af9d131007ea4436faa393"
+content-hash = "7be32b83b7033c7dc2ccec69ce6b5534b86e99ca2a83a17174b4b47a0edda99a"
 
 [metadata.files]
 argcomplete = [
@@ -460,8 +460,8 @@ pyflakes = [
     {file = "pyflakes-2.4.0.tar.gz", hash = "sha256:05a85c2872edf37a4ed30b0cce2f6093e1d0581f8c19d7393122da7e25b2b24c"},
 ]
 pylint = [
-    {file = "pylint-2.12.1-py3-none-any.whl", hash = "sha256:b4b5a7b6d04e914a11c198c816042af1fb2d3cda29bb0c98a9c637010da2a5c5"},
-    {file = "pylint-2.12.1.tar.gz", hash = "sha256:4f4a52b132c05b49094b28e109febcec6bfb7bc6961c7485a5ad0a0f961df289"},
+    {file = "pylint-2.12.2-py3-none-any.whl", hash = "sha256:daabda3f7ed9d1c60f52d563b1b854632fd90035bcf01443e234d3dc794e3b74"},
+    {file = "pylint-2.12.2.tar.gz", hash = "sha256:9d945a73640e1fec07ee34b42f5669b770c759acd536ec7b16d7e4b87a9c9ff9"},
 ]
 pyyaml = [
     {file = "PyYAML-6.0-cp310-cp310-macosx_10_9_x86_64.whl", hash = "sha256:d4db7c7aef085872ef65a8fd7d6d09a14ae91f691dec3e87ee5ee0539d516f53"},
@@ -550,7 +550,7 @@ regex = [
     {file = "regex-2021.11.10.tar.gz", hash = "sha256:f341ee2df0999bfdf7a95e448075effe0db212a59387de1a70690e4acb03d4c6"},
 ]
 rlane-mandown = [
-    {file = "rlane_mandown-0.1.16-py3-none-any.whl", hash = "md5:93c8bfe737079e09b95be0f3e6727c2e"},
+    {file = "rlane_mandown-0.1.17-py3-none-any.whl", hash = "md5:f0c163550413e78021220bfd34b944ea"},
 ]
 snowballstemmer = [
     {file = "snowballstemmer-2.2.0-py2.py3-none-any.whl", hash = "sha256:c8e1716e83cc398ae16824e5572ae04e0d9fc2c6b985fb0f900f5f0c96ecba1a"},
