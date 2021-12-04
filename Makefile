@@ -15,13 +15,13 @@ clean::
 .PHONY:		README.md
 README.md:
 	{ \
-		$(PYTHON) -m lscolors --help | $(PYTHON) -m mandown \
+		COLUMNS=97 $(PYTHON) -m lscolors --help | $(PYTHON) -m mandown \
 			--name "$(PACKAGE)" \
 			--title "$(PACKAGE_DESC)" \
 			--no-footer; \
 		for cmd in chart check configs report samples; do \
 			echo "\n$(BAR2)\n"; \
-			$(PYTHON) -m lscolors $$cmd --help | $(PYTHON) -m mandown \
+			COLUMNS=97 $(PYTHON) -m lscolors $$cmd --help | $(PYTHON) -m mandown \
 				--name "$(PACKAGE) $$cmd" \
 				--title "$(PACKAGE) $$cmd" \
 				--no-manpage-title \
@@ -30,7 +30,7 @@ README.md:
 		done; \
 		echo "\n$(BAR2)\n"; \
 		cmd=sort; \
-		$(PYTHON) -m lscolors $$cmd --help | $(PYTHON) -m mandown \
+		COLUMNS=97 $(PYTHON) -m lscolors $$cmd --help | $(PYTHON) -m mandown \
 			--name "$(PACKAGE) $$cmd" \
 			--title "$(PACKAGE) $$cmd" \
 			--no-manpage-title \

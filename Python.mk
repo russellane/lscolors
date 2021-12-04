@@ -292,7 +292,7 @@ isort:
 
 .PHONY:		README.md
 README.md:
-		$(PYTHON) -m $(PACKAGE) --help | $(PYTHON) -m mandown \
+		COLUMNS=97 $(PYTHON) -m $(PACKAGE) --help | $(PYTHON) -m mandown \
 			--name "$(PACKAGE)" \
 			--title "$(PACKAGE_DESC)" $(MANDOWN_OPTS) >$@
 

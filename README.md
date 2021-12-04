@@ -56,8 +56,8 @@ Check database in `$LS_COLORS` for required items.
 ##### Optional Arguments:
 	  -h, --help       show this help message and exit
 	  -q, --quiet      suppress warning if default `CONFIG` cannot be found
-	  --config CONFIG  require filenames, directories and extensions specified in
-	                   `CONFIG` file. (default: '.lscolors.yml')
+	  --config CONFIG  require filenames, directories and extensions specified in `CONFIG` file.
+	                   (default: '.lscolors.yml')
 
 ##### Notes
 
@@ -99,13 +99,12 @@ A default format is produced when `--left/--right` is not given.
 --------------------------------------------------------------------------------
 
 ### Lscolors Samples
-	lscolors samples [-h] [-q] [--config CONFIG] [--directory DIR] [-f]
-	                 [DIR_COLORS]
+	lscolors samples [-h] [-q] [--config CONFIG] [--directory DIR] [-f] [DIR_COLORS]
 
 #### Description
 
-Create directory and populate with sample files, directories, etc., for each
-item in `$LS_COLORS`, and all required items in configuration file `CONFIG`.
+Create directory and populate with sample files, directories, etc., for each item in
+`$LS_COLORS`, and all required items in configuration file `CONFIG`.
 
 ##### Positional Arguments:
 	  DIR_COLORS       read file `DIR_COLORS` instead of `$LS_COLORS`
@@ -113,8 +112,8 @@ item in `$LS_COLORS`, and all required items in configuration file `CONFIG`.
 ##### Optional Arguments:
 	  -h, --help       show this help message and exit
 	  -q, --quiet      suppress warning if default `CONFIG` cannot be found
-	  --config CONFIG  require filenames, directories and extensions specified in
-	                   `CONFIG` file. (default: '.lscolors.yml')
+	  --config CONFIG  require filenames, directories and extensions specified in `CONFIG` file.
+	                   (default: '.lscolors.yml')
 	  --directory DIR  create directory `DIR`. (default: 'lscolors-samples')
 	  -f, --force      destroy `DIR` if it exists
 
@@ -125,8 +124,8 @@ item in `$LS_COLORS`, and all required items in configuration file `CONFIG`.
 
 #### Description
 
-Filter `stdin` to `stdout` sorting lines of a `DIR_COLORS` file by color then
-filetype. Blank lines and comments are unsorted and moved to the end.
+Filter `stdin` to `stdout` sorting lines of a `DIR_COLORS` file by color then filetype. Blank
+lines and comments are unsorted and moved to the end.
 
 ##### Optional Arguments:
 	  -h, --help  show this help message and exit
