@@ -30,27 +30,28 @@ def _handle(args):
             f"{args.prog}: failure; {err}\n" f"{args.prog}: {meta_config}"
         ) from err
 
-    missing = []
-    required = 0
-    for item in (
+    required = (
         config["required_filenames"]
         + config["required_directories"]
         + config["required_extensions"]
-    ):
-        required += 1
+    )
+    nrequired = len(required)
+    # missing = [x for x in required if x not in colors]
+    missing = []
+    for item in required:
         if item not in colors:
             missing.append(item)
 
     if (nmissing := len(missing)) > 0:
         raise SyntaxError(
             f"{args.prog}: failure; {len(colors)} items; "
-            f"{required - nmissing}/{required} required; "
+            f"{nrequired - nmissing}/{nrequired} required; "
             f"{nmissing} missing {missing}\n"
             f"{args.prog}: {meta_colors}; {meta_config}"
         )
 
     print(
         f"{args.prog}: success; {len(colors)} items; "
-        f"{required}/{required} required.\n"
+        f"{nrequired}/{nrequired} required.\n"
         f"{args.prog}: {meta_colors}; {meta_config}"
     )

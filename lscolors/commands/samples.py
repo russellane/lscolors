@@ -8,9 +8,6 @@ import stat
 import lscolors.colors
 import lscolors.config
 
-# pylint: disable=consider-using-with
-# pylint: disable=unspecified-encoding
-
 
 def add_parser(subs):
     """Add command parser."""
@@ -75,13 +72,15 @@ def _samples(colors, config, fmt):
     for name in config["required_filenames"]:
         if name[0] == "*":
             name = name[1:]
-        open(name, mode="w")
+            with open(name, mode="w", encoding="utf-8"):
+                pass
 
     for name in config["required_directories"]:
         os.mkdir(name)
 
     for name in config["required_extensions"]:
-        open("required" + name, mode="w")
+        with open("required" + name, mode="w", encoding="utf-8"):
+            pass
 
     _create_basic_filetypes()
     _create_extension_samples(colors, fmt)
@@ -129,15 +128,18 @@ def _create_basic_filetypes():
 
     # NORMAL 00 # no color code at all
     normal_text = _fname("NORMAL")
-    open(normal_text, mode="w")
+    with open(normal_text, mode="w", encoding="utf-8"):
+        pass
 
     # FILE 00 # regular file: use no color at all
     regular_file = _fname("FILE-regular-file")
-    open(regular_file, mode="w")
+    with open(regular_file, mode="w", encoding="utf-8"):
+        pass
 
     # RESET 0 # reset to "normal" color
     reset_file = _fname("RESET")
-    open(reset_file, mode="w")
+    with open(reset_file, mode="w", encoding="utf-8"):
+        pass
 
     # DIR 00;36 # directory
     dir_not_ow = _fname("DIR-not-other-writable")
@@ -150,7 +152,8 @@ def _create_basic_filetypes():
 
     # MULTIHARDLINK 03 # regular file with more than one link
     hardlink_file1 = _fname("MULTIHARDLINK-file1")
-    open(hardlink_file1, mode="w")
+    with open(hardlink_file1, mode="w", encoding="utf-8"):
+        pass
 
     # FIFO 03;31 # pipe
     fifo = _fname("FIFO-named-pipe")
@@ -163,7 +166,8 @@ def _create_basic_filetypes():
 
     # DOOR 03;32 # door
     door = _fname("DOOR-fake")
-    open(door, mode="w")
+    with open(door, mode="w", encoding="utf-8"):
+        pass
 
     # BLK 40;33;01 # block device driver
     blk_device = _fname("BLK-block-device")
@@ -171,7 +175,8 @@ def _create_basic_filetypes():
         os.mknod(blk_device, stat.S_IFBLK)
     except PermissionError:
         blk_device = blk_device + "-fake"
-        open(blk_device, mode="w")
+        with open(blk_device, mode="w", encoding="utf-8"):
+            pass
 
     # CHR 40;33;01 # character device driver
     chr_device = _fname("CHR-character-device")
@@ -179,7 +184,8 @@ def _create_basic_filetypes():
         os.mknod(chr_device, stat.S_IFCHR)
     except PermissionError:
         chr_device = blk_device + "-fake"
-        open(chr_device, mode="w")
+        with open(chr_device, mode="w", encoding="utf-8"):
+            pass
 
     # ORPHAN 40;31;03 # symlink to nonexistent file, or non-stat'able file
     symlink_to_orphan = _fname("ORPHAN")
@@ -195,17 +201,20 @@ def _create_basic_filetypes():
 
     # SETUID 37;41 # file that is setuid (u+s)
     suid_file = _fname("SETUID-file")
-    open(suid_file, mode="w")
+    with open(suid_file, mode="w", encoding="utf-8"):
+        pass
     os.chmod(suid_file, stat.S_ISUID | 0o0755)
 
     # SETGID 30;43 # file that is setgid (g+s)
     sgid_file = _fname("SETGID-file")
-    open(sgid_file, mode="w")
+    with open(sgid_file, mode="w", encoding="utf-8"):
+        pass
     os.chmod(sgid_file, stat.S_ISGID | 0o0755)
 
     # CAPABILITY 30;41 # file with capability
     cap_file = _fname("CAPABILITY-file")
-    open(cap_file, mode="w")
+    with open(cap_file, mode="w", encoding="utf-8"):
+        pass
 
     # STICKY_OTHER_WRITABLE 30;42 # dir that is sticky and other-writable (+t,o+w)
     sticky_dir_ow = _fname("STICKY-dir-other-writable")
@@ -224,7 +233,8 @@ def _create_basic_filetypes():
 
     # EXEC 00 # This is for files with execute permission:
     exec_file = _fname("EXEC-executable")
-    open(exec_file, mode="w")
+    with open(exec_file, mode="w", encoding="utf-8"):
+        pass
     os.chmod(exec_file, 0o0755)
 
     # -- end of template --
@@ -291,4 +301,5 @@ def _create_extension_samples(colors, fmt):
         try:
             os.stat(filename)
         except FileNotFoundError:
-            open(filename, mode="w")
+            with open(filename, mode="w", encoding="utf-8"):
+                pass

@@ -12,7 +12,7 @@ lscolors - dircolors utilities
 
 Utilities for `dircolors(1)` and `dir_colors(5)`.
 
-##### Optional Arguments:
+##### Optional Arguments
 	  -h, --help     show this help message and exit
 	  -V, --version  show program's version number and exit
 
@@ -38,7 +38,7 @@ See `lscolors COMMAND --help` for help on a specific command.
 
 Print color-chart to `stdout`.
 
-##### Optional Arguments:
+##### Optional Arguments
 	  -h, --help  show this help message and exit
 
 --------------------------------------------------------------------------------
@@ -50,10 +50,10 @@ Print color-chart to `stdout`.
 
 Check database in `$LS_COLORS` for required items.
 
-##### Positional Arguments:
+##### Positional Arguments
 	  DIR_COLORS       read file `DIR_COLORS` instead of `$LS_COLORS`
 
-##### Optional Arguments:
+##### Optional Arguments
 	  -h, --help       show this help message and exit
 	  -q, --quiet      suppress warning if default `CONFIG` cannot be found
 	  --config CONFIG  require filenames, directories and extensions specified in `CONFIG` file.
@@ -72,7 +72,7 @@ Exit Status: zero indicates success, nonzero indicates failure.
 
 Print path to sample `.lscolors.yml` and `.dircolors` configuration files.
 
-##### Optional Arguments:
+##### Optional Arguments
 	  -h, --help  show this help message and exit
 
 --------------------------------------------------------------------------------
@@ -84,10 +84,10 @@ Print path to sample `.lscolors.yml` and `.dircolors` configuration files.
 
 Print colorized report for database in `$LS_COLORS` to `stdout`.
 
-##### Positional Arguments:
+##### Positional Arguments
 	  DIR_COLORS  read file `DIR_COLORS` instead of `$LS_COLORS`
 
-##### Optional Arguments:
+##### Optional Arguments
 	  -h, --help  show this help message and exit
 	  --left      format report for display in left window
 	  --right     format report for display in right window
@@ -106,10 +106,10 @@ A default format is produced when `--left/--right` is not given.
 Create directory and populate with sample files, directories, etc., for each item in
 `$LS_COLORS`, and all required items in configuration file `CONFIG`.
 
-##### Positional Arguments:
+##### Positional Arguments
 	  DIR_COLORS       read file `DIR_COLORS` instead of `$LS_COLORS`
 
-##### Optional Arguments:
+##### Optional Arguments
 	  -h, --help       show this help message and exit
 	  -q, --quiet      suppress warning if default `CONFIG` cannot be found
 	  --config CONFIG  require filenames, directories and extensions specified in `CONFIG` file.
@@ -127,7 +127,7 @@ Create directory and populate with sample files, directories, etc., for each ite
 Filter `stdin` to `stdout` sorting lines of a `DIR_COLORS` file by color then filetype. Blank
 lines and comments are unsorted and moved to the end.
 
-##### Optional Arguments:
+##### Optional Arguments
 	  -h, --help  show this help message and exit
 
 ----------------------------------------------------------

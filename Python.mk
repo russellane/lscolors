@@ -279,7 +279,7 @@ pydoc:
 .PHONY:		black
 black:
 		@echo $(BAR)
-		$(PYTHON) -m black -q $(SRC_ALL)
+		$(PYTHON) -m black $(SRC_ALL)
 
 #-------------------------------------------------------------------------------
 
