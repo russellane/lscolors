@@ -1,9 +1,4 @@
-### Dircolors Utilities
 	LSCOLORS(1)                      User commands                       LSCOLORS(1)
-
-#### Name
-
-lscolors - dircolors utilities
 
 #### Synopsis
 	lscolors [-h] [-V] COMMAND ...

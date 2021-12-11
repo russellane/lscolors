@@ -55,8 +55,13 @@ PYTHON		:= poetry run python
 SRC_ALL		:= $(shell git ls-files '*.py')
 SRC_APP		:= $(filter-out setup.py, $(SRC_ALL))
 PACKAGE_NAME	:= $(shell python -c 'import tomlkit; t = tomlkit.loads(open("pyproject.toml").read()); print(t["tool"]["poetry"]["name"])')
-PACKAGE_DESC	:= $(shell python -c 'import tomlkit; t = tomlkit.loads(open("pyproject.toml").read()); print(t["tool"]["poetry"]["description"])')
+#PACKAGE_DESC	:= $(shell python -c 'import tomlkit; t = tomlkit.loads(open("pyproject.toml").read()); print(t["tool"]["poetry"]["description"])')
 PIPX		:= $(shell grep -q "^\[tool.poetry.scripts\]" pyproject.toml && echo pipx || echo 'echo no console_scripts to')
+
+SRC_DIRS = $(PACKAGE)
+ifneq ("$(wildcard tests)","")
+    SRC_DIRS += tests
+endif
 
 #-------------------------------------------------------------------------------
 # 1) make [build]
@@ -85,12 +90,12 @@ really-rebuilder:
 		@echo $(PACKAGE) really-re-building $(BUILD)
 
 .PHONY:		build-venv
-build-venv:
+build-venv::
 		@echo $(BAR)
 		poetry install
 
 .PHONY:		clean-venv
-clean-venv:
+clean-venv::
 		@echo $(BAR)
 		venv=$$(poetry env list | awk "{print \$$1}"); [ "$$venv" ] \
 			&& poetry env remove $$venv \
@@ -193,7 +198,7 @@ full:		really-rebuild publish reinstall
 .PHONY:		tags
 tags:
 		@echo $(BAR)
-		ctags -R .
+		ctags -R $(SRC_DIRS)
 
 clean::
 		@echo $(BAR)
@@ -201,21 +206,10 @@ clean::
 
 #-------------------------------------------------------------------------------
 
-.PHONY:		flake8
-flake8:
+.PHONY:		black flake8 isort pylint
+black flake8 isort pylint:
 		@echo $(BAR)
-		$(PYTHON) -m flake8 .
-
-#-------------------------------------------------------------------------------
-
-.PHONY:		pylint
-pylint:
-	@echo $(BAR)
-	{ \
-		DIRS=$(PACKAGE); \
-		[ -d tests ] && DIRS="$$DIRS tests"; \
-		$(PYTHON) -m pylint $$DIRS; \
-	}
+		$(PYTHON) -m $@ $(SRC_DIRS)
 
 #-------------------------------------------------------------------------------
 
@@ -277,20 +271,6 @@ pydocstyle:
 .PHONY:		pydoc
 pydoc:
 		for i in $(SRC_APP); do LESS=c$$LESS $(PYTHON) -m pydoc $$i; done
-
-#-------------------------------------------------------------------------------
-
-.PHONY:		black
-black:
-		@echo $(BAR)
-		$(PYTHON) -m black .
-
-#-------------------------------------------------------------------------------
-
-.PHONY:		isort
-isort:
-		@echo $(BAR)
-		$(PYTHON) -m isort .
 
 #-------------------------------------------------------------------------------
 
