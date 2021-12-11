@@ -213,7 +213,7 @@ reference = "private"
 
 [[package]]
 name = "mandown"
-version = "0.1.2"
+version = "0.1.4"
 description = "argparse help text to markdown"
 category = "dev"
 optional = false
@@ -445,7 +445,7 @@ reference = "private"
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.8"
-content-hash = "8a939914b385f79e03f9c602998fdab58016ca426b86ef65116b27b3fc5388a7"
+content-hash = "5974645bed8a002b2c3e524d935727b3478d2717d14798c4cc8a18a88dba2ba2"
 
 [metadata.files]
 argcomplete = [
@@ -517,7 +517,7 @@ lazy-object-proxy = [
     {file = "lazy_object_proxy-1.6.0-cp39-cp39-win_amd64.whl", hash = "sha256:f5144c75445ae3ca2057faac03fda5a902eff196702b0a24daf1d6ce0650514b"},
 ]
 mandown = [
-    {file = "mandown-0.1.2-py3-none-any.whl", hash = "md5:e77f4ba2217d5785101f3231b769f1cb"},
+    {file = "mandown-0.1.4-py3-none-any.whl", hash = "md5:6a460c174c4ba5fd0e6b2c76134f79f7"},
 ]
 mccabe = [
     {file = "mccabe-0.6.1-py2.py3-none-any.whl", hash = "sha256:ab8a6258860da4b6677da4bd2fe5dc2c659cff31b3ee4f7f5d64e79735b80d42"},

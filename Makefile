@@ -1,5 +1,5 @@
 PACKAGE := lscolors
-BUILD += README.md
+BUILD += xREADME.md
 include Python.mk
 
 #-------------------------------------------------------------------------------
@@ -12,8 +12,8 @@ clean::
 
 #-------------------------------------------------------------------------------
 
-.PHONY:		README.md
-README.md:
+.PHONY:		xREADME.md
+xREADME.md:
 	{ \
 		COLUMNS=97 $(PYTHON) -m lscolors --help | $(PYTHON) -m mandown \
 			--name "$(PACKAGE)" \
@@ -35,7 +35,7 @@ README.md:
 			--title "$(PACKAGE) $$cmd" \
 			--no-manpage-title \
 			--no-name; \
-       } >$@
+       } >README.md
 
 #-------------------------------------------------------------------------------
 # vim: set ts=8 sw=8 noet:

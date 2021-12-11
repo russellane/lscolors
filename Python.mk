@@ -193,7 +193,7 @@ full:		really-rebuild publish reinstall
 .PHONY:		tags
 tags:
 		@echo $(BAR)
-		ctags -R --languages=python $(SRC_APP)
+		ctags -R .
 
 clean::
 		@echo $(BAR)
@@ -204,14 +204,18 @@ clean::
 .PHONY:		flake8
 flake8:
 		@echo $(BAR)
-		$(PYTHON) -m flake8 $(SRC_ALL)
+		$(PYTHON) -m flake8 .
 
 #-------------------------------------------------------------------------------
 
 .PHONY:		pylint
 pylint:
-		@echo $(BAR)
-		$(PYTHON) -m pylint $(SRC_ALL)
+	@echo $(BAR)
+	{ \
+		DIRS=$(PACKAGE); \
+		[ -d tests ] && DIRS="$$DIRS tests"; \
+		$(PYTHON) -m pylint $$DIRS; \
+	}
 
 #-------------------------------------------------------------------------------
 
@@ -279,22 +283,25 @@ pydoc:
 .PHONY:		black
 black:
 		@echo $(BAR)
-		$(PYTHON) -m black $(SRC_ALL)
+		$(PYTHON) -m black .
 
 #-------------------------------------------------------------------------------
 
 .PHONY:		isort
 isort:
 		@echo $(BAR)
-		$(PYTHON) -m isort $(SRC_ALL)
+		$(PYTHON) -m isort .
 
 #-------------------------------------------------------------------------------
 
 .PHONY:		README.md
 README.md:
-		COLUMNS=97 $(PYTHON) -m $(PACKAGE) --help | $(PYTHON) -m mandown \
-			--name "$(PACKAGE)" \
-			--title "$(PACKAGE_DESC)" $(MANDOWN_OPTS) >$@
+	{ \
+		export COLUMNS=97; \
+		WIDTH=89; \
+		$(PYTHON) -m $(PACKAGE) --help | $(PYTHON) -m mandown \
+			$(MANDOWN_OPTS) --width $$WIDTH --use-config; \
+	} >$@
 
 #-------------------------------------------------------------------------------
 # vim: set ts=8 sw=8 noet:
