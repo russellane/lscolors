@@ -1,12 +1,12 @@
 """lscolors `samples` command."""
 
 import os
-import shutil
 import socket
 import stat
 
 import lscolors.colors
 import lscolors.config
+import lscolors.mkdir
 
 
 def add_parser(subs):
@@ -20,18 +20,23 @@ def add_parser(subs):
         and all required items in configuration file `CONFIG`.""",
     )
 
-    _default_sampledir = "lscolors-samples"
-    parser.set_defaults(cmd=_handle, prog="lscolors samples", directory=_default_sampledir)
+    parser.set_defaults(
+        cmd=_handle,
+        prog="lscolors samples",
+        samplesdir="./lscolors-samples",
+    )
 
     lscolors.colors.add_arguments(parser)
     lscolors.config.add_arguments(parser)
 
     parser.add_argument(
-        "--directory",
+        "--samplesdir",
         metavar="DIR",
-        help="create directory `DIR`. " f"(default: {_default_sampledir!r})",
+        help="create directory `DIR`. " f"(default: {parser.get_default('samplesdir')!r})",
     )
-    parser.add_argument("-f", "--force", action="store_true", help="destroy `DIR` if it exists")
+    parser.add_argument(
+        "-f", "--force", action="store_true", help="Ok to clobber `DIR` if it exists"
+    )
 
 
 def _handle(args):
@@ -39,13 +44,10 @@ def _handle(args):
     colors, meta_colors = lscolors.colors.load(args)
     config, meta_config = lscolors.config.load(args)
 
-    print(f"{args.prog} creating directory {args.directory!r} for {meta_colors} {meta_config}:")
+    lscolors.mkdir.mkdir(args.samplesdir, args.force)
+    print(f"{args.prog} creating directory {args.samplesdir!r} for {meta_colors} {meta_config}:")
 
-    # '.../sample-files'
-    if args.force:
-        shutil.rmtree(args.directory, ignore_errors=True)
-    os.mkdir(args.directory)
-    os.chdir(args.directory)
+    os.chdir(args.samplesdir)
     top = os.getcwd()
 
     # .../sample-files/colors/x.038-005-213.py

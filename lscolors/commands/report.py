@@ -54,7 +54,7 @@ def _handle(args):
     try:
         colors, meta_colors = lscolors.colors.load(args)
     except RuntimeError as err:
-        raise SyntaxError(f"{args.prog}: failure; {err}\n") from err
+        raise RuntimeError(f"{args.prog}: failure; {err}\n") from err
 
     print(f"{args.prog} for {meta_colors}:")
 

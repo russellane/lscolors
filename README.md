@@ -15,6 +15,7 @@ Utilities for `dircolors(1)` and `dir_colors(5)`.
 	    chart        print color chart
 	    check        check database for required items
 	    configs      print path to sample configuration files
+	    docs         Create documentation for this application
 	    report       print colorized database report
 	    samples      create directory of sample filesystem items
 	    sort         sort lines of database file by color
@@ -94,7 +95,7 @@ A default format is produced when `--left/--right` is not given.
 --------------------------------------------------------------------------------
 
 ### Lscolors Samples
-	lscolors samples [-h] [-q] [--config CONFIG] [--directory DIR] [-f] [DIR_COLORS]
+	lscolors samples [-h] [-q] [--config CONFIG] [--samplesdir DIR] [-f] [DIR_COLORS]
 
 #### Description
 
@@ -102,15 +103,15 @@ Create directory and populate with sample files, directories, etc., for each ite
 `$LS_COLORS`, and all required items in configuration file `CONFIG`.
 
 ##### Positional Arguments
-	  DIR_COLORS       read file `DIR_COLORS` instead of `$LS_COLORS`
+	  DIR_COLORS        read file `DIR_COLORS` instead of `$LS_COLORS`
 
 ##### Optional Arguments
-	  -h, --help       show this help message and exit
-	  -q, --quiet      suppress warning if default `CONFIG` cannot be found
-	  --config CONFIG  require filenames, directories and extensions specified in `CONFIG` file.
-	                   (default: '.lscolors.yml')
-	  --directory DIR  create directory `DIR`. (default: 'lscolors-samples')
-	  -f, --force      destroy `DIR` if it exists
+	  -h, --help        show this help message and exit
+	  -q, --quiet       suppress warning if default `CONFIG` cannot be found
+	  --config CONFIG   require filenames, directories and extensions specified in `CONFIG` file.
+	                    (default: '.lscolors.yml')
+	  --samplesdir DIR  create directory `DIR`. (default: './lscolors-samples')
+	  -f, --force       Ok to clobber `DIR` if it exists
 
 --------------------------------------------------------------------------------
 

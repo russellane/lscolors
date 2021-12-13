@@ -8,6 +8,7 @@ import argcomplete
 import lscolors.commands.chart
 import lscolors.commands.check
 import lscolors.commands.configs
+import lscolors.commands.docs
 import lscolors.commands.report
 import lscolors.commands.samples
 import lscolors.commands.sort
@@ -30,6 +31,7 @@ def main():
     lscolors.commands.chart.add_parser(subs)
     lscolors.commands.check.add_parser(subs)
     lscolors.commands.configs.add_parser(subs)
+    lscolors.commands.docs.add_parser(subs, parser)
     lscolors.commands.report.add_parser(subs)
     lscolors.commands.samples.add_parser(subs)
     lscolors.commands.sort.add_parser(subs)
@@ -46,6 +48,6 @@ def main():
 
     try:
         args.cmd(args)
-    except SyntaxError as err:
+    except RuntimeError as err:
         print(err, file=sys.stderr)
         sys.exit(1)

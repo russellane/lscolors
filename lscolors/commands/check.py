@@ -26,7 +26,7 @@ def _handle(args):
     try:
         colors, meta_colors = lscolors.colors.load(args)
     except RuntimeError as err:
-        raise SyntaxError(
+        raise RuntimeError(
             f"{args.prog}: failure; {err}\n" f"{args.prog}: {meta_config}"
         ) from err
 
@@ -43,7 +43,7 @@ def _handle(args):
             missing.append(item)
 
     if (nmissing := len(missing)) > 0:
-        raise SyntaxError(
+        raise RuntimeError(
             f"{args.prog}: failure; {len(colors)} items; "
             f"{nrequired - nmissing}/{nrequired} required; "
             f"{nmissing} missing {missing}\n"
