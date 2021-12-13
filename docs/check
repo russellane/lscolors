@@ -8,6 +8,7 @@ positional arguments:
 optional arguments:
   -h, --help       show this help message and exit
   -q, --quiet      suppress warning if default `CONFIG` cannot be found
-  --config CONFIG  require filenames, directories and extensions specified in `CONFIG` file. (default: '.lscolors.yml')
+  --config CONFIG  require filenames, directories and extensions specified in `CONFIG` file.
+                   (default: '.lscolors.yml')
 
 Exit Status: zero indicates success, nonzero indicates failure.

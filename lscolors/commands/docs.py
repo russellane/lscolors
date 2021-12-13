@@ -2,6 +2,7 @@
 
 import argparse
 import pathlib
+
 import lscolors.mkdir
 
 
@@ -38,6 +39,7 @@ def _handle(args):
 
     lscolors.mkdir.mkdir(args.docs, args.force)
 
+    # pylint: disable=protected-access
     for action in args.main_parser._subparsers._actions:
         if isinstance(action, argparse._SubParsersAction):
             for name, parser in action.choices.items():

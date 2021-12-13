@@ -1,5 +1,6 @@
 PACKAGE := lscolors
 BUILD += xREADME.md
+BUILD += docs
 include Python.mk
 
 #-------------------------------------------------------------------------------
@@ -9,6 +10,12 @@ lscolors-samples:
 		$(PYTHON) -m lscolors samples --force
 clean::
 		rm -rf lscolors-samples
+
+#-------------------------------------------------------------------------------
+
+.PHONY:		docs
+docs:
+		COLUMNS=97 $(PYTHON) -m $(PACKAGE) docs --force
 
 #-------------------------------------------------------------------------------
 

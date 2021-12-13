@@ -1,6 +1,7 @@
 usage: lscolors docs [-h] [-f] [DIR]
 
-This application's packaging process uses this internal command to create this application's documentation.
+This application's packaging process uses this internal command to create this application's
+documentation.
 
 positional arguments:
   DIR          create directory `DIR`. (default: './docs')
