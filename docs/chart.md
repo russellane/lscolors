@@ -1,4 +1,4 @@
-	LSCOLORS(1)                           User commands                           LSCOLORS(1)
+	LSCOLORS-CHART(1)                     User commands                     LSCOLORS-CHART(1)
 
 #### Synopsis
 	lscolors chart [-h]
@@ -12,7 +12,7 @@ Print color-chart to `stdout`.
 
 ##### See Also
 
-[check](check), [configs](configs), [docs](docs), [report](report), [samples](samples), [sort](sort), [help](help).
+[lscolors-check](check.md), [lscolors-configs](configs.md), [lscolors-docs](docs.md), [lscolors-report](report.md), [lscolors-samples](samples.md), [lscolors-sort](sort.md), [lscolors-help](help.md).
 
 ----------------------------------------------------------
 [page by [mandown](https://github.com/russellane/mandown)]

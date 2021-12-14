@@ -1,4 +1,4 @@
-	LSCOLORS(1)                           User commands                           LSCOLORS(1)
+	LSCOLORS-SORT(1)                      User commands                      LSCOLORS-SORT(1)
 
 #### Synopsis
 	lscolors sort [-h]
@@ -13,7 +13,7 @@ lines and comments are unsorted and moved to the end.
 
 ##### See Also
 
-[chart](chart), [check](check), [configs](configs), [docs](docs), [report](report), [samples](samples), [help](help).
+[lscolors-chart](chart.md), [lscolors-check](check.md), [lscolors-configs](configs.md), [lscolors-docs](docs.md), [lscolors-report](report.md), [lscolors-samples](samples.md), [lscolors-help](help.md).
 
 ----------------------------------------------------------
 [page by [mandown](https://github.com/russellane/mandown)]

@@ -1,4 +1,4 @@
-	LSCOLORS(1)                           User commands                           LSCOLORS(1)
+	LSCOLORS-SAMPLES(1)                   User commands                   LSCOLORS-SAMPLES(1)
 
 #### Synopsis
 	lscolors samples [-h] [-q] [--config CONFIG] [--samplesdir DIR] [-f] [DIR_COLORS]
@@ -21,7 +21,7 @@ Create directory and populate with sample files, directories, etc., for each ite
 
 ##### See Also
 
-[chart](chart), [check](check), [configs](configs), [docs](docs), [report](report), [sort](sort), [help](help).
+[lscolors-chart](chart.md), [lscolors-check](check.md), [lscolors-configs](configs.md), [lscolors-docs](docs.md), [lscolors-report](report.md), [lscolors-sort](sort.md), [lscolors-help](help.md).
 
 ----------------------------------------------------------
 [page by [mandown](https://github.com/russellane/mandown)]

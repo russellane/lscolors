@@ -1,4 +1,4 @@
-	LSCOLORS(1)                           User commands                           LSCOLORS(1)
+	LSCOLORS-CHECK(1)                     User commands                     LSCOLORS-CHECK(1)
 
 #### Synopsis
 	lscolors check [-h] [-q] [--config CONFIG] [DIR_COLORS]
@@ -22,7 +22,7 @@ Exit Status: zero indicates success, nonzero indicates failure.
 
 ##### See Also
 
-[chart](chart), [configs](configs), [docs](docs), [report](report), [samples](samples), [sort](sort), [help](help).
+[lscolors-chart](chart.md), [lscolors-configs](configs.md), [lscolors-docs](docs.md), [lscolors-report](report.md), [lscolors-samples](samples.md), [lscolors-sort](sort.md), [lscolors-help](help.md).
 
 ----------------------------------------------------------
 [page by [mandown](https://github.com/russellane/mandown)]

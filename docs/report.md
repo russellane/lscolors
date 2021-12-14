@@ -1,4 +1,4 @@
-	LSCOLORS(1)                           User commands                           LSCOLORS(1)
+	LSCOLORS-REPORT(1)                    User commands                    LSCOLORS-REPORT(1)
 
 #### Synopsis
 	lscolors report [-h] [--left | --right] [DIR_COLORS]
@@ -21,7 +21,7 @@ A default format is produced when `--left/--right` is not given.
 
 ##### See Also
 
-[chart](chart), [check](check), [configs](configs), [docs](docs), [samples](samples), [sort](sort), [help](help).
+[lscolors-chart](chart.md), [lscolors-check](check.md), [lscolors-configs](configs.md), [lscolors-docs](docs.md), [lscolors-samples](samples.md), [lscolors-sort](sort.md), [lscolors-help](help.md).
 
 ----------------------------------------------------------
 [page by [mandown](https://github.com/russellane/mandown)]

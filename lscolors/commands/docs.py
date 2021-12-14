@@ -48,7 +48,7 @@ def _handle(args):
             for name, parser in action.choices.items():
                 lines = parser.format_help().splitlines()
                 see_also = ", ".join([v for k, v in also.items() if k != name]) + "."
-                mdoc = mandown.mandown.Mandown(lines, see_also=see_also)
+                mdoc = mandown.mandown.Mandown(lines, name=f"lscolors-{name}", see_also=see_also)
                 text = mdoc.render_markdown()
                 pathlib.Path(args.docs, name + ".md").write_text(text, encoding="utf-8")
 
@@ -62,6 +62,6 @@ def _see_also(args):
     for action in args.main_parser._subparsers._actions:
         if isinstance(action, argparse._SubParsersAction):
             for name in action.choices:
-                also[name] = f"[{name}]({name})"
+                also[name] = f"[lscolors-{name}]({name}.md)"
 
     return also

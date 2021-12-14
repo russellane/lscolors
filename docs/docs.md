@@ -1,4 +1,4 @@
-	LSCOLORS(1)                           User commands                           LSCOLORS(1)
+	LSCOLORS-DOCS(1)                      User commands                      LSCOLORS-DOCS(1)
 
 #### Synopsis
 	lscolors docs [-h] [-f] [DIR]
@@ -17,7 +17,7 @@ documentation.
 
 ##### See Also
 
-[chart](chart), [check](check), [configs](configs), [report](report), [samples](samples), [sort](sort), [help](help).
+[lscolors-chart](chart.md), [lscolors-check](check.md), [lscolors-configs](configs.md), [lscolors-report](report.md), [lscolors-samples](samples.md), [lscolors-sort](sort.md), [lscolors-help](help.md).
 
 ----------------------------------------------------------
 [page by [mandown](https://github.com/russellane/mandown)]

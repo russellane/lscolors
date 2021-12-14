@@ -1,4 +1,4 @@
-	LSCOLORS(1)                           User commands                           LSCOLORS(1)
+	LSCOLORS-CONFIGS(1)                   User commands                   LSCOLORS-CONFIGS(1)
 
 #### Synopsis
 	lscolors configs [-h]
@@ -12,7 +12,7 @@ Print path to sample `.lscolors.yml` and `.dircolors` configuration files.
 
 ##### See Also
 
-[chart](chart), [check](check), [docs](docs), [report](report), [samples](samples), [sort](sort), [help](help).
+[lscolors-chart](chart.md), [lscolors-check](check.md), [lscolors-docs](docs.md), [lscolors-report](report.md), [lscolors-samples](samples.md), [lscolors-sort](sort.md), [lscolors-help](help.md).
 
 ----------------------------------------------------------
 [page by [mandown](https://github.com/russellane/mandown)]
