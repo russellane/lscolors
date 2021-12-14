@@ -3,6 +3,8 @@
 import argparse
 import pathlib
 
+import mandown.mandown
+
 import lscolors.mkdir
 
 
@@ -38,11 +40,28 @@ command to create this application's documentation.""",
 def _handle(args):
 
     lscolors.mkdir.mkdir(args.docs, args.force)
+    also = _see_also(args)
 
     # pylint: disable=protected-access
     for action in args.main_parser._subparsers._actions:
         if isinstance(action, argparse._SubParsersAction):
             for name, parser in action.choices.items():
-                path = pathlib.Path(args.docs, name)
-                with open(path, "w", encoding="utf-8") as file:
-                    parser.print_help(file=file)
+                lines = parser.format_help().splitlines()
+                see_also = ", ".join([v for k, v in also.items() if k != name]) + "."
+                mdoc = mandown.mandown.Mandown(lines, see_also=see_also)
+                text = mdoc.render_markdown()
+                pathlib.Path(args.docs, name + ".md").write_text(text, encoding="utf-8")
+
+
+def _see_also(args):
+    """Docstring."""
+
+    also = {}
+
+    # pylint: disable=protected-access
+    for action in args.main_parser._subparsers._actions:
+        if isinstance(action, argparse._SubParsersAction):
+            for name in action.choices:
+                also[name] = f"[{name}]({name})"
+
+    return also

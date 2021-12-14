@@ -1,4 +1,4 @@
-	LSCOLORS(1)                      User commands                       LSCOLORS(1)
+	LSCOLORS(1)                           User commands                           LSCOLORS(1)
 
 #### Synopsis
 	lscolors [-h] [-V] COMMAND ...

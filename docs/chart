@@ -1,6 +1,0 @@
-usage: lscolors chart [-h]
-
-Print color-chart to `stdout`.
-
-optional arguments:
-  -h, --help  show this help message and exit
