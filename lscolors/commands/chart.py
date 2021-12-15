@@ -7,7 +7,7 @@ def add_parser(subs):
     parser = subs.add_parser(
         "chart",
         help="print color chart",
-        description="Print color-chart to `stdout`.",
+        description="Print color-chart.",
     )
 
     parser.set_defaults(cmd=_handle, prog="lscolors chart")

@@ -5,7 +5,7 @@
 
 #### Description
 
-Print colorized report for database in `$LS_COLORS` to `stdout`.
+Print colorized report for database in `$LS_COLORS`.
 
 ##### Positional Arguments
 	  DIR_COLORS  read file `DIR_COLORS` instead of `$LS_COLORS`

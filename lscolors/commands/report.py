@@ -9,7 +9,7 @@ def add_parser(subs):
     parser = subs.add_parser(
         "report",
         help="print colorized database report",
-        description="Print colorized report for database in `$LS_COLORS` to `stdout`.",
+        description="Print colorized report for database in `$LS_COLORS`.",
         epilog="A default format is produced when `--left/--right` is not given.",
     )
 

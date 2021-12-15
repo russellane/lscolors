@@ -1,11 +1,9 @@
 """lscolors `docs` command."""
 
-import argparse
-import pathlib
-
-import mandown.mandown
-
+import lscolors.mandown_  # developing here for now; to be moved to mandown.mandown
 import lscolors.mkdir
+
+# -------------------------------------------------------------------------------
 
 
 def add_parser(subs, main_parser):
@@ -14,7 +12,8 @@ def add_parser(subs, main_parser):
     parser = subs.add_parser(
         "docs",
         help="Create documentation for this application" "",
-        description="""\
+        description="Woohoo.",
+        epilog="""\
 This application's packaging process uses this internal
 command to create this application's documentation.""",
     )
@@ -32,36 +31,28 @@ command to create this application's documentation.""",
         metavar="DIR",
         help="create directory `DIR`. " f"(default: {parser.get_default('docs')!r})",
     )
+
     parser.add_argument(
-        "-f", "--force", action="store_true", help="Ok to clobber `DIR` if it exists"
+        "-f",
+        "--force",
+        action="store_true",
+        help="Ok to clobber `DIR` if it exists",
     )
+
+    parser.add_argument(
+        "--top-level",
+        action="store_true",
+        help="Create top level page only",
+    )
+
+
+# -------------------------------------------------------------------------------
 
 
 def _handle(args):
 
-    lscolors.mkdir.mkdir(args.docs, args.force)
-    also = _see_also(args)
-
-    # pylint: disable=protected-access
-    for action in args.main_parser._subparsers._actions:
-        if isinstance(action, argparse._SubParsersAction):
-            for name, parser in action.choices.items():
-                lines = parser.format_help().splitlines()
-                see_also = ", ".join([v for k, v in also.items() if k != name]) + "."
-                mdoc = mandown.mandown.Mandown(lines, name=f"lscolors-{name}", see_also=see_also)
-                text = mdoc.render_markdown()
-                pathlib.Path(args.docs, name + ".md").write_text(text, encoding="utf-8")
-
-
-def _see_also(args):
-    """Docstring."""
-
-    also = {}
-
-    # pylint: disable=protected-access
-    for action in args.main_parser._subparsers._actions:
-        if isinstance(action, argparse._SubParsersAction):
-            for name in action.choices:
-                also[name] = f"[lscolors-{name}]({name}.md)"
-
-    return also
+    if args.top_level:
+        lscolors.mandown_.print_main_page(args.main_parser)
+    else:
+        lscolors.mkdir.mkdir(args.docs, args.force)
+        lscolors.mandown_.write_command_pages(args.main_parser, args.docs)

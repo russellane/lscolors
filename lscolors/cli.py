@@ -20,10 +20,24 @@ def main():
 
     parser = argparse.ArgumentParser(
         prog=__package__,
-        description="Utilities for `dircolors(1)` and `dir_colors(5)`.",
+        description="Utilities for `dircolors(1)` and `dir_colors(5)`",
         epilog="See `%(prog)s COMMAND --help` for help on a specific command.",
     )
-    parser.add_argument("-V", "--version", action="version", version=__version__)
+
+    parser.add_argument(
+        "-V",
+        "--version",
+        help="show program's version number and exit",
+        action="version",
+        version=__version__,
+    )
+
+    parser.add_argument(
+        "--bobo",
+        nargs="?",
+        metavar="FILE",
+        help="test option for testing",
+    )
 
     parser.set_defaults(cmd=None)
     subs = parser.add_subparsers(metavar="COMMAND", dest="command", title="Specify one of")

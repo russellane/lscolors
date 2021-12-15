@@ -1,15 +1,16 @@
 	LSCOLORS(1)                           User commands                           LSCOLORS(1)
 
 #### Synopsis
-	lscolors [-h] [-V] COMMAND ...
+	lscolors [-h] [-V] [--bobo [FILE]] COMMAND ...
 
 #### Description
 
-Utilities for `dircolors(1)` and `dir_colors(5)`.
+Utilities for `dircolors(1)` and `dir_colors(5)`
 
 ##### Optional Arguments
 	  -h, --help     show this help message and exit
 	  -V, --version  show program's version number and exit
+	  --bobo [FILE]  test option for testing
 
 ##### Commands
 	    chart        print color chart
@@ -32,7 +33,7 @@ See `lscolors COMMAND --help` for help on a specific command.
 
 #### Description
 
-Print color-chart to `stdout`.
+Print color-chart.
 
 ##### Optional Arguments
 	  -h, --help  show this help message and exit
@@ -78,7 +79,7 @@ Print path to sample `.lscolors.yml` and `.dircolors` configuration files.
 
 #### Description
 
-Print colorized report for database in `$LS_COLORS` to `stdout`.
+Print colorized report for database in `$LS_COLORS`.
 
 ##### Positional Arguments
 	  DIR_COLORS  read file `DIR_COLORS` instead of `$LS_COLORS`

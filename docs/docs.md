@@ -1,12 +1,11 @@
 	LSCOLORS-DOCS(1)                      User commands                      LSCOLORS-DOCS(1)
 
 #### Synopsis
-	lscolors docs [-h] [-f] [DIR]
+	lscolors docs [-h] [-f] [--top-level] [DIR]
 
 #### Description
 
-This application's packaging process uses this internal command to create this application's
-documentation.
+Woohoo.
 
 ##### Positional Arguments
 	  DIR          create directory `DIR`. (default: './docs')
@@ -14,6 +13,12 @@ documentation.
 ##### Optional Arguments
 	  -h, --help   show this help message and exit
 	  -f, --force  Ok to clobber `DIR` if it exists
+	  --top-level  Create top level page only
+
+##### Notes
+
+This application's packaging process uses this internal command to create this application's
+documentation.
 
 ##### See Also
 

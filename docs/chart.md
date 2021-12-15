@@ -5,7 +5,7 @@
 
 #### Description
 
-Print color-chart to `stdout`.
+Print color-chart.
 
 ##### Optional Arguments
 	  -h, --help  show this help message and exit
