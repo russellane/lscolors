@@ -52,6 +52,8 @@ class MarkdownHelpFormatter(argparse.HelpFormatter):
                     print(f"_ADD_ITEM {action}", flush=True)
         super()._add_item(func, args)
 
+    # -------------------------------------------------------------------------------
+
     def _metavar_formatter(self, action, default_metavar):
         if action.metavar is not None:
             result = action.metavar
@@ -62,7 +64,8 @@ class MarkdownHelpFormatter(argparse.HelpFormatter):
         else:
             result = default_metavar
 
-        result = f'<span style="color: darkred">***{result}***</span>'
+        # result = f'<span style="color: darkred">***{result}***</span>'
+        result = f"***{result}***"
 
         # pylint: disable=redefined-builtin
         def format(tuple_size):
@@ -76,15 +79,27 @@ class MarkdownHelpFormatter(argparse.HelpFormatter):
 
     def _format_usage(self, usage, actions, groups, prefix):
         if self._debug:
+            print(f"_FORMAT_USAGE: usage={usage!r}", flush=True)
             print(f"_FORMAT_USAGE: type(self)={type(self)}", flush=True)
-            print(f"_FORMAT_USAGE: usage={usage}", flush=True)
             print(f"_FORMAT_USAGE: actions={actions}", flush=True)
             print(f"_FORMAT_USAGE: groups={groups}", flush=True)
             print(f"_FORMAT_USAGE: prefix={prefix}", flush=True)
-        ret = super()._format_usage(usage, actions, groups, prefix)
+        string = super()._format_usage(usage, actions, groups, prefix)
         if self._debug:
-            print(f"_FORMAT_USAGE: ret={ret}", flush=True)
-        return "### Usage\n" + ret[7:]  # strlen("usage: ")
+            print(f"_FORMAT_USAGE: string={string!r}", flush=True)
+        # Remove the 1st len("usage: ") chars from all lines.
+        trim = len("usage: ")
+        lines = [x[trim:] for x in string.splitlines()]
+        return "\n".join(
+            [
+                "### Usage",
+                "```",
+            ]
+            + lines
+            + [
+                "```",
+            ]
+        )
 
     #   def format_help(self):
     #       """Docstring."""

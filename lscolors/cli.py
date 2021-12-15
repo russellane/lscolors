@@ -33,10 +33,17 @@ def main():
     )
 
     parser.add_argument(
-        "--bobo",
+        "--test-one",
         nargs="?",
         metavar="FILE",
         help="test option for testing",
+    )
+
+    parser.add_argument(
+        "--test-two",
+        nargs="?",
+        metavar="FILE",
+        help="another test option for testing",
     )
 
     parser.set_defaults(cmd=None)

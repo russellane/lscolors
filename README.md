@@ -1,15 +1,17 @@
 ### Usage
-lscolors [-h] [-V] [--bobo [<span style="color: darkred">***FILE***</span>]]
-                <span style="color: darkred">***COMMAND***</span> ...
+```
+lscolors [-h] [-V] [--test-one [***FILE***]] [--test-two [***FILE***]]
+         ***COMMAND*** ...
 
-Utilities for `dircolors(1)` and `dir_colors(5)`
+```Utilities for `dircolors(1)` and `dir_colors(5)`
 
 ### optional arguments:
 | option | description |
 |:------ |:----------- |
 | -h, --help | show this help message and exit |
 | -V, --version | show program's version number and exit |
-| --bobo [<span style="color: darkred">***FILE***</span>] | test option for testing |
+| --test-one [***FILE***] | test option for testing |
+| --test-two [***FILE***] | another test option for testing |
 
 ### Specify one of:
 | <span style="color: darkred">***COMMAND***</span> | |
