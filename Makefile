@@ -1,5 +1,5 @@
 PACKAGE := lscolors
-BUILD += xREADME.md
+BUILD += xREADME.md2
 BUILD += docs
 include Python.mk
 
@@ -16,6 +16,12 @@ clean::
 .PHONY:		docs
 docs:
 		COLUMNS=97 $(PYTHON) -m $(PACKAGE) docs --force
+
+#-------------------------------------------------------------------------------
+
+.PHONY:		xREADME.md2
+xREADME.md2:
+		COLUMNS=97 $(PYTHON) -m $(PACKAGE) docs --top-level >README.md
 
 #-------------------------------------------------------------------------------
 
