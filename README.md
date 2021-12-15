@@ -1,4 +1,5 @@
-usage: lscolors [-h] [-V] [--bobo [<span style="color: darkred">***FILE***</span>]]
+### Usage
+lscolors [-h] [-V] [--bobo [<span style="color: darkred">***FILE***</span>]]
                 <span style="color: darkred">***COMMAND***</span> ...
 
 Utilities for `dircolors(1)` and `dir_colors(5)`

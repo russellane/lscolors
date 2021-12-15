@@ -84,7 +84,7 @@ class MarkdownHelpFormatter(argparse.HelpFormatter):
         ret = super()._format_usage(usage, actions, groups, prefix)
         if self._debug:
             print(f"_FORMAT_USAGE: ret={ret}", flush=True)
-        return ret
+        return "### Usage\n" + ret[7:]  # strlen("usage: ")
 
     #   def format_help(self):
     #       """Docstring."""
