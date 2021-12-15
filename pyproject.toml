@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "lscolors"
-version = "0.1.12"
+version = "0.1.14"
 description = "dircolors utilities"
 license = "MIT"
 authors = ["Russel Lane <russel@rlane.com>"]
@@ -32,9 +32,9 @@ pyyaml = "^6.0"
 black = "^21.12b0"
 flake8 = "^4.0.1"
 flake8-bugbear = "^21.11.29"
+flake8-pydocstyle = "^0.2.0"
 flake8-simplify = "^0.14.2"
 isort = "^5.10.1"
-pydocstyle = "^6.1.1"
 pylint = "^2.12.2"
 
 [tool.poetry.scripts]

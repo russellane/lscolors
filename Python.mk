@@ -5,7 +5,7 @@
 #-------------------------------------------------------------------------------
 # This file implements these high-level targets:
 
-# 1) make [build]	# black, isort, flake8, pydocstyle, pydoctest, pylint, pytest && dist
+# 1) make [build]	# black, isort, flake8, pydoctest, pylint, pytest && dist
 # 2) make clean
 # 3) make dist		# poetry build
 # 4) make distclean
@@ -18,7 +18,6 @@
 # Undocumented:
 # default
 # doctest-debug
-# pydocstyle
 # pytest-info
 # build-venv
 # pytest-pdb
@@ -35,7 +34,7 @@
 # Uncommenting them here will apply to all projects. These components
 # are available:
 
-BUILD := tags $(shell egrep '^(black|isort|flake8|pydocstyle|pydoctest|pylint|pytest) = ' <pyproject.toml | cut -d' ' -f1) $(BUILD)
+BUILD := tags $(shell egrep '^(black|isort|flake8|pydoctest|pylint|pytest) = ' <pyproject.toml | cut -d' ' -f1) $(BUILD)
 
 #-------------------------------------------------------------------------------
 # try this in .vimrc
@@ -254,17 +253,6 @@ pydoctest-debug:
 			echo $(BAR); \
 			$(DOCTEST) -v $$i; \
 		done $(DEBUG_PAGER)
-
-#-------------------------------------------------------------------------------
-
-.PHONY:		pydocstyle
-pydocstyle:
-		@echo $(BAR)
-		outfile=`mktemp`; \
-		$(PYTHON) -m pydocstyle $(PACKAGE) | \
-			while read x; do read y; echo $$(echo $$x | awk "{print \$$1}"):0 $$y; done | \
-			sort -k2 -k1 | tee $$outfile; \
-		[ -s $$outfile ]; ret=$$?; rm -f $$outfile; [ $$ret -ne 0 ]
 
 #-------------------------------------------------------------------------------
 
