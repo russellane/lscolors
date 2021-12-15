@@ -54,28 +54,28 @@ class MarkdownHelpFormatter(argparse.HelpFormatter):
 
     # -------------------------------------------------------------------------------
 
-    def _metavar_formatter(self, action, default_metavar):
-        if action.metavar is not None:
-            result = action.metavar
-        elif action.choices is not None:
-            choice_strs = [str(choice) for choice in action.choices]
-            # pylint: disable=consider-using-f-string
-            result = "{%s}" % ",".join(choice_strs)
-        else:
-            result = default_metavar
+    #   def _metavar_formatter(self, action, default_metavar):
+    #       if action.metavar is not None:
+    #           result = action.metavar
+    #       elif action.choices is not None:
+    #           choice_strs = [str(choice) for choice in action.choices]
+    #           # ylint: disable=consider-using-f-string
+    #           result = "{%s}" % ",".join(choice_strs)
+    #       else:
+    #           result = default_metavar
 
-        # result = f'<span style="color: darkred">***{result}***</span>'
-        result = f"***{result}***"
+    #       # result = f'<span style="color: darkred">***{result}***</span>'
+    #       # result = f"***{result}***"
 
-        # pylint: disable=redefined-builtin
-        def format(tuple_size):
-            # pylint: disable=no-else-return
-            if isinstance(result, tuple):
-                return result
-            else:
-                return (result,) * tuple_size
+    #       # ylint: disable=redefined-builtin
+    #       def format(tuple_size):
+    #           # ylint: disable=no-else-return
+    #           if isinstance(result, tuple):
+    #               return result
+    #           else:
+    #               return (result,) * tuple_size
 
-        return format
+    #       return format
 
     def _format_usage(self, usage, actions, groups, prefix):
         if self._debug:
@@ -170,7 +170,7 @@ class MarkdownHelpFormatter(argparse.HelpFormatter):
             lines = []
 
         # lines.append(f"| **{invocation}** | {help_text} |")
-        lines.append(f"| {invocation} | {help_text} |")
+        lines.append(f"| `{invocation}` | {help_text} |")
         return "\n".join(lines) + "\n"
 
     # -------------------------------------------------------------------------------
@@ -191,12 +191,13 @@ class MarkdownHelpFormatter(argparse.HelpFormatter):
             # print(f"\n=>name={name!r} parser={parser!r}")
             # breakpoint()
             # print(f"| [{name}](docs/{name}.md) | {description} |")
-            lines.append(f"| `[{name}](docs/{name}.md)` | {description} |")
+            lines.append(f"| [`{name}`](docs/{name}.md) | {description} |")
 
         if len(lines) == 0:
             return ""
 
-        command = '<span style="color: darkred">***COMMAND***</span>'
+        # command = '<span style="color: darkred">***COMMAND***</span>'
+        command = "COMMAND"
         return (
             "\n".join(
                 [
