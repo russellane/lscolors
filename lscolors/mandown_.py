@@ -89,15 +89,18 @@ class MarkdownHelpFormatter(argparse.HelpFormatter):
             print(f"_FORMAT_USAGE: string={string!r}", flush=True)
         # Remove the 1st len("usage: ") chars from all lines.
         trim = len("usage: ")
-        lines = [x[trim:] for x in string.splitlines()]
+        lines = [x[trim:] for x in string.rstrip().splitlines()]
         return "\n".join(
             [
                 "### Usage",
+                "",
                 "```",
             ]
             + lines
             + [
                 "```",
+                "",
+                "",
             ]
         )
 
@@ -123,13 +126,12 @@ class MarkdownHelpFormatter(argparse.HelpFormatter):
     def add_text(self, text):
         """Docstring."""
 
-        if (
-            self._current_section == self._root_section
-            and self._is_new_section is not None
-            and not self._have_epilog
-        ):
-            self._have_epilog = True
-            super().add_text("### Epilog")
+        if self._current_section == self._root_section:
+            if self._is_new_section is not None and not self._have_epilog:
+                self._have_epilog = True
+                super().add_text("### Epilog")
+            else:
+                super().add_text("### Description")
 
         super().add_text(text)
 
@@ -189,7 +191,7 @@ class MarkdownHelpFormatter(argparse.HelpFormatter):
             # print(f"\n=>name={name!r} parser={parser!r}")
             # breakpoint()
             # print(f"| [{name}](docs/{name}.md) | {description} |")
-            lines.append(f"| [{name}](docs/{name}.md) | {description} |")
+            lines.append(f"| `[{name}](docs/{name}.md)` | {description} |")
 
         if len(lines) == 0:
             return ""
