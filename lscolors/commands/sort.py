@@ -3,55 +3,62 @@
 import sys
 from collections import defaultdict
 
-
-def add_parser(subs):
-    """Add command parser."""
-
-    parser = subs.add_parser(
-        "sort",
-        help="sort lines of database file by color",
-        description="""Filter `stdin` to `stdout` sorting
-        lines of a `DIR_COLORS` file by color then filetype.
-        Blank lines and comments are unsorted and moved to the end.""",
-    )
-
-    parser.set_defaults(cmd=_handle, prog="lscolors sort")
+import lscolors
 
 
-def _handle(args):
-    """`lscolors sort` command."""
+class Command(lscolors.Command):
+    """lscolors `sort` command."""
 
-    _ = args  # unused
-    # parse lines per https://github.com/coreutils/coreutils/blob/master/src/dircolors.c
-    # which strips leading spaces, spaces between keyword and arg,
-    # and trailing spaces after arg, which may contain spaces.
+    def __init__(self):
+        """Initialize lscolors `sort` command."""
 
-    lines_by_color = defaultdict(list)
+        super().__init__()
 
-    # save comments and empty lines for end; for modeline.
-    comments = []
+        parser = self.subs.add_parser(
+            "sort",
+            help="sort lines of database file by color",
+            description="""Filter `stdin` to `stdout` sorting
+            lines of a `DIR_COLORS` file by color then filetype.
+            Blank lines and comments are unsorted and moved to the end.""",
+        )
 
-    for line in sys.stdin:
-        line = line.strip()
-        if not line or line[0] == "#":
-            comments.append(line)
-            continue
+        parser.set_defaults(cmd=self.handle, prog="lscolors sort")
 
-        arg = line.split(maxsplit=1)[1]  # (keyword, arg)
+    @staticmethod
+    def handle(args):
+        """`lscolors sort` command."""
 
-        if (i := arg.find("#")) >= 0:
-            arg = arg[:i].strip()
+        _ = args  # unused
+        # parse lines per https://github.com/coreutils/coreutils/blob/master/src/dircolors.c
+        # which strips leading spaces, spaces between keyword and arg,
+        # and trailing spaces after arg, which may contain spaces.
 
-        colors = []
-        for color in arg.split(";"):
-            colors.append(f"{int(color):03}")
-        color = "-".join(colors)
+        lines_by_color = defaultdict(list)
 
-        lines_by_color[color].append(line)
+        # save comments and empty lines for end; for modeline.
+        comments = []
 
-    for color in sorted(lines_by_color):
-        for line in sorted(lines_by_color[color]):
+        for line in sys.stdin:
+            line = line.strip()
+            if not line or line[0] == "#":
+                comments.append(line)
+                continue
+
+            arg = line.split(maxsplit=1)[1]  # (keyword, arg)
+
+            if (i := arg.find("#")) >= 0:
+                arg = arg[:i].strip()
+
+            colors = []
+            for color in arg.split(";"):
+                colors.append(f"{int(color):03}")
+            color = "-".join(colors)
+
+            lines_by_color[color].append(line)
+
+        for color in sorted(lines_by_color):
+            for line in sorted(lines_by_color[color]):
+                print(line)
+
+        for line in comments:
             print(line)
-
-    for line in comments:
-        print(line)

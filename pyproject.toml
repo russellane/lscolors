@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "lscolors"
-version = "0.1.14"
+version = "0.1.15"
 description = "dircolors utilities"
 license = "MIT"
 authors = ["Russel Lane <russel@rlane.com>"]
@@ -46,6 +46,7 @@ line-length = "97"
 [tool.isort]
 line_length = "97"
 profile = "black"
+force_single_line = "true"
 
 [tool.pylint.format]
 max-line-length = "97"
@@ -55,6 +56,7 @@ enable = ["useless-suppression"]
 fail-on = ["I0021"]             # useless-suppression
 disable = [
     "C0330", "C0326",           # black
+    "R0801",                    # Similar lines in 2 files - cleo commands
 ]
 
 [tool.pydocstyle]

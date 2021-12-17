@@ -1,58 +1,58 @@
 """lscolors `docs` command."""
 
+import lscolors
 import lscolors.mandown_  # developing here for now; to be moved to mandown.mandown
-import lscolors.mkdir
-
-# -------------------------------------------------------------------------------
 
 
-def add_parser(subs, main_parser):
-    """Add command parser."""
+class Command(lscolors.Command):
+    """lscolors `docs` command."""
 
-    parser = subs.add_parser(
-        "docs",
-        help="Create documentation for this application" "",
-        description="Woohoo.",
-        epilog="""\
-This application's packaging process uses this internal
-command to create this application's documentation.""",
-    )
+    def __init__(self):
+        """Initialize lscolors `docs` command."""
 
-    parser.set_defaults(
-        cmd=_handle,
-        prog="lscolors docs",
-        docs="./docs",
-        main_parser=main_parser,
-    )
+        super().__init__()
 
-    parser.add_argument(
-        "docs",
-        nargs="?",
-        metavar="DIR",
-        help="create directory `DIR`. " f"(default: {parser.get_default('docs')!r})",
-    )
+        parser = self.subs.add_parser(
+            "docs",
+            help="Create documentation for this application" "",
+            description="Woohoo.",
+            epilog=(
+                "This is an internal command used during "
+                "packaging to create documentation files."
+            ),
+        )
 
-    parser.add_argument(
-        "-f",
-        "--force",
-        action="store_true",
-        help="Ok to clobber `DIR` if it exists",
-    )
+        parser.set_defaults(
+            cmd=self.handle,
+            prog="lscolors docs",
+            docs="./docs",
+        )
 
-    parser.add_argument(
-        "--top-level",
-        action="store_true",
-        help="Create top level page only",
-    )
+        parser.add_argument(
+            "docs",
+            nargs="?",
+            metavar="DIR",
+            help="create directory `DIR`. " f"(default: {parser.get_default('docs')!r})",
+        )
 
+        parser.add_argument(
+            "-f",
+            "--force",
+            action="store_true",
+            help="Ok to clobber `DIR` if it exists",
+        )
 
-# -------------------------------------------------------------------------------
+        parser.add_argument(
+            "--top-level",
+            action="store_true",
+            help="Create top level page only",
+        )
 
+    def handle(self, args):
+        """Handle command invocation."""
 
-def _handle(args):
-
-    if args.top_level:
-        lscolors.mandown_.print_main_page(args.main_parser)
-    else:
-        lscolors.mkdir.mkdir(args.docs, args.force)
-        lscolors.mandown_.write_command_pages(args.main_parser, args.docs)
+        if args.top_level:
+            lscolors.mandown_.print_main_page(self.main_parser)
+        else:
+            lscolors.mkdir.mkdir(args.docs, args.force)
+            lscolors.mandown_.write_command_pages(self.main_parser, args.docs)

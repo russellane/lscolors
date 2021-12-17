@@ -1,7 +1,7 @@
 ### Usage
 
 ```
-lscolors [-h] [-V] [--test-one [FILE]] [--test-two [FILE]] COMMAND ...
+lscolors [-h] [-V] COMMAND ...
 ```
 
 ### Description
@@ -13,8 +13,6 @@ Utilities for `dircolors(1)` and `dir_colors(5)`
 |:------ |:----------- |
 | `-h, --help` | show this help message and exit |
 | `-V, --version` | show program's version number and exit |
-| `--test-one [FILE]` | test option for testing |
-| `--test-two [FILE]` | another test option for testing |
 
 ### Specify one of:
 | COMMAND | |

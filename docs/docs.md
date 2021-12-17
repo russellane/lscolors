@@ -17,8 +17,7 @@ Woohoo.
 
 ##### Notes
 
-This application's packaging process uses this internal command to create this application's
-documentation.
+This is an internal command used during packaging to create documentation files.
 
 ##### See Also
 
