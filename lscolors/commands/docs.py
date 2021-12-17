@@ -14,12 +14,9 @@ class Command(lscolors.Command):
 
         parser = self.subs.add_parser(
             "docs",
-            help="Create documentation for this application" "",
-            description="Woohoo.",
-            epilog=(
-                "This is an internal command used during "
-                "packaging to create documentation files."
-            ),
+            help="Create documentation.",
+            description="Create documentation files for this application.",
+            epilog="This is an internal command used during the packaging process.",
         )
 
         parser.set_defaults(

@@ -5,7 +5,7 @@
 
 #### Description
 
-Woohoo.
+Create documentation files for this application.
 
 ##### Positional Arguments
 	  DIR          create directory `DIR`. (default: './docs')
@@ -17,7 +17,7 @@ Woohoo.
 
 ##### Notes
 
-This is an internal command used during packaging to create documentation files.
+This is an internal command used during the packaging process.
 
 ##### See Also
 
