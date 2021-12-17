@@ -3,7 +3,7 @@
 import lscolors
 
 
-class Command(lscolors.Command):
+class Command(lscolors.command.Command):
     """lscolors `chart` command."""
 
     def __init__(self):

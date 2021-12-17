@@ -27,7 +27,7 @@ def main():
         version=__version__,
     )
 
-    app = lscolors.command.CommandApp(parser, lscolors.commands.modules)
+    app = lscolors.application.Application(parser, lscolors.commands.modules)
 
     sub = app.subs.add_parser("help", help="same as `--help`")
     sub.set_defaults(cmd=lambda x: parser.print_help())

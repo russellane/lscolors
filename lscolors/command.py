@@ -1,8 +1,8 @@
 """Base class for all commands."""
 
 
-class Command:
-    """Base class for all lscolors commands."""
+class Command:  # noqa: SIM119 Use a dataclass
+    """Base class for all commands."""
 
     # pylint: disable=too-few-public-methods
 
@@ -13,35 +13,10 @@ class Command:
         """Initialize base of all commands."""
 
     @staticmethod
-    def horzrule(text):
-        """Return horizontal rule with `text`."""
+    def too_few_public_methods():
+        """Suppress linter error in derived classes."""
 
-        return str(" " + text).rjust(80, "-")
-
-
-# -------------------------------------------------------------------------------
-
-
-class CommandApp:  # noqa: SIM119 Use a dataclass
-    """Application whose functionality is split into a number of sub-commands."""
-
-    # pylint: disable=too-few-public-methods
-
-    def __init__(self, parser, modules):
-        """Initialize application.
-
-        Args:
-            parser: top-level `argparse.ArgumentParser`.
-            modules: list of modules; each defines a Command class.
-        """
-
-        parser.set_defaults(cmd=None)
-        self.subs = parser.add_subparsers(
-            metavar="COMMAND", dest="command", title="Specify one of"
-        )
-
-        Command.main_parser = parser
-        Command.subs = self.subs
-
-        for module in modules:
-            module.Command()
+    # @staticmethod
+    # def horzrule(text):
+    #     """Return horizontal rule with `text`."""
+    #     return str(" " + text).rjust(80, "-")

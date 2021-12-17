@@ -6,7 +6,7 @@ from collections import defaultdict
 import lscolors
 
 
-class Command(lscolors.Command):
+class Command(lscolors.command.Command):
     """lscolors `sort` command."""
 
     def __init__(self):

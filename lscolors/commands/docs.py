@@ -4,7 +4,7 @@ import lscolors
 import lscolors.mandown_  # developing here for now; to be moved to mandown.mandown
 
 
-class Command(lscolors.Command):
+class Command(lscolors.command.Command):
     """lscolors `docs` command."""
 
     def __init__(self):
