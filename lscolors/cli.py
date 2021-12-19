@@ -27,9 +27,13 @@ def main():
         version=__version__,
     )
 
-    app = lscolors.application.Application(parser, lscolors.commands.modules)
+    parser.set_defaults(cmd=None)
+    subparsers = parser.add_subparsers(metavar="COMMAND", dest="command", title="Specify one of")
+    lscolors.command.Command.configure(parser, subparsers)
+    for module in lscolors.commands.modules:
+        module.Command()
 
-    sub = app.subs.add_parser("help", help="same as `--help`")
+    sub = subparsers.add_parser("help", help="same as `--help`")
     sub.set_defaults(cmd=lambda x: parser.print_help())
 
     argcomplete.autocomplete(parser)

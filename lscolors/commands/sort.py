@@ -12,9 +12,7 @@ class Command(lscolors.command.Command):
     def __init__(self):
         """Initialize lscolors `sort` command."""
 
-        super().__init__()
-
-        parser = self.subs.add_parser(
+        parser = self.subparsers.add_parser(
             "sort",
             help="sort lines of database file by color",
             description="""Filter `stdin` to `stdout` sorting

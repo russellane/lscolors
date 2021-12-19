@@ -10,9 +10,7 @@ class Command(lscolors.command.Command):
     def __init__(self):
         """Initialize lscolors `docs` command."""
 
-        super().__init__()
-
-        parser = self.subs.add_parser(
+        parser = self.subparsers.add_parser(
             "docs",
             help="Create documentation.",
             description="Create documentation files for this application.",

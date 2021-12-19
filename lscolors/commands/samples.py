@@ -13,9 +13,7 @@ class Command(lscolors.command.Command):
     def __init__(self):
         """Initialize lscolors `samples` command."""
 
-        super().__init__()
-
-        parser = self.subs.add_parser(
+        parser = self.subparsers.add_parser(
             "samples",
             help="create directory of sample filesystem items",
             description="""Create directory and populate with sample files,

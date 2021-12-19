@@ -4,13 +4,14 @@
 class Command:  # noqa: SIM119 Use a dataclass
     """Base class for all commands."""
 
-    # pylint: disable=too-few-public-methods
-
     main_parser = None
-    subs = None
+    subparsers = None
 
-    def __init__(self):
-        """Initialize base of all commands."""
+    @classmethod
+    def configure(cls, main_parser, subparsers):
+        """Docstring."""
+        cls.main_parser = main_parser
+        cls.subparsers = subparsers
 
     @staticmethod
     def too_few_public_methods():
