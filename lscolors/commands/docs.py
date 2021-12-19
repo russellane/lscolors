@@ -46,8 +46,6 @@ class Command(lscolors.command.Command):
     def handle(self, args):
         """Handle command invocation."""
 
-        if args.top_level:
-            lscolors.mandown_.print_main_page(self.main_parser)
-        else:
-            lscolors.mkdir.mkdir(args.docs, args.force)
-            lscolors.mandown_.write_command_pages(self.main_parser, args.docs)
+        lscolors.mkdir.mkdir(args.docs, args.force)
+        lscolors.mandown_.print_main_page(self.main_parser)
+        lscolors.mandown_.write_command_pages(self.main_parser, args.docs)
