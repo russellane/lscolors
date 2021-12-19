@@ -63,25 +63,26 @@ class Command(lscolors.command.Command):
         print(f"{args.prog} for {meta_colors}:")
 
         for filetype, color in colors.items():
-            type_color = f"Type: {filetype:15} Colour: {color:20}"
+            type_color = f"{filetype:15} {color:20}"
             _ = codes.get(filetype)
             if _:
                 text = f"{_[0]} {_[1]}"
             else:
-                text = filetype + " (TODO: get description)"
+                text = filetype + " lorem ipsum dolor sit amet"
 
+            scolor = color.ljust(10)
             if args.left:
                 if color == "target":
-                    print(f"{type_color} {text:>40}")
+                    print(f"{type_color} {scolor} {text:>44}")
                 else:
-                    print(f"{type_color} [{color}m{color} {text:>40}[0m")
+                    print(f"{type_color} [{color}m{scolor} {text:>44}[0m")
             elif args.right:
                 if color == "target":
-                    print(f"{text:40} {type_color}")
+                    print(f"{text:44} {type_color}")
                 else:
-                    print(f"[{color}m{text:40}[0m {type_color}")
+                    print(f"[{color}m{text:44}[0m {type_color}")
             else:
                 if color == "target":
-                    print(f"{type_color} {text:40}")
+                    print(f"{type_color} {scolor} {text:44}")
                 else:
-                    print(f"{type_color} [{color}m{text:40}[0m")
+                    print(f"{type_color} [{color}m{text:44}[0m")
