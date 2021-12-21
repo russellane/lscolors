@@ -5,15 +5,10 @@ import argparse
 import sys
 
 import argcomplete
-import icecream
-from icecream import ic
 
 import lscolors.commands
 from lscolors import argformat
 from lscolors.__version__ import __version__
-
-icecream.install()
-ic.configureOutput(prefix="\nic ===> ", includeContext=True)
 
 
 def main():
@@ -33,26 +28,13 @@ def main():
         version=__version__,
     )
 
-    ic(parser.__dict__)
-
-    parser.set_defaults(cmd=None)
-    # passing `prog` is not necessary, but speeds things up for
-    # add_subparsers to not have to determine a default value for it.
-    # `dest` is not necessary.
-    subparsers = parser.add_subparsers(
-        prog=__package__,
-        metavar="COMMAND",
-        title="Specify one of",
-    )
-
-    ic(parser.__dict__)
-
-    lscolors.commands.configure(parser, subparsers)
-
+    # use case 1:
+    subparsers = argformat.command.Command.add_subparsers(parser, lscolors.commands.modules)
     sub = subparsers.add_parser("help", help="same as `--help`")
     sub.set_defaults(cmd=lambda x: parser.print_help())
+    # use case 2:
+    # argformat.argformat(parser)
 
-    argformat.argformat(parser)
     argcomplete.autocomplete(parser)
     args = parser.parse_args()
 
