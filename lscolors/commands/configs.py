@@ -5,7 +5,7 @@ import os.path
 import lscolors
 
 
-class Command(lscolors.command.Command):
+class Command(lscolors.Command):
     """lscolors `configs` command."""
 
     def __init__(self):

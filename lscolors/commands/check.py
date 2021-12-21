@@ -3,7 +3,7 @@
 import lscolors
 
 
-class Command(lscolors.command.Command):
+class Command(lscolors.Command):
     """lscolors `check` command."""
 
     def __init__(self):

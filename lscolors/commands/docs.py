@@ -6,7 +6,7 @@ import lscolors
 import lscolors.argformat
 
 
-class Command(lscolors.command.Command):
+class Command(lscolors.Command):
     """lscolors `docs` command."""
 
     def __init__(self):

@@ -12,14 +12,19 @@ from . import markdown
 class Argformat:
     """Argparse help formatting."""
 
-    FormatterClass = None  # argparse.HelpFormatter
+    FormatterClass = ansi.AnsiHelpFormatter
 
     def __init__(self, parser):
-        """Initialize argparse help formatting."""
+        """Initialize argparse help formatting.
 
-        self.__class__.FormatterClass = ansi.AnsiHelpFormatter
-        parser.formatter_class = ansi.AnsiHelpFormatter
-        parser._check_value = ansi._check_value  # monkey patch
+        >>> import argparse
+        >>> import argformat
+        >>> parser = argparse.ArgumentParser(prog="hello")
+        >>> argformat.argformat(parser)
+        """
+
+        parser.formatter_class = self.FormatterClass
+        parser._check_value = ansi.AnsiArgumentParser._check_value  # monkey patch
 
     # pylint: disable=redefined-builtin
     @classmethod

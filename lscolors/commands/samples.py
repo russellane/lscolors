@@ -7,7 +7,7 @@ import stat
 import lscolors
 
 
-class Command(lscolors.command.Command):
+class Command(lscolors.Command):
     """lscolors `samples` command."""
 
     def __init__(self):

@@ -8,19 +8,15 @@ class Command:  # noqa: SIM119 Use a dataclass
 
     main_parser = None
     subparsers = None
-    formatter_class = argformat.ansi.AnsiHelpFormatter
+    formatter_class = argformat.Argformat.FormatterClass
 
-    # pylint: disable=redefined-builtin
     @classmethod
-    def configure(cls, main_parser=None, subparsers=None, format=None):
+    def configure(cls, main_parser=None, subparsers=None):
         """Docstring."""
         if main_parser is not None:
             cls.main_parser = main_parser
         if subparsers is not None:
             cls.subparsers = subparsers
-        if format is not None:
-            argformat.configure(format=format)
-            cls.formatter_class = argformat.Argformat.FormatterClass
 
     @staticmethod
     def too_few_public_methods():

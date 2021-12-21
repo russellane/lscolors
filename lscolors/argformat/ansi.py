@@ -6,11 +6,10 @@ import textwrap
 from functools import partial
 
 from colors import color
-from icecream import ic
-from icecream import install
 
-install()
-ic.configureOutput(includeContext=True)
+# from icecream import ic, install
+# install()
+# ic.configureOutput(includeContext=True)
 
 # see /usr/lib/python3.8/argparse.py
 # -------------------------------------------------------------------------------
@@ -155,9 +154,9 @@ class AnsiHelpFormatter(argparse.HelpFormatter):
     def _format_action(self, action):
         """See /usr/lib/python3.8/argparse.py."""
 
-        ic(action)
-        orig = super()._format_action(action)
-        ic(orig)
+        # ic(action)
+        # orig = super()._format_action(action)
+        # ic(orig)
 
         # if action.dest == "command":
         if self._current_subparser_action and action.dest == self._current_subparser_action.dest:
@@ -201,10 +200,6 @@ class AnsiHelpFormatter(argparse.HelpFormatter):
     def _format_command_action(self, action):
         """New method; not in argparse."""
 
-        ic(self.__dict__)
-        ic(action.__dict__)
-        # breakpoint()
-
         lines = [" " * self._current_indent + Colors.metavar(action.metavar)]
 
         for name, parser in action.choices.items():
@@ -227,20 +222,24 @@ class AnsiHelpFormatter(argparse.HelpFormatter):
 # -------------------------------------------------------------------------------
 
 
-def _check_value(action, value):
-    """Override argparse.ArgumentParser method.
+class AnsiArgumentParser:
+    """See /usr/lib/python3.8/argparse.py."""
 
-    See /usr/lib/python3.8/argparse.py.
-    """
+    # pylint: disable=too-few-public-methods
 
-    # converted value must be one of the choices (if specified)
-    if action.choices is not None and value not in action.choices:
+    @staticmethod
+    def _check_value(action, value):
 
-        colored = [Colors.choices(x) for x in action.choices]
-        quoted = [f"'{x}'" for x in colored]
-        args = {
-            "value": f"'{Colors.invalid_choice(value)}'",
-            "choices": ", ".join(quoted),
-        }
-        msg = gettext.gettext("invalid choice: %(value)s (choose from %(choices)s)")
-        raise argparse.ArgumentError(action, msg % args)
+        # converted value must be one of the choices (if specified)
+        if action.choices is not None and value not in action.choices:
+
+            msg = gettext.gettext("invalid choice: {} (choose from {})")
+            quote = "'"
+            #
+            value = quote + Colors.invalid_choice(value) + quote
+            #
+            colored = [Colors.choices(x) for x in action.choices]
+            quoted = [quote + x + quote for x in colored]
+            choices = ", ".join(quoted)
+            #
+            raise argparse.ArgumentError(action, msg.format(value, choices))

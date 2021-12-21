@@ -5,11 +5,15 @@ import argparse
 import sys
 
 import argcomplete
+import icecream
+from icecream import ic
 
-import lscolors
 import lscolors.commands
 from lscolors import argformat
 from lscolors.__version__ import __version__
+
+icecream.install()
+ic.configureOutput(prefix="\nic ===> ", includeContext=True)
 
 
 def main():
@@ -21,8 +25,6 @@ def main():
         epilog="See `%(prog)s COMMAND --help` for help on a specific command.",
     )
 
-    argcomplete.autocomplete(parser)
-
     parser.add_argument(
         "-V",
         "--version",
@@ -30,6 +32,8 @@ def main():
         action="version",
         version=__version__,
     )
+
+    ic(parser.__dict__)
 
     parser.set_defaults(cmd=None)
     # passing `prog` is not necessary, but speeds things up for
@@ -40,14 +44,16 @@ def main():
         metavar="COMMAND",
         title="Specify one of",
     )
-    lscolors.command.Command.configure(parser, subparsers)
-    for module in lscolors.commands.modules:
-        module.Command()
+
+    ic(parser.__dict__)
+
+    lscolors.commands.configure(parser, subparsers)
 
     sub = subparsers.add_parser("help", help="same as `--help`")
     sub.set_defaults(cmd=lambda x: parser.print_help())
 
     argformat.argformat(parser)
+    argcomplete.autocomplete(parser)
     args = parser.parse_args()
 
     if not args.cmd:

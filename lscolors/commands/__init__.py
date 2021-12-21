@@ -1,19 +1,27 @@
 """lscolors commands."""
 
-from lscolors.commands import chart
-from lscolors.commands import check
-from lscolors.commands import configs
-from lscolors.commands import docs
-from lscolors.commands import report
-from lscolors.commands import samples
-from lscolors.commands import sort
+import lscolors.argformat.command
+import lscolors.commands.chart
+import lscolors.commands.check
+import lscolors.commands.configs
+import lscolors.commands.docs
+import lscolors.commands.report
+import lscolors.commands.samples
+import lscolors.commands.sort
 
-modules = [
-    chart,
-    check,
-    configs,
-    docs,
-    report,
-    samples,
-    sort,
-]
+
+def configure(parser, subparsers):
+    """Load all command modules."""
+
+    lscolors.argformat.command.Command.configure(parser, subparsers)
+
+    for module in [
+        lscolors.commands.chart,
+        lscolors.commands.check,
+        lscolors.commands.configs,
+        lscolors.commands.docs,
+        lscolors.commands.report,
+        lscolors.commands.samples,
+        lscolors.commands.sort,
+    ]:
+        module.Command()
