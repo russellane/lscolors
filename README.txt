@@ -1,0 +1,21 @@
+usage: lscolors [-h] [-V] COMMAND ...
+
+Utilities for `dircolors(1)` and `dir_colors(5)`
+
+optional arguments:
+  -h, --help     show this help message and exit
+  -V, --version  show program's version number and exit
+
+Specify one of:
+  COMMAND
+    chart        print color chart
+    check        check database for required items
+    configs      print path to sample configuration files
+    docs         Create documentation.
+    report       print colorized database report
+    samples      create directory of sample filesystem items
+    sort         sort lines of database file by color
+    help         same as `--help`
+
+See `lscolors COMMAND --help` for help on a specific command.
+

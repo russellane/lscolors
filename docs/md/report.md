@@ -1,21 +1,28 @@
 	LSCOLORS-REPORT(1)                    User commands                    LSCOLORS-REPORT(1)
 
-#### Synopsis
-	lscolors report [-h] [--left | --right] [DIR_COLORS]
-
 #### Description
+
+### Usage
+
+```
+lscolors report [-h] [--left | --right] [DIR_COLORS]
+```
+
+### Description
 
 Print colorized report for database in `$LS_COLORS`.
 
-##### Positional Arguments
-	  DIR_COLORS  read file `DIR_COLORS` instead of `$LS_COLORS`
+### positional arguments:
+| option | description |
+|:------ |:----------- |
+| `DIR_COLORS` | read file `DIR_COLORS` instead of `$LS_COLORS` |
 
-##### Optional Arguments
-	  -h, --help  show this help message and exit
-	  --left      format report for display in left window
-	  --right     format report for display in right window
+### optional arguments:
+| `-h, --help` | show this help message and exit |
+| `--left` | format report for display in left window |
+| `--right` | format report for display in right window |
 
-##### Notes
+### Epilog
 
 A default format is produced when `--left/--right` is not given.
 

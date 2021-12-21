@@ -1,0 +1,7 @@
+usage: lscolors sort [-h]
+
+Filter `stdin` to `stdout` sorting lines of a `DIR_COLORS` file by color then filetype.
+Blank lines and comments are unsorted and moved to the end.
+
+[38;5;33;4moptional arguments[0m:
+  [38;5;43m-h, --help[0m  show this help message and exit

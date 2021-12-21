@@ -1,21 +1,28 @@
 	LSCOLORS-DOCS(1)                      User commands                      LSCOLORS-DOCS(1)
 
-#### Synopsis
-	lscolors docs [-h] [-f] [--top-level] [DIR]
-
 #### Description
+
+### Usage
+
+```
+lscolors docs [-h] [-f] {ansi,md,txt} DIR
+```
+
+### Description
 
 Create documentation files for this application.
 
-##### Positional Arguments
-	  DIR          create directory `DIR`. (default: './docs')
+### positional arguments:
+| option | description |
+|:------ |:----------- |
+| `{ansi,md,txt}` | Output format |
+| `DIR` | create directory `DIR`. (default: './docs') |
 
-##### Optional Arguments
-	  -h, --help   show this help message and exit
-	  -f, --force  Ok to clobber `DIR` if it exists
-	  --top-level  Create top level page only
+### optional arguments:
+| `-h, --help` | show this help message and exit |
+| `-f, --force` | Ok to clobber `DIR` if it exists |
 
-##### Notes
+### Epilog
 
 This is an internal command used during the packaging process.
 

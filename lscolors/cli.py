@@ -1,4 +1,5 @@
 """Command line interface."""
+# /usr/lib/python3.8/argparse.py
 
 import argparse
 import sys
@@ -7,6 +8,7 @@ import argcomplete
 
 import lscolors
 import lscolors.commands
+from lscolors import argformat
 from lscolors.__version__ import __version__
 
 
@@ -19,6 +21,8 @@ def main():
         epilog="See `%(prog)s COMMAND --help` for help on a specific command.",
     )
 
+    argcomplete.autocomplete(parser)
+
     parser.add_argument(
         "-V",
         "--version",
@@ -28,7 +32,14 @@ def main():
     )
 
     parser.set_defaults(cmd=None)
-    subparsers = parser.add_subparsers(metavar="COMMAND", dest="command", title="Specify one of")
+    # passing `prog` is not necessary, but speeds things up for
+    # add_subparsers to not have to determine a default value for it.
+    # `dest` is not necessary.
+    subparsers = parser.add_subparsers(
+        prog=__package__,
+        metavar="COMMAND",
+        title="Specify one of",
+    )
     lscolors.command.Command.configure(parser, subparsers)
     for module in lscolors.commands.modules:
         module.Command()
@@ -36,7 +47,7 @@ def main():
     sub = subparsers.add_parser("help", help="same as `--help`")
     sub.set_defaults(cmd=lambda x: parser.print_help())
 
-    argcomplete.autocomplete(parser)
+    argformat.argformat(parser)
     args = parser.parse_args()
 
     if not args.cmd:

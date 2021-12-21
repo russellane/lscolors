@@ -1,14 +1,23 @@
 	LSCOLORS-CONFIGS(1)                   User commands                   LSCOLORS-CONFIGS(1)
 
-#### Synopsis
-	lscolors configs [-h]
-
 #### Description
+
+### Usage
+
+```
+lscolors configs [-h]
+```
+
+### Description
 
 Print path to sample `.lscolors.yml` and `.dircolors` configuration files.
 
-##### Optional Arguments
-	  -h, --help  show this help message and exit
+### optional arguments:
+| option | description |
+|:------ |:----------- |
+| `-h, --help` | show this help message and exit |
+
+### Epilog
 
 ##### See Also
 

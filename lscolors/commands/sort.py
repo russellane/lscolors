@@ -14,6 +14,7 @@ class Command(lscolors.command.Command):
 
         parser = self.subparsers.add_parser(
             "sort",
+            formatter_class=self.formatter_class,
             help="sort lines of database file by color",
             description="""Filter `stdin` to `stdout` sorting
             lines of a `DIR_COLORS` file by color then filetype.

@@ -9,8 +9,10 @@ class Command(lscolors.command.Command):
     def __init__(self):
         """Initialize lscolors `chart` command."""
 
+        super().__init__()
         parser = self.subparsers.add_parser(
             "chart",
+            formatter_class=self.formatter_class,
             help="print color chart",
             description="Print color-chart.",
         )

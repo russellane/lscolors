@@ -15,6 +15,7 @@ class Command(lscolors.command.Command):
 
         parser = self.subparsers.add_parser(
             "samples",
+            formatter_class=self.formatter_class,
             help="create directory of sample filesystem items",
             description="""Create directory and populate with sample files,
             directories, etc., for each item in `$LS_COLORS`,

@@ -1,14 +1,23 @@
 	LSCOLORS-CHART(1)                     User commands                     LSCOLORS-CHART(1)
 
-#### Synopsis
-	lscolors chart [-h]
-
 #### Description
+
+### Usage
+
+```
+lscolors chart [-h]
+```
+
+### Description
 
 Print color-chart.
 
-##### Optional Arguments
-	  -h, --help  show this help message and exit
+### optional arguments:
+| option | description |
+|:------ |:----------- |
+| `-h, --help` | show this help message and exit |
+
+### Epilog
 
 ##### See Also
 

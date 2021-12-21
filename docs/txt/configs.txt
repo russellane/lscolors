@@ -1,0 +1,6 @@
+usage: lscolors configs [-h]
+
+Print path to sample `.lscolors.yml` and `.dircolors` configuration files.
+
+optional arguments:
+  -h, --help  show this help message and exit

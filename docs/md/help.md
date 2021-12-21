@@ -1,10 +1,21 @@
 	LSCOLORS-HELP(1)                      User commands                      LSCOLORS-HELP(1)
 
-#### Synopsis
-	lscolors help [-h]
+#### Description
 
-##### Optional Arguments
-	  -h, --help  show this help message and exit
+### Usage
+
+```
+lscolors help [-h]
+```
+
+### Description
+
+### optional arguments:
+| option | description |
+|:------ |:----------- |
+| `-h, --help` | show this help message and exit |
+
+### Epilog
 
 ##### See Also
 

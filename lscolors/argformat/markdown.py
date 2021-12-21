@@ -1,19 +1,15 @@
-"""MakedownHelpFormatter."""
+"""MarkdownHelpFormatter."""
 
 import argparse
-import pathlib
 import re
-
-import mandown.mandown
 
 # -------------------------------------------------------------------------------
 # /usr/lib/python3.8/argparse.py
 
 
 class MarkdownHelpFormatter(argparse.HelpFormatter):
-    """Docstring."""
+    """MarkdownHelpFormatter."""
 
-    # def __init__(self, prog, indent_increment=2, max_help_position=24, width=None):
     def __init__(self, *args, **kwargs):
         """Docstring."""
         kwargs["width"] = 89
@@ -22,11 +18,11 @@ class MarkdownHelpFormatter(argparse.HelpFormatter):
         self._have_epilog = False
         self._debug = False
 
-    def _get_default_metavar_for_optional(self, action):
-        return "=>" + action.dest.upper() + "<="
+    # def _get_default_metavar_for_optional(self, action):
+    #     return "=>" + action.dest.upper() + "<="
 
-    def _get_default_metavar_for_positional(self, action):
-        return "==>" + action.dest + "<=="
+    # def _get_default_metavar_for_positional(self, action):
+    #     return "==>" + action.dest + "<=="
 
     def add_argument(self, action):
         """Override."""
@@ -208,68 +204,3 @@ class MarkdownHelpFormatter(argparse.HelpFormatter):
             )
             + "\n\n"
         )
-
-
-# -------------------------------------------------------------------------------
-
-
-def print_main_page(main_parser):
-    """Print main help page."""
-
-    save = main_parser.formatter_class
-    main_parser.formatter_class = MarkdownHelpFormatter
-    print(main_parser.format_help())
-    main_parser.formatter_class = save
-
-
-# -------------------------------------------------------------------------------
-
-
-def write_command_pages(main_parser, directory):
-    """Create separate pages for each command in `directory`."""
-
-    also = _see_also(main_parser)
-
-    # pylint: disable=protected-access
-    for action in main_parser._subparsers._actions:
-        if isinstance(action, argparse._SubParsersAction):
-            for name, parser in action.choices.items():
-                lines = parser.format_help().splitlines()
-                see_also = ", ".join([v for k, v in also.items() if k != name]) + "."
-                mdoc = mandown.mandown.Mandown(lines, name=f"lscolors-{name}", see_also=see_also)
-                text = mdoc.render_markdown()
-                pathlib.Path(directory, name + ".md").write_text(text, encoding="utf-8")
-
-
-# -------------------------------------------------------------------------------
-
-
-def _see_also(main_parser):
-    """Docstring."""
-
-    also = {}
-
-    # pylint: disable=protected-access
-    for action in main_parser._subparsers._actions:
-        if isinstance(action, argparse._SubParsersAction):
-            for name in action.choices:
-                also[name] = f"[lscolors-{name}]({name}.md)"
-
-    return also
-
-
-# -------------------------------------------------------------------------------
-# class MarkdownHelpAction(argparse.Action):
-#     """MD help action"""
-#
-#     def __init__(
-#         self, option_strings, dest=argparse.SUPPRESS, default=argparse.SUPPRESS, **kwargs
-#     ):
-#         super().__init__(
-#             option_strings=option_strings, dest=dest, default=default, nargs=0, **kwargs
-#         )
-#
-#     def __call__(self, parser, namespace, values, option_string=None):
-#         parser.formatter_class = MarkdownHelpFormatter
-#         parser.print_help()
-#         parser.exit()

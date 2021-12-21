@@ -14,6 +14,7 @@ class Command(lscolors.command.Command):
         parser = self.subparsers.add_parser(
             "configs",
             help="print path to sample configuration files",
+            formatter_class=self.formatter_class,
             description="""Print path to sample `.lscolors.yml`
                             and `.dircolors` configuration files.""",
         )

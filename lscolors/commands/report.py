@@ -11,6 +11,7 @@ class Command(lscolors.command.Command):
 
         parser = self.subparsers.add_parser(
             "report",
+            formatter_class=self.formatter_class,
             help="print colorized database report",
             description="Print colorized report for database in `$LS_COLORS`.",
             epilog="A default format is produced when `--left/--right` is not given.",
