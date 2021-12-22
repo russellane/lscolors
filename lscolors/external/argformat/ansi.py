@@ -2,14 +2,16 @@
 
 import argparse
 import gettext
+import re
 import textwrap
 from functools import partial
 
+import icecream
 from colors.colors import color
+from icecream import ic
 
-# from icecream import ic, install
-# install()
-# ic.configureOutput(includeContext=True)
+icecream.install()
+ic.configureOutput(prefix="\nic ===> ", includeContext=True)
 
 # see /usr/lib/python3.8/argparse.py
 # -------------------------------------------------------------------------------
@@ -71,7 +73,8 @@ class Colors:
     section = partial(color, fg=blue, style="underline")
     action = partial(color, fg=aqua)
     command_action = partial(color, fg=aqua)
-    choices = partial(color, fg=yellow, style="italic")  # command_action
+    choices = command_action
+    backtick = partial(color, fg=yellow, style="italic")
     invalid_choice = partial(color, fg=red, style="italic")
 
 
@@ -87,6 +90,7 @@ class AnsiHelpFormatter(argparse.HelpFormatter):
         super().__init__(*args, **kwargs)
         self._is_new_section = None
         self._current_subparser_action = None
+        self.re_backtick = None
 
     def _add_item(self, func, args):
         """See /usr/lib/python3.8/argparse.py."""
@@ -186,12 +190,15 @@ class AnsiHelpFormatter(argparse.HelpFormatter):
                 initial_indent="",
                 subsequent_indent=" " * (self._action_max_length + 2),
             )
+            description = self.colorize(description)
+        else:
+            description = ""
 
         return (
             "  "
             + Colors.action(invocation)
             + " " * (self._action_max_length - len(invocation))
-            + str(self._expand_help(action) if action.help else "")
+            + description
             + "\n"
         )
 
@@ -213,10 +220,27 @@ class AnsiHelpFormatter(argparse.HelpFormatter):
                 subsequent_indent=" " * (self._action_max_length + 2),
             )
 
+            description = self.colorize(description)
             gutter = " " * (self._action_max_length - len(name))
             lines.append(f"  {Colors.command_action(name)}{gutter}{description}")
 
         return str("\n".join(lines) + "\n\n") if len(lines) > 1 else ""
+
+    # -------------------------------------------------------------------------------
+
+    def colorize(self, string):
+        """Colorize things in `string`."""
+
+        if self.re_backtick is None:
+            # see ~/dev/pygments/pygments/lexers/markup.py
+            # italics fenced by '`'
+            self.re_backtick = re.compile(r"([^`]?)(`[^` \n][^`\n]*`)")
+
+        return re.sub(
+            self.re_backtick,
+            lambda m: Colors.backtick(m.group(0)),
+            string,
+        )
 
 
 # -------------------------------------------------------------------------------

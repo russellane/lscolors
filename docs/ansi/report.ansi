@@ -3,7 +3,7 @@ usage: lscolors report [-h] [--left | --right] [[38;5;166;3mDIR_COLORS[0m]
 Print colorized report for database in `$LS_COLORS`.
 
 [38;5;33;4mpositional arguments[0m:
-  [38;5;43m[38;5;166;3mDIR_COLORS[0m[0m  read file `DIR_COLORS` instead of `$LS_COLORS`
+  [38;5;43m[38;5;166;3mDIR_COLORS[0m[0m  read file[38;5;136;3m `DIR_COLORS`[0m instead of[38;5;136;3m `$LS_COLORS`[0m
 
 [38;5;33;4moptional arguments[0m:
   [38;5;43m-h, --help[0m                   show this help message and exit
