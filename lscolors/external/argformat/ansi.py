@@ -5,7 +5,7 @@ import gettext
 import textwrap
 from functools import partial
 
-from colors import color
+from colors.colors import color
 
 # from icecream import ic, install
 # install()

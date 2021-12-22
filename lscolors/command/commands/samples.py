@@ -13,7 +13,7 @@ class Command(lscolors.Command):
     def __init__(self):
         """Initialize lscolors `samples` command."""
 
-        parser = self.subparsers.add_parser(
+        parser = self.add_parser(
             "samples",
             formatter_class=self.formatter_class,
             help="create directory of sample filesystem items",
@@ -53,7 +53,7 @@ class Command(lscolors.Command):
         colors, meta_colors = lscolors.colors.load(args)
         config, meta_config = lscolors.config.load(args)
 
-        lscolors.mkdir.mkdir(args.samplesdir, args.force)
+        lscolors.mkdir(args.samplesdir, args.force)
         print(
             args.prog,
             "creating directory",

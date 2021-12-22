@@ -9,7 +9,7 @@ class Command(lscolors.Command):
     def __init__(self):
         """Initialize lscolors `check` command."""
 
-        parser = self.subparsers.add_parser(
+        parser = self.add_parser(
             "check",
             formatter_class=self.formatter_class,
             help="check database for required items",

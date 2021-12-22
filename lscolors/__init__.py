@@ -1,6 +1,6 @@
 """dircolors utilities."""
 
-import lscolors.colors
-import lscolors.config
-import lscolors.mkdir  # noqa: F401
-from lscolors.argformat.command import Command  # noqa: F401
+from lscolors.command import Command  # noqa:
+from lscolors.command.utils import colors  # noqa:
+from lscolors.command.utils import config  # noqa:
+from lscolors.command.utils.mkdir import mkdir  # noqa:

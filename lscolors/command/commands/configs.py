@@ -11,7 +11,7 @@ class Command(lscolors.Command):
     def __init__(self):
         """Initialize lscolors `configs` command."""
 
-        parser = self.subparsers.add_parser(
+        parser = self.add_parser(
             "configs",
             help="print path to sample configuration files",
             formatter_class=self.formatter_class,

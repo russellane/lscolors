@@ -6,9 +6,10 @@ import sys
 
 import argcomplete
 
-import lscolors.commands
-from lscolors import argformat
+import lscolors.command.commands
 from lscolors.__version__ import __version__
+from lscolors.external import argformat
+from lscolors.external import subcommands
 
 
 def main():
@@ -28,12 +29,11 @@ def main():
         version=__version__,
     )
 
-    # use case 1:
-    subparsers = argformat.command.Command.add_subparsers(parser, lscolors.commands.modules)
+    argformat.argformat(parser)
+    subparsers = subcommands.add_subcommands(parser, lscolors.command.commands.modules)
+
     sub = subparsers.add_parser("help", help="same as `--help`")
     sub.set_defaults(cmd=lambda x: parser.print_help())
-    # use case 2:
-    # argformat.argformat(parser)
 
     argcomplete.autocomplete(parser)
     args = parser.parse_args()

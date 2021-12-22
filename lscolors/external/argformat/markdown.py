@@ -36,7 +36,6 @@ class MarkdownHelpFormatter(argparse.HelpFormatter):
         return super().add_argument(action)
 
     def _add_item(self, func, args):
-        # breakpoint()
         if isinstance(args, tuple):
             action = args[1]  # line 265: args = usage, actions, groups, prefix
             # pylint: disable=protected-access
@@ -185,7 +184,6 @@ class MarkdownHelpFormatter(argparse.HelpFormatter):
             description = re.sub(" +", " ", description.replace("\n", " "))
             # print(parser.format_help())
             # print(f"\n=>name={name!r} parser={parser!r}")
-            # breakpoint()
             # print(f"| [{name}](docs/{name}.md) | {description} |")
             lines.append(f"| [`{name}`](docs/{name}.md) | {description} |")
 

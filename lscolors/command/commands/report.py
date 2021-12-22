@@ -9,7 +9,7 @@ class Command(lscolors.Command):
     def __init__(self):
         """Initialize lscolors `report` command."""
 
-        parser = self.subparsers.add_parser(
+        parser = self.add_parser(
             "report",
             formatter_class=self.formatter_class,
             help="print colorized database report",
