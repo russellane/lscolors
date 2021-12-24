@@ -1,17 +1,16 @@
-usage: lscolors samples [-h] [-q] [--config [38;5;166;3mCONFIG[0m]
-                        [--samplesdir [38;5;166;3mDIR[0m] [-f]
-                        [[38;5;166;3mDIR_COLORS[0m]
+usage: lscolors samples [-h] [-q] [--config [38;5;166;3mCONFIG[0m] [--samplesdir [38;5;166;3mDIR[0m] [-f] [[38;5;166;3mDIR_COLORS[0m]
 
-Create directory and populate with sample files, directories, etc., for each item in
-`$LS_COLORS`, and all required items in configuration file `CONFIG`.
+Create directory and populate with sample files, directories, etc., for each item
+in[38;5;136;3m `$LS_COLORS`[0m, and all required items in configuration file[38;5;136;3m
+`CONFIG`[0m.
 
 [38;5;33;4mpositional arguments[0m:
-  [38;5;43m[38;5;166;3mDIR_COLORS[0m[0m        read file[38;5;136;3m `DIR_COLORS`[0m instead of[38;5;136;3m `$LS_COLORS`[0m
+  [38;5;166;3mDIR_COLORS[0m        read file[38;5;136;3m `DIR_COLORS`[0m instead of[38;5;136;3m `$LS_COLORS`[0m
 
 [38;5;33;4moptional arguments[0m:
-  [38;5;43m-h, --help[0m                         show this help message and exit
-  [38;5;43m-q, --quiet[0m                        suppress warning if default[38;5;136;3m `CONFIG`[0m cannot be found
-  [38;5;43m--config [38;5;166;3mCONFIG[0m[0m   require filenames, directories and extensions specified in[38;5;136;3m `CONFIG`[0m file. (default:
-                                     '.lscolors.yml')
-  [38;5;43m--samplesdir [38;5;166;3mDIR[0m[0m  create directory[38;5;136;3m `DIR`[0m. (default: './lscolors-samples')
-  [38;5;43m-f, --force[0m                        Ok to clobber[38;5;136;3m `DIR`[0m if it exists
+  [38;5;43;4m-h[0m, [38;5;43;4m--help[0m        show this help message and exit
+  [38;5;43;4m-q[0m, [38;5;43;4m--quiet[0m       suppress warning if default[38;5;136;3m `CONFIG`[0m cannot be found
+  --config [38;5;166;3mCONFIG[0m   require filenames, directories and extensions specified in[38;5;136;3m `CONFIG`[0m file.
+                    (default: '.lscolors.yml')
+  --samplesdir [38;5;166;3mDIR[0m  create directory[38;5;136;3m `DIR`[0m. (default: './lscolors-samples')
+  [38;5;43;4m-f[0m, [38;5;43;4m--force[0m       Ok to clobber[38;5;136;3m `DIR`[0m if it exists

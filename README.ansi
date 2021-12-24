@@ -1,23 +1,21 @@
 usage: lscolors [-h] [-V] [38;5;166;3mCOMMAND[0m ...
 
-Utilities for `dircolors(1)` and `dir_colors(5)`
+Utilities for[38;5;136;3m `dircolors(1)`[0m and[38;5;136;3m `dir_colors(5)`[0m
 
 [38;5;33;4moptional arguments[0m:
-  [38;5;43m-h, --help[0m                show this help message and exit
-  [38;5;43m-V, --version[0m             show program's version number and exit
+  [38;5;43;4m-h[0m, [38;5;43;4m--help[0m     show this help message and exit
+  [38;5;43;4m-V[0m, [38;5;43;4m--version[0m  show program's version number and exit
 
 [38;5;33;4mSpecify one of[0m:
   [38;5;166;3mCOMMAND[0m
-  [38;5;43mchart[0m                     Print color-chart.
-  [38;5;43mcheck[0m                     Check database in[38;5;136;3m `$LS_COLORS`[0m for required items.
-  [38;5;43mconfigs[0m                   Print path to sample[38;5;136;3m `.lscolors.yml`[0m and[38;5;136;3m `.dircolors`[0m configuration files.
-  [38;5;43mdocs[0m                      Create documentation files for this application.
-  [38;5;43mreport[0m                    Print colorized report for database in[38;5;136;3m `$LS_COLORS`[0m.
-  [38;5;43msamples[0m                   Create directory and populate with sample files, directories, etc., for each item in
-                           [38;5;136;3m `$LS_COLORS`[0m, and all required items in configuration file
-                           [38;5;136;3m `CONFIG`[0m.
-  [38;5;43msort[0m                      Filter[38;5;136;3m `stdin`[0m to[38;5;136;3m `stdout`[0m sorting lines of a[38;5;136;3m `DIR_COLORS`[0m file by color then filetype.
-                            Blank lines and comments are unsorted and moved to the end.
+    [38;5;166;3mchart[0m        print color chart
+    [38;5;166;3mcheck[0m        check database for required items
+    [38;5;166;3mconfigs[0m      print path to sample configuration files
+    [38;5;166;3mdocs[0m         Create documentation.
+    [38;5;166;3mreport[0m       print colorized database report
+    [38;5;166;3msamples[0m      create directory of sample filesystem items
+    [38;5;166;3msort[0m         sort lines of database file by color
+    [38;5;166;3mhelp[0m         same as[38;5;136;3m `--help`[0m
 
-See `lscolors COMMAND --help` for help on a specific command.
+See[38;5;136;3m `lscolors COMMAND --help`[0m for help on a specific command.
 

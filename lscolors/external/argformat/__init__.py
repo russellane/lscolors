@@ -1,18 +1,27 @@
 """Argparse help formatting."""
 
 import argparse
+import os
 import pathlib
 
+import icecream
 import mandown.mandown
+from icecream import ic
 
 from . import ansi
 from . import markdown
+
+icecream.install()
+ic.configureOutput(prefix="\nic ===> ", includeContext=True)
 
 
 class Argformat:
     """Argparse help formatting."""
 
-    FormatterClass = ansi.AnsiHelpFormatter
+    # See /usr/lib/python3.8/argparse.py.
+
+    formatter_class = ansi.AnsiHelpFormatter
+    formatter_class_ext = ".ansi"
 
     def __init__(self, parser):
         """Initialize argparse help formatting.
@@ -23,7 +32,10 @@ class Argformat:
         >>> argformat.argformat(parser)
         """
 
-        parser.formatter_class = self.FormatterClass
+        if "_NO_ARGFORMAT" in os.environ:
+            return
+
+        parser.formatter_class = self.formatter_class
         parser._check_value = ansi.AnsiArgumentParser._check_value  # monkey patch
 
     # pylint: disable=redefined-builtin
@@ -32,20 +44,20 @@ class Argformat:
         """Configure argparse help formatting."""
 
         if format == "ansi":
-            cls.FormatterClass = ansi.AnsiHelpFormatter
-            cls.Extension = ".ansi"
+            cls.formatter_class = ansi.AnsiHelpFormatter
+            cls.formatter_class_ext = ".ansi"
         elif format == "md":
-            cls.FormatterClass = markdown.MarkdownHelpFormatter
-            cls.Extension = ".md"
+            cls.formatter_class = markdown.MarkdownHelpFormatter
+            cls.formatter_class_ext = ".md"
         else:
-            cls.FormatterClass = argparse.HelpFormatter
-            cls.Extension = ".txt"
+            cls.formatter_class = argparse.HelpFormatter
+            cls.formatter_class_ext = ".txt"
 
     @classmethod
     def print_main_page(cls, main_parser):
         """Print main help page to `stdout`."""
 
-        main_parser.formatter_class = cls.FormatterClass
+        main_parser.formatter_class = cls.formatter_class
         print(main_parser.format_help())
 
     @classmethod
@@ -59,10 +71,10 @@ class Argformat:
             if isinstance(action, argparse._SubParsersAction):
                 for name, parser in action.choices.items():
 
-                    parser.formatter_class = cls.FormatterClass
+                    parser.formatter_class = cls.formatter_class
                     helpdoc = parser.format_help()
 
-                    if cls.FormatterClass == markdown.MarkdownHelpFormatter:
+                    if cls.formatter_class == markdown.MarkdownHelpFormatter:
                         lines = helpdoc.splitlines()
                         see_also = ", ".join([v for k, v in also.items() if k != name]) + "."
                         mdoc = mandown.mandown.Mandown(
@@ -70,7 +82,7 @@ class Argformat:
                         )
                         helpdoc = mdoc.render_markdown() + "\n"
 
-                    pathlib.Path(directory, name + cls.Extension).write_text(
+                    pathlib.Path(directory, name + cls.formatter_class_ext).write_text(
                         helpdoc, encoding="utf-8"
                     )
 
