@@ -91,7 +91,15 @@ import sys as _sys
 
 import warnings
 
+from functools import partial, partialmethod
 from gettext import gettext as _, ngettext
+
+from colors.colors import color, ansilen, strip_color
+from coloring import SolarizedDark
+#import icecream
+#from icecream import ic
+#icecream.install()
+#ic.configureOutput(prefix="\nic ===> ", includeContext=True)
 
 SUPPRESS = '==SUPPRESS=='
 
@@ -148,6 +156,98 @@ def _copy_items(items):
     import copy
     return copy.copy(items)
 
+# =============
+# Ansi coloring
+# =============
+
+class Colors:
+    """Colors."""
+
+    _is_disabled = 0
+
+    @classmethod
+    def disable(cls):
+        cls._is_disabled += 1
+
+    @classmethod
+    def enable(cls):
+        cls._is_disabled -= 1
+
+    @classmethod
+    def _color(cls, text, *args, **kwargs):
+        if cls._is_disabled:
+            return text
+        return color(text, *args, **kwargs)
+
+    theme = SolarizedDark
+
+    prog            = partialmethod(_color, fg=theme.VIOLET, style="bold+italic")
+    metavar         = partialmethod(_color, fg=theme.ORANGE, style="italic")
+    section         = partialmethod(_color, fg=theme.BLUE)
+    command_action  = partialmethod(_color, fg=theme.CYAN)
+    choices         = command_action
+    option          = partialmethod(_color, fg=theme.CYAN, style="italic")
+    punct           = partialmethod(_color, fg=theme.BASE0, style="italic")
+    backtick        = partialmethod(_color, fg=theme.YELLOW, style="italic")
+    invalid_choice  = partialmethod(_color, fg=theme.RED, style="italic")
+
+    _re_backtick = None
+
+    @staticmethod
+    def fill(colored, template):
+        """Wrap `colored` like `template`.
+
+        Arguments:
+            - colored -- text with ansi codes to be reformatted.
+            - template -- same text as `colored` without ansi codes, wrapped.
+                Leading spaces, and newlines are significant; others don't matter.
+
+        >>> Colors.fill(text, textwrap.fill(strip_color(text)))
+
+        """
+
+        if not template or "\n" not in template:
+            return colored
+
+        lines = []
+        for line in template.splitlines():
+            indent = ""
+            if line and line[0].isspace():
+                while line and line[0].isspace():
+                    indent += line[0]
+                    line = line[1:]
+            result = ""
+            while line:
+                if colored[0] == "\x1b":
+                    escape, _, colored = colored.partition("m")
+                    if not colored:
+                        raise RuntimeError
+                    result += escape + _
+                    continue
+                if indent:
+                    if colored[0].isspace():
+                        colored = colored[1:]
+                        continue
+                    result = indent
+                    indent = None
+                line = line[1:]
+                result += colored[0]
+                colored = colored[1:]
+            lines.append(result)
+        return "\n".join(lines)
+
+    @classmethod
+    def colorize(cls, string):
+        """Colorize things in `string`."""
+
+        if cls._re_backtick is None:
+            # see ~/dev/pygments/pygments/lexers/markup.py
+            # italics fenced by '`'
+            cls._re_backtick = _re.compile(r"([^`]?)(`[^` \n][^`\n]*`)")
+
+        if string is not None:
+            string = _re.sub(cls._re_backtick, lambda m: cls.backtick(m.group(0)), string)
+        return string
 
 # ===============
 # Formatting Help
@@ -232,6 +332,8 @@ class HelpFormatter(object):
             return join(['\n', heading, item_help, '\n'])
 
     def _add_item(self, func, args):
+        if isinstance(args, list) and len(args) > 0 and isinstance(args[0], str):
+            args = [Colors.colorize(x) for x in args]
         self._current_section.items.append((func, args))
 
     # ========================
@@ -239,7 +341,7 @@ class HelpFormatter(object):
     # ========================
     def start_section(self, heading):
         self._indent()
-        section = self._Section(self, self._current_section, heading)
+        section = self._Section(self, self._current_section, Colors.section(heading))
         self._add_item(section.format_help, [])
         self._current_section = section
 
@@ -266,7 +368,7 @@ class HelpFormatter(object):
                 invocations.append(get_invocation(subaction))
 
             # update the maximum item length
-            invocation_length = max(map(len, invocations))
+            invocation_length = max(map(ansilen, invocations))
             action_length = invocation_length + self._current_indent
             self._action_max_length = max(self._action_max_length,
                                           action_length)
@@ -321,7 +423,8 @@ class HelpFormatter(object):
             # build full usage string
             format = self._format_actions_usage
             action_usage = format(optionals + positionals, groups)
-            usage = ' '.join([s for s in [prog, action_usage] if s])
+            colored_usage = ' '.join([s for s in [Colors.prog(prog), action_usage] if s])
+            usage = strip_color(colored_usage)
 
             # wrap the usage parts if it's too long
             text_width = self._width - self._current_indent
@@ -333,8 +436,12 @@ class HelpFormatter(object):
                     r'\[.*?\]+(?=\s|$)|'
                     r'\S+'
                 )
+                if usage != colored_usage:
+                    Colors.disable()
                 opt_usage = format(optionals, groups)
                 pos_usage = format(positionals, groups)
+                if usage != colored_usage:
+                    Colors.enable()
                 opt_parts = _re.findall(part_regexp, opt_usage)
                 pos_parts = _re.findall(part_regexp, pos_usage)
                 assert ' '.join(opt_parts) == opt_usage
@@ -385,6 +492,9 @@ class HelpFormatter(object):
 
                 # join lines into usage
                 usage = '\n'.join(lines)
+
+            # endif wrap the usage parts if it's too long
+            usage = Colors.fill(colored_usage, strip_color(usage))
 
         # prefix with 'usage:'
         return '%s%s\n\n' % (prefix, usage)
@@ -467,7 +577,7 @@ class HelpFormatter(object):
                 else:
                     default = self._get_default_metavar_for_optional(action)
                     args_string = self._format_args(action, default)
-                    part = '%s %s' % (option_string, args_string)
+                    part = '%s %s' % (Colors.option(option_string), args_string)
 
                 # make it look optional if it's not required or in a group
                 if not action.required and action not in group_actions:
@@ -492,6 +602,16 @@ class HelpFormatter(object):
         text = _re.sub(r'\(([^|]*)\)', r'\1', text)
         text = text.strip()
 
+        # colorize punctuation
+        text = _re.sub(r'(?<!\x1b)\[', Colors.punct("["), text)
+        text = text.replace("]", Colors.punct("]"))
+        text = text.replace("{", Colors.punct("{"))
+        text = text.replace("}", Colors.punct("}"))
+        text = text.replace("(", Colors.punct("("))
+        text = text.replace(")", Colors.punct(")"))
+        text = text.replace("|", Colors.punct("|"))
+        text = text.replace(",", Colors.punct(","))
+
         # return the text
         return text
 
@@ -500,7 +620,9 @@ class HelpFormatter(object):
             text = text % dict(prog=self._prog)
         text_width = max(self._width - self._current_indent, 11)
         indent = ' ' * self._current_indent
-        return self._fill_text(text, text_width, indent) + '\n\n'
+        filled = self._fill_text(text, text_width, indent)
+        colored = Colors.colorize(filled)
+        return colored + '\n\n'
 
     def _format_action(self, action):
         # determine the required width and the entry label
@@ -516,9 +638,10 @@ class HelpFormatter(object):
             action_header = '%*s%s\n' % tup
 
         # short action name; start on the same line and pad two spaces
-        elif len(action_header) <= action_width:
-            tup = self._current_indent, '', action_width, action_header
-            action_header = '%*s%-*s  ' % tup
+        elif (n := ansilen(action_header)) <= action_width:
+            indent = " " * self._current_indent
+            gutter = " " * (action_width - n)
+            action_header = indent + action_header + gutter + "  "
             indent_first = 0
 
         # long action name; start on the next line
@@ -535,6 +658,7 @@ class HelpFormatter(object):
             help_text = self._expand_help(action)
             if help_text:
                 help_lines = self._split_lines(help_text, help_width)
+                help_lines = [Colors.colorize(x) for x in help_lines]
                 parts.append('%*s%s\n' % (indent_first, '', help_lines[0]))
                 for line in help_lines[1:]:
                     parts.append('%*s%s\n' % (help_position, '', line))
@@ -562,7 +686,7 @@ class HelpFormatter(object):
             # if the Optional doesn't take a value, format is:
             #    -s, --long
             if action.nargs == 0:
-                parts.extend(action.option_strings)
+                parts.extend([Colors.option(x) for x in action.option_strings])
 
             # if the Optional takes a value, format is:
             #    -s ARGS, --long ARGS
@@ -570,18 +694,18 @@ class HelpFormatter(object):
                 default = self._get_default_metavar_for_optional(action)
                 args_string = self._format_args(action, default)
                 for option_string in action.option_strings:
-                    parts.append('%s %s' % (option_string, args_string))
+                    parts.append('%s %s' % (Colors.option(option_string), args_string))
 
-            return ', '.join(parts)
+            return f"{Colors.punct(',')} ".join(parts)
 
     def _metavar_formatter(self, action, default_metavar):
         if action.metavar is not None:
-            result = action.metavar
+            result = Colors.metavar(action.metavar)
         elif action.choices is not None:
-            choice_strs = [str(choice) for choice in action.choices]
-            result = '{%s}' % ','.join(choice_strs)
+            choice_strs = [Colors.metavar(choice) for choice in action.choices]
+            result = Colors.punct("{") + Colors.punct(",").join(choice_strs) + Colors.punct("}")
         else:
-            result = default_metavar
+            result = Colors.metavar(default_metavar)
 
         def format(tuple_size):
             if isinstance(result, tuple):
@@ -627,7 +751,7 @@ class HelpFormatter(object):
             if hasattr(params[name], '__name__'):
                 params[name] = params[name].__name__
         if params.get('choices') is not None:
-            choices_str = ', '.join([str(c) for c in params['choices']])
+            choices_str = f"{Colors.punct(',')} ".join([str(c) for c in params['choices']])
             params['choices'] = choices_str
         return self._get_help_string(action) % params
 
@@ -651,9 +775,10 @@ class HelpFormatter(object):
     def _fill_text(self, text, width, indent):
         text = self._whitespace_matcher.sub(' ', text).strip()
         import textwrap
-        return textwrap.fill(text, width,
+        wrap = textwrap.fill(text, width,
                              initial_indent=indent,
                              subsequent_indent=indent)
+        return Colors.fill(text, strip_color(wrap))
 
     def _get_help_string(self, action):
         return action.help
@@ -756,7 +881,7 @@ class ArgumentError(Exception):
         else:
             format = 'argument %(argument_name)s: %(message)s'
         return format % dict(message=self.message,
-                             argument_name=self.argument_name)
+                             argument_name=Colors.metavar(self.argument_name))
 
 
 class ArgumentTypeError(Exception):
@@ -856,7 +981,7 @@ class Action(_AttributeHolder):
         return [(name, getattr(self, name)) for name in names]
 
     def format_usage(self):
-        return self.option_strings[0]
+        return Colors.option(self.option_strings[0])
 
     def __call__(self, parser, namespace, values, option_string=None):
         raise NotImplementedError(_('.__call__() not defined'))
@@ -1135,7 +1260,7 @@ class _SubParsersAction(Action):
         def __init__(self, name, aliases, help):
             metavar = dest = name
             if aliases:
-                metavar += ' (%s)' % ', '.join(aliases)
+                metavar += ' (%s)' % f"{Colors.punct(',')} ".join(aliases)
             sup = super(_SubParsersAction._ChoicesPseudoAction, self)
             sup.__init__(option_strings=[], dest=dest, help=help,
                          metavar=metavar)
@@ -1202,7 +1327,7 @@ class _SubParsersAction(Action):
             parser = self._name_parser_map[parser_name]
         except KeyError:
             args = {'parser_name': parser_name,
-                    'choices': ', '.join(self._name_parser_map)}
+                    'choices': f"{Colors.punct(',')} ".join(self._name_parser_map)}
             msg = _('unknown parser %(parser_name)r (choices: %(choices)s)') % args
             raise ArgumentError(self, msg)
 
@@ -2519,9 +2644,9 @@ class ArgumentParser(_AttributeHolder, _ActionsContainer):
     def _check_value(self, action, value):
         # converted value must be one of the choices (if specified)
         if action.choices is not None and value not in action.choices:
-            args = {'value': value,
-                    'choices': ', '.join(map(repr, action.choices))}
-            msg = _('invalid choice: %(value)r (choose from %(choices)s)')
+            args = {'value': f"'{Colors.invalid_choice(value)}'",
+                    'choices': ', '.join([f"'{Colors.choices(x)}'" for x in action.choices])}
+            msg = _('invalid choice: %(value)s (choose from %(choices)s)')
             raise ArgumentError(action, msg % args)
 
     # =======================
@@ -2534,6 +2659,7 @@ class ArgumentParser(_AttributeHolder, _ActionsContainer):
         return formatter.format_help()
 
     def format_help(self):
+        Colors.disable()
         formatter = self._get_formatter()
 
         # usage
@@ -2554,6 +2680,7 @@ class ArgumentParser(_AttributeHolder, _ActionsContainer):
         formatter.add_text(self.epilog)
 
         # determine help from format above
+        Colors.enable()
         return formatter.format_help()
 
     def _get_formatter(self):

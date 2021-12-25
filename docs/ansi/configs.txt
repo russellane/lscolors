@@ -1,0 +1,11 @@
+usage: [38;2;108;113;196;1;3mlscolors configs[0m [38;2;131;148;150;3m[[0m[38;2;42;161;152;3m-h[0m[38;2;131;148;150;3m][0m
+
+Print path to sample[38;2;181;137;0;3m `.lscolors.yml`[0m and[38;2;181;137;0;3m `.dircolors`[0m configuration files.
+
+options:
+  [38;2;42;161;152;3m-h[0m[38;2;131;148;150;3m,[0m [38;2;42;161;152;3m--help[0m  show this help message and exit
+
+
+See Also: 
+  lscolors-chart, lscolors-check, lscolors-configs, lscolors-docs, lscolors-report, lscolors-
+  samples, lscolors-sort, lscolors-help.

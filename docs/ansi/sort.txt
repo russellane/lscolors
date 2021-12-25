@@ -1,0 +1,12 @@
+usage: [38;2;108;113;196;1;3mlscolors sort[0m [38;2;131;148;150;3m[[0m[38;2;42;161;152;3m-h[0m[38;2;131;148;150;3m][0m
+
+Filter[38;2;181;137;0;3m `stdin`[0m to[38;2;181;137;0;3m `stdout`[0m sorting lines of a[38;2;181;137;0;3m `DIR_COLORS`[0m file by color then filetype. Blank
+ lines and comments are unsorted and moved to the end
+
+options:
+  [38;2;42;161;152;3m-h[0m[38;2;131;148;150;3m,[0m [38;2;42;161;152;3m--help[0m  show this help message and exit
+
+
+See Also: 
+  lscolors-chart, lscolors-check, lscolors-configs, lscolors-docs, lscolors-report, lscolors-
+  samples, lscolors-sort, lscolors-help.

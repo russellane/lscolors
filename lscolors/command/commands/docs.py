@@ -3,7 +3,8 @@
 # move this into argformat
 
 import lscolors
-from lscolors.external import argformat
+
+# from lscolors.external import argformat
 
 
 class Command(lscolors.Command):
@@ -50,6 +51,7 @@ class Command(lscolors.Command):
         """Handle command invocation."""
 
         lscolors.mkdir(args.docs, args.force)
-        argformat.configure(format=args.format)
-        argformat.print_main_page(self.main_parser)
-        argformat.write_command_pages(self.main_parser, args.docs)
+        _ = self
+        # argformat.configure(format=args.format)
+        # argformat.print_main_page(self.main_parser)
+        # argformat.write_command_pages(self.main_parser, args.docs)

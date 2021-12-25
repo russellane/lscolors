@@ -1,0 +1,18 @@
+usage: [38;2;108;113;196;1;3mlscolors report[0m [38;2;131;148;150;3m[[0m[38;2;42;161;152;3m-h[0m[38;2;131;148;150;3m][0m [38;2;131;148;150;3m[[0m[38;2;42;161;152;3m--left[0m [38;2;131;148;150;3m|[0m [38;2;42;161;152;3m--right[0m[38;2;131;148;150;3m][0m [38;2;131;148;150;3m[[0m[38;2;203;75;22;3mDIR_COLORS[0m[38;2;131;148;150;3m][0m
+
+Print colorized report for database in[38;2;181;137;0;3m `$LS_COLORS`[0m.
+
+positional arguments:
+  [38;2;203;75;22;3mDIR_COLORS[0m  read file[38;2;181;137;0;3m `DIR_COLORS`[0m instead of[38;2;181;137;0;3m `$LS_COLORS`[0m
+
+options:
+  [38;2;42;161;152;3m-h[0m[38;2;131;148;150;3m,[0m [38;2;42;161;152;3m--help[0m  show this help message and exit
+  [38;2;42;161;152;3m--left[0m      format report for display in left window
+  [38;2;42;161;152;3m--right[0m     format report for display in right window
+
+A default format is produced when[38;2;181;137;0;3m `--left/--right`[0m is not given.
+
+
+See Also: 
+  lscolors-chart, lscolors-check, lscolors-configs, lscolors-docs, lscolors-report, lscolors-
+  samples, lscolors-sort, lscolors-help.

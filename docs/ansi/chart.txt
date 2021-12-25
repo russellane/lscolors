@@ -1,0 +1,11 @@
+usage: [38;2;108;113;196;1;3mlscolors chart[0m [38;2;131;148;150;3m[[0m[38;2;42;161;152;3m-h[0m[38;2;131;148;150;3m][0m
+
+Print color-chart.
+
+options:
+  [38;2;42;161;152;3m-h[0m[38;2;131;148;150;3m,[0m [38;2;42;161;152;3m--help[0m  show this help message and exit
+
+
+See Also: 
+  lscolors-chart, lscolors-check, lscolors-configs, lscolors-docs, lscolors-report, lscolors-
+  samples, lscolors-sort, lscolors-help.

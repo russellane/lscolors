@@ -8,7 +8,7 @@ FILE1="$1"
 if [ "$2" ]; then
     FILE2="$2"
 else
-    FILE2=docs/ansi/$1.ansi
+    FILE2=docs/ansi/$1.txt
     FILE1=docs/txt/$1.txt
 fi
 
