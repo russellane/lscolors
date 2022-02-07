@@ -14,12 +14,11 @@ class Command(lscolors.Command):
         parser = self.add_parser(
             "configs",
             help="print path to sample configuration files",
-            formatter_class=self.formatter_class,
             description="""Print path to sample `.lscolors.yml`
                             and `.dircolors` configuration files.""",
         )
 
-        parser.set_defaults(cmd=self.handle, prog="lscolors configs")
+        parser.set_defaults(cmd=self.handle)
 
     @staticmethod
     def handle(args):

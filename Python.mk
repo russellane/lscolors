@@ -3,7 +3,11 @@
 # it exist in other projects.
 
 ifeq ("$(PACKAGE)","")
-    $(error PACKAGE is not defined)
+	$(error PACKAGE is not defined)
+endif
+
+ifeq ("$(PACKAGE_NAME)","")
+	PACKAGE_NAME := $(PACKAGE)
 endif
 
 #-------------------------------------------------------------------------------
@@ -41,14 +45,14 @@ DEBUG_PAGER	:= 2>&1 | more
 
 __bar__		= ---------------------------------------------------------------------- $(PACKAGE) $@
 PYTHON		:= poetry run python
-SRC_FILES	:= $(shell git ls-files '*.py')
-PACKAGE_NAME	:= $(shell python -c 'import tomlkit; t = tomlkit.loads(open("pyproject.toml").read()); print(t["tool"]["poetry"]["name"])')
+SRC_FILES	:= $(shell git ls-files '*.py' 2>/dev/null)
+#PACKAGE_NAME	:= $(shell python -c 'import tomlkit; t = tomlkit.loads(open("pyproject.toml").read()); print(t["tool"]["poetry"]["name"])')
 PIPX		:= $(shell grep -q "^\[tool.poetry.scripts\]" pyproject.toml && echo pipx || echo 'echo no console_scripts to')
 BUILD		:= tags $(shell egrep '^(black|isort|flake8|pydoctest|pylint|pytest) = ' <pyproject.toml | cut -d' ' -f1) $(BUILD)
 
 SRC_DIRS = $(PACKAGE)
 ifneq ("$(wildcard tests)","")
-    SRC_DIRS += tests
+	SRC_DIRS += tests
 endif
 
 .SUFFIXES:

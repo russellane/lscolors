@@ -1,20 +1,39 @@
-usage: [38;2;108;113;196;1;3mlscolors samples[0m [38;2;131;148;150;3m[[0m[38;2;42;161;152;3m-h[0m[38;2;131;148;150;3m][0m [38;2;131;148;150;3m[[0m[38;2;42;161;152;3m-q[0m[38;2;131;148;150;3m][0m [38;2;131;148;150;3m[[0m[38;2;42;161;152;3m--config[0m [38;2;203;75;22;3mCONFIG[0m[38;2;131;148;150;3m][0m [38;2;131;148;150;3m[[0m[38;2;42;161;152;3m--samplesdir[0m [38;2;203;75;22;3mDIR[0m[38;2;131;148;150;3m][0m [38;2;131;148;150;3m[[0m[38;2;42;161;152;3m-f[0m[38;2;131;148;150;3m][0m [38;2;131;148;150;3m[[0m[38;2;203;75;22;3mDIR_COLORS[0m[38;2;131;148;150;3m][0m
+[38;2;38;139;210musage: [0m[38;2;108;113;196;1;3mlscolors samples[0m
+                             [38;2;131;148;150;3m[[0m[38;2;42;161;152;3m-h[0m[38;2;131;148;150;3m][0m
+                             [38;2;131;148;150;3m[[0m[38;2;42;161;152;3m-q[0m[38;2;131;148;150;3m][0m
+                             [38;2;131;148;150;3m[[0m[38;2;42;161;152;3m--config[0m
+                             [38;2;203;75;22;3mCONFIG[0m[38;2;131;148;150;3m][0m
+                             [38;2;131;148;150;3m[[0m[38;2;42;161;152;3m--samplesdir[0m
+                             [38;2;203;75;22;3mDIR[0m[38;2;131;148;150;3m][0m
+                             [38;2;131;148;150;3m[[0m[38;2;42;161;152;3m-f[0m[38;2;131;148;150;3m][0m
+                             [38;2;131;148;150;3m[[0m[38;2;203;75;22;3mDIR_COLORS[0m[38;2;131;148;150;3m][0m
 
-Create directory and populate with sample files, directories, etc., for each item in
-[38;2;181;137;0;3m `$LS_COLORS`[0m, and all required items in configuration file[38;2;181;137;0;3m `CONFIG`[0m
+Create directory and populate with sample files,
+directories, etc., for each item in
+[38;2;181;137;0;3m`$LS_COLORS`[0m, and all required items in
+configuration file [38;2;181;137;0;3m`CONFIG`[0m.
 
-positional arguments:
-  [38;2;203;75;22;3mDIR_COLORS[0m        read file[38;2;181;137;0;3m `DIR_COLORS`[0m instead of[38;2;181;137;0;3m `$LS_COLORS`[0m
+[38;2;38;139;210mpositional arguments[0m:
+  [38;2;203;75;22;3mDIR_COLORS[0m        read file [38;2;181;137;0;3m`DIR_COLORS`[0m
+                    instead of [38;2;181;137;0;3m`$LS_COLORS`[0m
 
-options:
-  [38;2;42;161;152;3m-h[0m[38;2;131;148;150;3m,[0m [38;2;42;161;152;3m--help[0m        show this help message and exit
-  [38;2;42;161;152;3m-q[0m[38;2;131;148;150;3m,[0m [38;2;42;161;152;3m--quiet[0m       suppress warning if default[38;2;181;137;0;3m `CONFIG`[0m cannot be found
-  [38;2;42;161;152;3m--config[0m [38;2;203;75;22;3mCONFIG[0m   require filenames, directories and extensions specified in[38;2;181;137;0;3m `CONFIG`[0m file.
+[38;2;38;139;210moptions[0m:
+  [38;2;42;161;152;3m-h[0m[38;2;131;148;150;3m,[0m [38;2;42;161;152;3m--help[0m        show this help message and
+                    exit
+  [38;2;42;161;152;3m-q[0m[38;2;131;148;150;3m,[0m [38;2;42;161;152;3m--quiet[0m       suppress warning if default
+                    [38;2;181;137;0;3m`CONFIG`[0m cannot be found
+  [38;2;42;161;152;3m--config[0m [38;2;203;75;22;3mCONFIG[0m   require filenames,
+                    directories and extensions
+                    specified in [38;2;181;137;0;3m`CONFIG`[0m file.
                     (default: '.lscolors.yml')
-  [38;2;42;161;152;3m--samplesdir[0m [38;2;203;75;22;3mDIR[0m  create directory[38;2;181;137;0;3m `DIR`[0m. (default: './lscolors-samples')
-  [38;2;42;161;152;3m-f[0m[38;2;131;148;150;3m,[0m [38;2;42;161;152;3m--force[0m       Ok to clobber[38;2;181;137;0;3m `DIR`[0m if it exists
+  [38;2;42;161;152;3m--samplesdir[0m [38;2;203;75;22;3mDIR[0m  create directory [38;2;181;137;0;3m`DIR`[0m.
+                    (default: './lscolors-
+                    samples')
+  [38;2;42;161;152;3m-f[0m[38;2;131;148;150;3m,[0m [38;2;42;161;152;3m--force[0m       Ok to clobber [38;2;181;137;0;3m`DIR`[0m if it
+                    exists
+
+[38;2;38;139;210mSee Also:[0m
+  [38;2;181;137;0;3m`lscolors chart`[0m, [38;2;181;137;0;3m`check`[0m, [38;2;181;137;0;3m`configs`[0m,
+  [38;2;181;137;0;3m`report`[0m, [38;2;181;137;0;3m`sort`[0m, [38;2;181;137;0;3m`help`[0m, [38;2;181;137;0;3m`docs`[0m.
 
 
-See Also: 
-  lscolors-chart, lscolors-check, lscolors-configs, lscolors-docs, lscolors-report, lscolors-
-  samples, lscolors-sort, lscolors-help.

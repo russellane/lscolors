@@ -11,12 +11,11 @@ class Command(lscolors.Command):
 
         parser = self.add_parser(
             "chart",
-            formatter_class=self.formatter_class,
             help="print color chart",
             description="Print color-chart.",
         )
 
-        parser.set_defaults(cmd=self.handle, prog="lscolors chart")
+        parser.set_defaults(cmd=self.handle)
 
     @staticmethod
     def handle(args):

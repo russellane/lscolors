@@ -1,21 +1,27 @@
-usage: [38;2;108;113;196;1;3mlscolors[0m [38;2;131;148;150;3m[[0m[38;2;42;161;152;3m-h[0m[38;2;131;148;150;3m][0m [38;2;131;148;150;3m[[0m[38;2;42;161;152;3m-V[0m[38;2;131;148;150;3m][0m [38;2;203;75;22;3mCOMMAND[0m ...
+usage: lscolors [-h] [-V] COMMAND ...
 
-Utilities for[38;2;181;137;0;3m `dircolors(1)`[0m and[38;2;181;137;0;3m `dir_colors(5)`[0m
+Utilities for `dircolors(1)` and `dir_colors(5)`
 
 options:
-  [38;2;42;161;152;3m-h[0m[38;2;131;148;150;3m,[0m [38;2;42;161;152;3m--help[0m     show this help message and exit
-  [38;2;42;161;152;3m-V[0m[38;2;131;148;150;3m,[0m [38;2;42;161;152;3m--version[0m  show program's version number and exit
+  -h, --help     show this help message and exit
+  -V, --version  show program's version number
+                 and exit
 
 Specify one of:
-  [38;2;203;75;22;3mCOMMAND[0m
-    [38;2;203;75;22;3mchart[0m        print color chart
-    [38;2;203;75;22;3mcheck[0m        check database for required items
-    [38;2;203;75;22;3mconfigs[0m      print path to sample configuration files
-    [38;2;203;75;22;3mdocs[0m         Create documentation.
-    [38;2;203;75;22;3mreport[0m       print colorized database report
-    [38;2;203;75;22;3msamples[0m      create directory of sample filesystem items
-    [38;2;203;75;22;3msort[0m         sort lines of database file by color
-    [38;2;203;75;22;3mhelp[0m         same as[38;2;181;137;0;3m `--help`[0m
+  COMMAND
+    chart        print color chart
+    check        check database for required
+                 items
+    configs      print path to sample
+                 configuration files
+    report       print colorized database report
+    samples      create directory of sample
+                 filesystem items
+    sort         sort lines of database file by
+                 color
+    help         ==SUPPRESS==
+    docs         ==SUPPRESS==
 
-See[38;2;181;137;0;3m `lscolors COMMAND --help`[0m for help on a specific command.
+See `lscolors COMMAND --help` for help on a
+specific command.
 

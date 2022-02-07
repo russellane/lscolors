@@ -4,9 +4,11 @@ include Python.mk
 
 #-------------------------------------------------------------------------------
 
-.PHONY:		docs
+MKDOCS := COLUMNS=50 $(PYTHON) -m $(PACKAGE) docs --force
+.PHONY:	docs
 docs:
-		COLUMNS=97 $(PYTHON) -m $(PACKAGE) docs --force docs/ansi >README.txt
+	ARGPARSE_COLOR=never $(MKDOCS) docs/txt >README.txt
+	ARGPARSE_COLOR=always $(MKDOCS) docs/ansi >README.ansi
 
 #-------------------------------------------------------------------------------
 # vim: set ts=8 sw=8 noet:

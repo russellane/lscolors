@@ -1,9 +1,10 @@
-usage: [38;2;108;113;196;1;3mlscolors help[0m [38;2;131;148;150;3m[[0m[38;2;42;161;152;3m-h[0m[38;2;131;148;150;3m][0m
+[38;2;38;139;210musage: [0m[38;2;108;113;196;1;3mlscolors help[0m [38;2;131;148;150;3m[[0m[38;2;42;161;152;3m-h[0m[38;2;131;148;150;3m][0m
 
-options:
+[38;2;38;139;210moptions[0m:
   [38;2;42;161;152;3m-h[0m[38;2;131;148;150;3m,[0m [38;2;42;161;152;3m--help[0m  show this help message and exit
 
+[38;2;38;139;210mSee Also:[0m
+  [38;2;181;137;0;3m`lscolors chart`[0m, [38;2;181;137;0;3m`check`[0m, [38;2;181;137;0;3m`configs`[0m,
+  [38;2;181;137;0;3m`report`[0m, [38;2;181;137;0;3m`samples`[0m, [38;2;181;137;0;3m`sort`[0m, [38;2;181;137;0;3m`docs`[0m.
 
-See Also: 
-  lscolors-chart, lscolors-check, lscolors-configs, lscolors-docs, lscolors-report, lscolors-
-  samples, lscolors-sort, lscolors-help.
+

@@ -2,5 +2,11 @@ usage: lscolors chart [-h]
 
 Print color-chart.
 
-optional arguments:
+options:
   -h, --help  show this help message and exit
+
+See Also:
+  `lscolors check`, `configs`, `report`,
+  `samples`, `sort`, `help`, `docs`.
+
+

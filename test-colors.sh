@@ -12,11 +12,15 @@ else
     FILE1=docs/txt/$1.txt
 fi
 
-while :; do
+ANS=
+while [ "$ANS" != q ]; do
     for FILE in "$FILE1" "$FILE2"; do
         tput clear
+        echo ::::: "$FILE" :::::
         cat "$FILE"
         echo -n "Press ENTER..."
-        read </dev/tty || break
+        read ANS || break
+        [ "$ANS" = "q" ] && break
+        echo ANS=$ANS
     done
 done

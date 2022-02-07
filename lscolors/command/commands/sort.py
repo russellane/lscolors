@@ -14,14 +14,13 @@ class Command(lscolors.Command):
 
         parser = self.add_parser(
             "sort",
-            formatter_class=self.formatter_class,
             help="sort lines of database file by color",
-            description="""Filter `stdin` to `stdout` sorting
-            lines of a `DIR_COLORS` file by color then filetype.
-            Blank lines and comments are unsorted and moved to the end.""",
+            description="""\
+Filter `stdin` to `stdout` sorting lines of a `DIR_COLORS` file by color
+then filetype. Blank lines and comments are unsorted and moved to the end.""",
         )
 
-        parser.set_defaults(cmd=self.handle, prog="lscolors sort")
+        parser.set_defaults(cmd=self.handle)
 
     @staticmethod
     def handle(args):

@@ -1,14 +1,29 @@
-usage: lscolors check [-h] [-q] [--config CONFIG] [DIR_COLORS]
+usage: lscolors check [-h] [-q]
+                      [--config CONFIG]
+                      [DIR_COLORS]
 
-Check database in `$LS_COLORS` for required items.
+Check database in `$LS_COLORS` for required
+items.
 
 positional arguments:
-  DIR_COLORS       read file `DIR_COLORS` instead of `$LS_COLORS`
+  DIR_COLORS       read file `DIR_COLORS`
+                   instead of `$LS_COLORS`
 
-optional arguments:
-  -h, --help       show this help message and exit
-  -q, --quiet      suppress warning if default `CONFIG` cannot be found
-  --config CONFIG  require filenames, directories and extensions specified in `CONFIG` file.
+options:
+  -h, --help       show this help message and
+                   exit
+  -q, --quiet      suppress warning if default
+                   `CONFIG` cannot be found
+  --config CONFIG  require filenames,
+                   directories and extensions
+                   specified in `CONFIG` file.
                    (default: '.lscolors.yml')
 
-Exit Status: zero indicates success, nonzero indicates failure.
+Exit Status: zero indicates success, nonzero
+indicates failure.
+
+See Also:
+  `lscolors chart`, `configs`, `report`,
+  `samples`, `sort`, `help`, `docs`.
+
+

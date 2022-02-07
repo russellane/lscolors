@@ -27,6 +27,55 @@
 			"justMyCode": false
 		},
 		{
+			"name": "lscolors docs --force docs",
+			"type": "python",
+			"request": "launch",
+			"module": "lscolors",
+			"args": [
+				"docs",
+				"--force",
+				"docs"
+			],
+			"justMyCode": false
+		},
+		{
+			"name": "lscolors docs --force docs COLUMNS=50",
+			"type": "python",
+			"request": "launch",
+			"module": "lscolors",
+			"args": [
+				"docs",
+				"--force",
+				"docs"
+			],
+			"env": {"COLUMNS": "50"},
+			"justMyCode": false
+		},
+		{
+			"name": "lscolors sort --help COLUMNS=50",
+			"type": "python",
+			"request": "launch",
+			"module": "lscolors",
+			"args": [
+				"sort",
+				"--help",
+			],
+			"env": {"COLUMNS": "50"},
+			"justMyCode": false
+		},
+		{
+			"name": "lscolors sort --help COLUMNS=80",
+			"type": "python",
+			"request": "launch",
+			"module": "lscolors",
+			"args": [
+				"sort",
+				"--help",
+			],
+			"env": {"COLUMNS": "80"},
+			"justMyCode": false
+		},
+		{
 			"name": "Python: Current File",
 			"type": "python",
 			"request": "launch",

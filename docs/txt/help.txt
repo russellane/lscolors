@@ -1,4 +1,10 @@
 usage: lscolors help [-h]
 
-optional arguments:
+options:
   -h, --help  show this help message and exit
+
+See Also:
+  `lscolors chart`, `check`, `configs`,
+  `report`, `samples`, `sort`, `docs`.
+
+

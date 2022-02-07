@@ -11,13 +11,12 @@ class Command(lscolors.Command):
 
         parser = self.add_parser(
             "check",
-            formatter_class=self.formatter_class,
             help="check database for required items",
             description="Check database in `$LS_COLORS` for required items.",
             epilog="Exit Status: zero indicates success, nonzero indicates failure.",
         )
 
-        parser.set_defaults(cmd=self.handle, prog="lscolors check")
+        parser.set_defaults(cmd=self.handle)
         lscolors.config.add_arguments(parser)
         lscolors.colors.add_arguments(parser)
 

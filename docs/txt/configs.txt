@@ -1,6 +1,13 @@
 usage: lscolors configs [-h]
 
-Print path to sample `.lscolors.yml` and `.dircolors` configuration files.
+Print path to sample `.lscolors.yml` and
+`.dircolors` configuration files.
 
-optional arguments:
+options:
   -h, --help  show this help message and exit
+
+See Also:
+  `lscolors chart`, `check`, `report`,
+  `samples`, `sort`, `help`, `docs`.
+
+

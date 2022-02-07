@@ -11,13 +11,12 @@ class Command(lscolors.Command):
 
         parser = self.add_parser(
             "report",
-            formatter_class=self.formatter_class,
             help="print colorized database report",
             description="Print colorized report for database in `$LS_COLORS`.",
             epilog="A default format is produced when `--left/--right` is not given.",
         )
 
-        parser.set_defaults(cmd=self.handle, prog="lscolors report")
+        parser.set_defaults(cmd=self.handle)
 
         grp = parser.add_mutually_exclusive_group()
         grp.add_argument(

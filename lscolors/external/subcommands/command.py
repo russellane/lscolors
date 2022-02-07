@@ -5,12 +5,11 @@ class Command:  # noqa: SIM119 Use a dataclass
     """Base class for all commands."""
 
     main_parser = None
-    formatter_class = None
     subparsers = None
+    parent = None
 
     def add_parser(self, name, **kwargs):
         """See /usr/lib/python3.8/argparse.py."""
-        kwargs["formatter_class"] = self.main_parser.formatter_class
         return self.subparsers.add_parser(name, **kwargs)
 
     @staticmethod
