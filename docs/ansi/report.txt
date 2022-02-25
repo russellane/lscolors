@@ -14,5 +14,5 @@ A default format is produced when[38;2;181;137;0;3m `--left/--right`[0m is not
 
 
 See Also: 
-  lscolors-chart, lscolors-check, lscolors-configs, lscolors-docs, lscolors-report, lscolors-
-  samples, lscolors-sort, lscolors-help.
+  lscolors-chart, lscolors-check, lscolors-configs, lscolors-docs, lscolors-paint, lscolors-
+  report, lscolors-samples, lscolors-sort, lscolors-help.

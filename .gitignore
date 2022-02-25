@@ -4,6 +4,7 @@
 .make.out
 .pytest_cache/
 __pycache__/
+__pypackages__/
 build/
 dist/
 sample-files/

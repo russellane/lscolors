@@ -1,11 +1,14 @@
-usage: [38;2;108;113;196;1;3mlscolors chart[0m [38;2;131;148;150;3m[[0m[38;2;42;161;152;3m-h[0m[38;2;131;148;150;3m][0m
+usage: [38;2;108;113;196;1;3mlscolors chart[0m [38;2;131;148;150;3m[[0m[38;2;42;161;152;3m-h[0m[38;2;131;148;150;3m][0m [38;2;131;148;150;3m[[0m[38;2;203;75;22;3mcolor[0m ...[38;2;131;148;150;3m][0m
 
 Print color-chart.
+
+positional arguments:
+  [38;2;203;75;22;3mcolor[0m       print color palette with given colors
 
 options:
   [38;2;42;161;152;3m-h[0m[38;2;131;148;150;3m,[0m [38;2;42;161;152;3m--help[0m  show this help message and exit
 
 
 See Also: 
-  lscolors-chart, lscolors-check, lscolors-configs, lscolors-docs, lscolors-report, lscolors-
-  samples, lscolors-sort, lscolors-help.
+  lscolors-chart, lscolors-check, lscolors-configs, lscolors-docs, lscolors-paint, lscolors-
+  report, lscolors-samples, lscolors-sort, lscolors-help.

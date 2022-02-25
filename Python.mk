@@ -1,34 +1,86 @@
-# This file is common to numerous projects, and is included by each of their
+# Python.mk - build/packaging tools for python/pdm projects
+#
+# Targets:				   [----per pyproject.toml----]
+#  make [build]		pdm-install, tags, [black, pylint, pytest, etc], pdm-build
+#  make clean		remove objs, caches, etc.
+#  make clean-all	clean, dist, __pypackages__
+#  make publish		copy wheel ~/packages
+#  make bump-major	increment major part in libcurses/__version__.py
+#  make bump-minor	increment minor part in libcurses/__version__.py
+#  make bump-micro	increment micro part in libcurses/__version__.py
+#  make install		pipx install, if console.scripts
+#  make uninstall	pipx uninstall, if console.scripts
+#  make reinstall	pipx uninstall && pipx install (not pipx reinstall)
+#
+# This file is common to multiple python/pdm projects, and is included by each of their
 # Makefiles.  This file is maintained within one project; copies/clones of
 # it exist in other projects.
+#
+# The purpose of this file is to separate common python build/packaging
+# tasks from any customizations a project may require. Do not modify this
+# file; `include` it in a top-level Makefile that defines required variable
+# `PACKAGE`, and add customizations to that Makefile.
+#
+# Minimum Makefile (2 lines):
+#	PACKAGE := mypackage
+#	include Python.mk
+
+#-------------------------------------------------------------------------------
 
 ifeq ("$(PACKAGE)","")
-    $(error PACKAGE is not defined)
+	$(error PACKAGE is not defined)
+endif
+
+ifeq ("$(PACKAGE_NAME)","")
+	PACKAGE_NAME := $(PACKAGE)
 endif
 
 #-------------------------------------------------------------------------------
-# High-level targets:
+# By default, "make [build]" runs known python tasks listed in `pyproject.toml`.
+
+PYPROJECT_TOML := pyproject.toml
+BUILD += tags $(shell $(SED) -n 's/^    "\(\(black\|isort\|flake8\|pydoctest\|pylint\|pytest\)\)[=<>~].*/\1/p' <$(PYPROJECT_TOML))
+
+# "make bump-major/minor/micro" modifies this file:
+VERSION_FILE := $(PACKAGE)/__version__.py
+
+# "make publish" copies wheels to this directory:
+PACKAGES := ~/packages
+
+AWK := /bin/awk
+GREP := /bin/grep
+SED := /bin/sed
+
+# Add other tasks to the default build list by adding to the `BUILD` variable in the top-level Makefile.
+# For example, this file defines `README.md`, which uses `mandown` to create documentation.
+#	PACKAGE := mypackage
+#	BUILD += README.md
+#	include Python.mk
 #
-#	[build]		# poetry install + black/isort/flake8/pydoctest/pylint/pytest + $(BUILD) + poetry build
-#	clean		# remove *.py[co], __pycache__, dist
-#	distclean	# remove *.py[co], __pycache__, dist + poetry env remove
-#	publish		# poetry version patch + build + copy wheels to ~/packages
-#	install		# pipx install if console.scripts
-#	uninstall	# pipx uninstall if console.scripts
-#	reinstall	# pipx uninstall + pipx install (not pipx reinstall)
+# Add custom rules to the top-level Makefile as well, and add their targets to BUILD.
+#	PACKAGE := mypackage
+#	BUILD += task1
+#	BUILD += task2
+#	include Python.mk
+#	task1:
+#		echo running task1
+#	task2:
+#		echo running task2
+#
+# Note that Makefile adds to BUILD before including Python.mk
 
-# Undocumented:
-# doctest-debug
-# pytest-info
-# pytest-pdb
-# clean-poetry.lock
-# really-rebuild
-# build-venv
-# clean-venv
-# pydoc
-# pytest-debug
-# rebuild
+#-------------------------------------------------------------------------------
+# This file implements these high-level targets:
 
+# 1) make [build]	# tags, black, isort, flake8, pydoctest, pylint, pytest, pdm-build
+# 2) make clean		# remove objs, caches, etc.
+# 4) make clean-all	# clean + remove dist + remove env
+# 5) make publish	# bump version, copy wheel ~/packages
+# 6) make install	# pipx install if console.scripts
+# 7) make uninstall	# pipx uninstall if console.scripts
+# 8) make reinstall	# pipx uninstall && pipx install (not pipx reinstall)
+
+#-------------------------------------------------------------------------------
 #-------------------------------------------------------------------------------
 # try this in .vimrc
 # execute "set <M-m>=\em"
@@ -39,119 +91,141 @@ endif
 # use :!make, not :make, for targets that use DEBUG_PAGER
 DEBUG_PAGER	:= 2>&1 | more
 
-__bar__		= ---------------------------------------------------------------------- $(PACKAGE) $@
-PYTHON		:= poetry run python
-SRC_FILES	:= $(shell git ls-files '*.py')
-PACKAGE_NAME	:= $(shell python -c 'import tomlkit; t = tomlkit.loads(open("pyproject.toml").read()); print(t["tool"]["poetry"]["name"])')
-PIPX		:= $(shell grep -q "^\[tool.poetry.scripts\]" pyproject.toml && echo pipx || echo 'echo no console_scripts to')
-BUILD		:= tags $(shell egrep '^(black|isort|flake8|pydoctest|pylint|pytest) = ' <pyproject.toml | cut -d' ' -f1) $(BUILD)
+BAR		= ---------------------------------------------------------------------- $(PACKAGE) $@
+BAR2		:= --------------------------------------------------------------------------------
+PYTHON		:= pdm run python
+PYTHON_FILES	:= $(shell git ls-files '*.py')
+PIPX		:= $(shell $(GREP) -q "^\[project.scripts\]" $(PYPROJECT_TOML) && echo pipx || echo 'echo no console_scripts to')
 
 SRC_DIRS = $(PACKAGE)
 ifneq ("$(wildcard tests)","")
-    SRC_DIRS += tests
+	SRC_DIRS += tests
 endif
 
 .SUFFIXES:
-default:	build
+.DEFAULT_GOAL = build
+
+HELP = "Targets:				   [----per pyproject.toml----]\n"
+.PHONY:	help
+help:
+	@echo $(HELP)
 
 #-------------------------------------------------------------------------------
-# 1) make [build]
+HELP += "make [build]\t\tpdm-install, $(TASKS), pdm-build\n"
+comma = ", "
+TASKS = $(subst $() $(),$(comma),$(BUILD))
 
-.PHONY:		build
-build::		builder build-venv $(BUILD)
-		@echo $(__bar__)
-		rm -rf dist
-		poetry build
+.PHONY:		build .builder
+build::		env bootstrap-deps .builder $(BUILD)
+		pdm build
 
-.PHONY:		builder
-builder:
-		@echo $(__bar__)
+.builder:
+		@echo $(BAR)
 		@echo $(PACKAGE) building $(BUILD)
 
-.PHONY:		rebuild
-rebuild:	rebuilder build-venv build
+.PHONY:		env
+env:		__pypackages__
+__pypackages__:
+		pdm install
 
-.PHONY:		rebuilder
-rebuilder:
-		@echo $(PACKAGE) re-building $(BUILD)
-
-.PHONY:		really-rebuild
-really-rebuild:	really-rebuilder clean-venv clean-poetry.lock rebuild
-
-.PHONY:		really-rebuilder
-really-rebuilder:
-		@echo $(PACKAGE) really-re-building $(BUILD)
-
-.PHONY:		build-venv
-build-venv::
-		@echo $(__bar__)
-		poetry install
-
-.PHONY:		clean-venv
-clean-venv::
-		@echo $(__bar__)
-		venv=$$(poetry env list | awk "{print \$$1}"); [ "$$venv" ] \
-			&& poetry env remove $$venv \
-			|| echo no venv to clean
-
-.PHONY:		clean-poetry.lock
-clean-poetry.lock:
-		@echo $(__bar__)
-		rm -f poetry.lock
+.PHONY:		bootstrap-deps
+bootstrap-deps:
+	@echo $(BAR)
+	{ \
+		CMDS=$$($(GREP) '^# pdm add' $(PYPROJECT_TOML) | $(SED) 's/..//'); \
+		if [ "$$CMDS" ]; then \
+			EDITED=$$($(SED) '/^# pdm add/d' $(PYPROJECT_TOML)); \
+			echo "$$EDITED" >$(PYPROJECT_TOML); \
+			echo "$$CMDS" | bash -x; \
+			echo "$(PYPROJECT_TOML) has been modified; please re-run $(MAKE) $(MFLAGS)"; \
+			exit 1; \
+		fi; \
+	}
 
 #-------------------------------------------------------------------------------
-# 2) make clean
+HELP += "make clean\t\tremove objs, caches, etc.\n"
 
 .PHONY:		clean
 clean::
-		@echo $(__bar__)
+		@echo $(BAR)
 		rm -f .make.out
-		find . -type f -name '*.py[co]' -delete
-		find . -type d -name '__pycache__' -delete
+		find . -type f -name '*.py[co]' -delete && \
+			find . -type d -name '__pycache__' -delete
+
+#-------------------------------------------------------------------------------
+HELP += "make clean-all\t\tclean, dist, __pypackages__\n"
+
+.PHONY:		clean-all
+clean-all::	clean
+		rm -rf __pypackages__
 		rm -rf dist
 
 #-------------------------------------------------------------------------------
-# 4) make distclean
-
-.PHONY:		distclean
-distclean::	clean clean-venv
-
-#-------------------------------------------------------------------------------
-# 5) make publish
+HELP += "make publish\t\tcopy wheel $(PACKAGES)\n"
 
 .PHONY:		publish
-publish:	publisher build
-		@echo $(__bar__)
-		/bin/cp -p -v dist/*.whl ~/packages
-
-.PHONY:		publisher
-publisher:
-		@echo $(__bar__)
-		poetry version patch
-		echo '"""Version."""'"\n\n__version__ = \""`poetry version --short`'"' >$(PACKAGE)/__version__.py
+publish:
+		@echo $(BAR)
+		/bin/mkdir -p $(PACKAGES)
+		/bin/cp -p -v dist/*.whl $(PACKAGES)
 
 #-------------------------------------------------------------------------------
-# 6) make install
+HELP += "make bump-major\tincrement major part in $(VERSION_FILE)\n"
+HELP += "make bump-minor\tincrement minor part in $(VERSION_FILE)\n"
+HELP += "make bump-micro\tincrement micro part in $(VERSION_FILE)\n"
+
+.PHONY:		bump-major .major-bumper
+bump-major:	.major-bumper build
+.major-bumper:
+		@echo $(BAR)
+		@echo Bumping version major level
+		VERSION=`$(AWK) '/^__version__/ { split(substr($$3, 2), a, "."); \
+			print a[1] + 1 ".0.0"}' <$(VERSION_FILE)`; \
+		echo VERSION=$$VERSION; \
+		echo '"""Version."""'"\n\n__version__ = \""$$VERSION'"' >$(VERSION_FILE)
+
+.PHONY:		bump-minor .minor-bumper
+bump-minor:	.minor-bumper build
+.minor-bumper:
+		@echo $(BAR)
+		@echo Bumping version minor level
+		VERSION=`$(AWK) '/^__version__/ { split(substr($$3, 2), a, "."); \
+			print a[1] "." a[2] + 1 ".0"}' <$(VERSION_FILE)`; \
+		echo VERSION=$$VERSION; \
+		echo '"""Version."""'"\n\n__version__ = \""$$VERSION'"' >$(VERSION_FILE)
+
+.PHONY:		bump-micro .micro-bumper
+bump-micro:	.micro-bumper build
+.micro-bumper:
+		@echo $(BAR)
+		@echo Bumping version micro level
+		VERSION=`$(AWK) '/^__version__/ { split(substr($$3, 2), a, "."); \
+			print a[1] "." a[2] "." a[3] + 1}' <$(VERSION_FILE)`; \
+		echo VERSION=$$VERSION; \
+		echo '"""Version."""'"\n\n__version__ = \""$$VERSION'"' >$(VERSION_FILE)
+
+#-------------------------------------------------------------------------------
+HELP += "make install\t\tpipx install, if console.scripts\n"
 
 .PHONY:		install
 install:
-		@echo $(__bar__)
+		@echo $(BAR)
 		$(PIPX) install $(PACKAGE_NAME)
 
 #-------------------------------------------------------------------------------
-# 7) make uninstall
+HELP += "make uninstall\t\tpipx uninstall, if console.scripts\n"
 
 .PHONY:		uninstall
 uninstall:
-		@echo $(__bar__)
+		@echo $(BAR)
 		-$(PIPX) uninstall $(PACKAGE_NAME)
 
 #-------------------------------------------------------------------------------
-# 8) make reinstall
+HELP += "make reinstall\t\tpipx uninstall && pipx install (not pipx reinstall)"
 
 .PHONY:		reinstall
 reinstall:	uninstall install
-		@echo $(__bar__)
+		@echo $(BAR)
 
 #-------------------------------------------------------------------------------
 # BUILD targets
@@ -159,18 +233,16 @@ reinstall:	uninstall install
 
 .PHONY:		tags
 tags:
-		@echo $(__bar__)
 		ctags -R $(SRC_DIRS)
 
 clean::
-		@echo $(__bar__)
 		rm -f tags
 
 #-------------------------------------------------------------------------------
 
 .PHONY:		black flake8 isort pylint
 black flake8 isort pylint:
-		@echo $(__bar__)
+		@echo $(BAR)
 		$(PYTHON) -m $@ $(SRC_DIRS)
 
 #-------------------------------------------------------------------------------
@@ -179,7 +251,7 @@ PYTEST :=	$(PYTHON) -m pytest --cache-clear --exitfirst --showlocals --verbose
 
 .PHONY:		pytest
 pytest:
-		@echo $(__bar__)
+		@echo $(BAR)
 		$(PYTEST)
 
 .PHONY:		pytest-info
@@ -195,25 +267,24 @@ pytest-pdb:
 		$(PYTEST) --capture=no --pdb
 
 clean::
-		@echo $(__bar__)
 		find . -name .pytest_cache | xargs -rt rm -rf
 
 #-------------------------------------------------------------------------------
 
-SRC_APP_NO_MAIN := $(filter-out $(PACKAGE)/__main__.py, $(SRC_FILES))
+SRC_APP_NO_MAIN := $(filter-out $(PACKAGE)/__main__.py, $(PYTHON_FILES))
 
 .PHONY:		pydoctest
 DOCTEST :=	$(PYTHON) -m doctest
 pydoctest:
-		@echo $(__bar__)
+		@echo $(BAR)
 		$(DOCTEST) $(SRC_APP_NO_MAIN)
 
 .PHONY:		pydoctest-debug
 pydoctest-debug:
 		for i in $(SRC_APP_NO_MAIN); do \
-			echo $(__bar__); \
+			echo $(BAR); \
 			echo $$i; \
-			echo $(__bar__); \
+			echo $(BAR); \
 			$(DOCTEST) -v $$i; \
 		done $(DEBUG_PAGER)
 
@@ -221,7 +292,7 @@ pydoctest-debug:
 
 .PHONY:		pydoc
 pydoc:
-		for i in $(SRC_FILES); do LESS=c$$LESS $(PYTHON) -m pydoc $$i; done
+		for i in $(PYTHON_FILES); do LESS=c$$LESS $(PYTHON) -m pydoc $$i; done
 
 #-------------------------------------------------------------------------------
 
@@ -230,7 +301,7 @@ README.md:
 	{ \
 		export COLUMNS=97; \
 		WIDTH=89; \
-		$(PYTHON) -m $(PACKAGE) --help | $(PYTHON) -m mandown \
+		pdm run $(PACKAGE) --help | pdm run mandown \
 			$(MANDOWN_OPTS) --width $$WIDTH --use-config; \
 	} >$@
 

@@ -1,0 +1,31 @@
+usage: [38;2;108;113;196;1;3mlscolors paint[0m [38;2;131;148;150;3m[[0m[38;2;42;161;152;3m-h[0m[38;2;131;148;150;3m][0m [38;2;131;148;150;3m[[0m[38;2;42;161;152;3m--encoding[0m [38;2;203;75;22;3mNAME[0m[38;2;131;148;150;3m][0m [38;2;131;148;150;3m[[0m[38;2;42;161;152;3m--palettes-dir[0m [38;2;203;75;22;3mDIR[0m[38;2;131;148;150;3m][0m [38;2;131;148;150;3m[[0m[38;2;42;161;152;3m--palette-num[0m [38;2;203;75;22;3mNUMBER[0m[38;2;131;148;150;3m]
+                      [[0m[38;2;42;161;152;3m--palette-file[0m [38;2;203;75;22;3mFILE[0m[38;2;131;148;150;3m][0m [38;2;131;148;150;3m[[0m[38;2;42;161;152;3m--pick[0m [38;2;203;75;22;3mCOLORNUM[0m [38;2;131;148;150;3m[[0m[38;2;203;75;22;3mCOLORNUM[0m ...[38;2;131;148;150;3m][0m[38;2;131;148;150;3m][0m [38;2;131;148;150;3m[[0m[38;2;42;161;152;3m--add-samples[0m[38;2;131;148;150;3m]
+                      [[0m[38;2;42;161;152;3m--group-color[0m [38;2;203;75;22;3mGROUP=COLOR[0m [38;2;131;148;150;3m[[0m[38;2;203;75;22;3mGROUP=COLOR[0m ...[38;2;131;148;150;3m][0m[38;2;131;148;150;3m]
+                      [[0m[38;2;203;75;22;3mDIR_COLORS[0m[38;2;131;148;150;3m]
+
+Apply palette to dircolors.
+
+positional arguments:
+  [38;2;203;75;22;3mDIR_COLORS[0m            read[38;2;181;137;0;3m `DIR_COLORS`[0m file (default:[38;2;181;137;0;3m `/home/russel/.dircolors`[0m)
+
+options:
+  [38;2;42;161;152;3m-h[0m[38;2;131;148;150;3m,[0m [38;2;42;161;152;3m--help[0m            show this help message and exit
+  [38;2;42;161;152;3m--encoding[0m [38;2;203;75;22;3mNAME[0m       file encoding (default:[38;2;181;137;0;3m `utf-8`[0m)
+  [38;2;42;161;152;3m--palettes-dir[0m [38;2;203;75;22;3mDIR[0m    directory of[38;2;181;137;0;3m `coloors.co`[0m palettes (default:[38;2;181;137;0;3m `/home/russel/.palettes`[0m)
+  [38;2;42;161;152;3m--palette-num[0m [38;2;203;75;22;3mNUMBER[0m  id of[38;2;181;137;0;3m `coloors.co`[0m palette file to apply
+  [38;2;42;161;152;3m--palette-file[0m [38;2;203;75;22;3mFILE[0m   [38;2;181;137;0;3m`coloors.co`[0m palette file to apply
+  [38;2;42;161;152;3m--pick[0m [38;2;203;75;22;3mCOLORNUM[0m [[38;2;203;75;22;3mCOLORNUM[0m ...]
+                        select and order colors by palette[38;2;181;137;0;3m-`COLORNUM`[0m
+  [38;2;42;161;152;3m--add-samples[0m         add color samples (default: False)
+  [38;2;42;161;152;3m--group-color[0m [38;2;203;75;22;3mGROUP=COLOR[0m [[38;2;203;75;22;3mGROUP=COLOR[0m ...]
+                        paint[38;2;181;137;0;3m `GROUP`[0m with[38;2;181;137;0;3m `COLOR`[0m, where[38;2;181;137;0;3m `GROUP`[0m is one of[38;2;181;137;0;3m `archive`[0m,[38;2;181;137;0;3m `image`[0m,
+                        [38;2;181;137;0;3m`audio`[0m,[38;2;181;137;0;3m `data`[0m,[38;2;181;137;0;3m `source`[0m,[38;2;181;137;0;3m `config`[0m,[38;2;181;137;0;3m `history`[0m,[38;2;181;137;0;3m `doc`[0m,[38;2;181;137;0;3m `NORMAL`[0m,
+                        [38;2;181;137;0;3m`FILE`[0m,[38;2;181;137;0;3m `RESET`[0m,[38;2;181;137;0;3m `DIR`[0m,[38;2;181;137;0;3m `LINK`[0m,[38;2;181;137;0;3m `MULTIHARDLINK`[0m,[38;2;181;137;0;3m `FIFO`[0m,[38;2;181;137;0;3m `SOCK`[0m,
+                        [38;2;181;137;0;3m`DOOR`[0m,[38;2;181;137;0;3m `BLK`[0m,[38;2;181;137;0;3m `CHR`[0m,[38;2;181;137;0;3m `ORPHAN`[0m,[38;2;181;137;0;3m `MISSING`[0m,[38;2;181;137;0;3m `SETUID`[0m,[38;2;181;137;0;3m `SETGID`[0m,
+                        [38;2;181;137;0;3m`CAPABILITY`[0m,[38;2;181;137;0;3m `STICKY_OTHER_WRITABLE`[0m,[38;2;181;137;0;3m `OTHER_WRITABLE`[0m,[38;2;181;137;0;3m `STICKY`[0m,
+                        [38;2;181;137;0;3m`EXEC`[0m
+
+
+See Also: 
+  lscolors-chart, lscolors-check, lscolors-configs, lscolors-docs, lscolors-paint, lscolors-
+  report, lscolors-samples, lscolors-sort, lscolors-help.

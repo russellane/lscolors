@@ -14,5 +14,5 @@ This is an internal command used during the packaging process.
 
 
 See Also: 
-  lscolors-chart, lscolors-check, lscolors-configs, lscolors-docs, lscolors-report, lscolors-
-  samples, lscolors-sort, lscolors-help.
+  lscolors-chart, lscolors-check, lscolors-configs, lscolors-docs, lscolors-paint, lscolors-
+  report, lscolors-samples, lscolors-sort, lscolors-help.

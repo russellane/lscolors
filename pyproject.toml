@@ -1,11 +1,12 @@
-[tool.poetry]
+[project]
 name = "lscolors"
-version = "0.1.22"
+dynamic = ["version"]
 description = "dircolors utilities"
-license = "MIT"
-authors = ["Russel Lane <russel@rlane.com>"]
+authors = [
+    {name = "Russel Lane", email = "russel@rlane.com"}
+]
+license = {text = "MIT"}
 readme = "README.md"
-homepage = "https://github.com/russellane/lscolors"
 keywords = ["dircolors", "xterm-256color", "color-scheme", "terminal", "shell", "ls", "tree"]
 classifiers = [
     "Development Status :: 3 - Alpha",
@@ -18,29 +19,37 @@ classifiers = [
     "Topic :: Terminals",
     "Topic :: Utilities"
 ]
-packages = [
-    { include = "lscolors" },
+requires-python = ">=3.8,<4.0"
+dependencies = [
+    "argcomplete>=2.0.0",
+    "mandown>=1.0.0",
+    "pyyaml>=6.0",
+    "ansicolors>=1.1.8",
 ]
 
-[tool.poetry.dependencies]
-python = "^3.8"
-argcomplete = "^1.12.3"
-mandown = "^0.1.6"
-pyyaml = "^6.0"
-ansicolors = "^1.1.8"
+[project.urls]
+Homepage = "https://github.com/russellane/lscolors"
 
-[tool.poetry.dev-dependencies]
-black = "^21.12b0"
-flake8 = "^4.0.1"
-flake8-bugbear = "^21.11.29"
-flake8-pydocstyle = "^0.2.0"
-flake8-simplify = "^0.14.2"
-isort = "^5.10.1"
-pylint = "^2.12.2"
-icecream = "^2.1.1"
-
-[tool.poetry.scripts]
+[project.scripts]
 lscolors = "lscolors.cli:main"
+
+[project.optional-dependencies]
+[tool.pdm]
+version = {from = "lscolors/__version__.py"}
+
+[tool.pdm.dev-dependencies]
+dev = [
+    "black>=22.1.0",
+    "flake8>=4.0.1",
+    "flake8-bugbear>=22.1.11",
+    "flake8-pydocstyle>=0.2.0",
+    "flake8-simplify>=0.18.0",
+    "isort>=5.10.1",
+    "pylint>=2.12.2",
+]
+
+[tool.pytest.ini_options]
+addopts = "--ignore=__pypackages__/"
 
 [tool.black]
 line-length = "97"
@@ -69,11 +78,7 @@ add-ignore = [
 ]
 
 [build-system]
-requires = ["poetry-core>=1.0.0"]
-build-backend = "poetry.core.masonry.api"
-
-[[tool.poetry.source]]
-name = "private"
-url = "http://localhost:9080/simple/"
+requires = ["pdm-pep517"]
+build-backend = "pdm.pep517.api"
 
 # vim: set ts=4 sw=4 et:

@@ -12,6 +12,7 @@ Specify one of:
     [38;2;203;75;22;3mcheck[0m        check database for required items
     [38;2;203;75;22;3mconfigs[0m      print path to sample configuration files
     [38;2;203;75;22;3mdocs[0m         Create documentation.
+    [38;2;203;75;22;3mpaint[0m        paint dircolors
     [38;2;203;75;22;3mreport[0m       print colorized database report
     [38;2;203;75;22;3msamples[0m      create directory of sample filesystem items
     [38;2;203;75;22;3msort[0m         sort lines of database file by color
