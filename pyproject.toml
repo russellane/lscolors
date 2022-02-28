@@ -48,6 +48,25 @@ dev = [
     "pylint>=2.12.2",
 ]
 
+[tool.pdm.scripts]
+make.shell = "pdm run tags && pdm run lint && pdm run test && pdm build"
+rebuild.shell = "pdm run clean-all && pdm install && pdm run make"
+clean-all.shell = "pdm run clean; rm -rf __pypackages__ dist"
+clean.shell = "find . -type f -name '*.py[co]' -delete && find . -type d -name __pycache__ -delete"
+tags.shell = "ctags -R ."
+lint.shell = "pdm run black && pdm run flake8 && pdm run isort && pdm run pylint"
+black.shell = "pdm run python -m black -q lscolors"
+flake8.shell = "pdm run python -m flake8 lscolors"
+isort.shell = "pdm run python -m isort lscolors"
+pylint.shell = "pdm run python -m pylint lscolors"
+test.shell = "[ -d tests ] && pdm run pytest || true"
+pytest.shell = "pdm run python -m pytest --exitfirst --showlocals --verbose tests"
+publish.shell = "cp -pv dist/*.whl `pip config get global.find-links`"
+xinstall.shell = "pip install --user dist/*.whl"
+uninstall.shell = "pip uninstall lscolors"
+reinstall.shell = "pdm run uninstall; pdm run install"
+list.shell = "pdm plugin list; pdm run --list"
+
 [tool.pytest.ini_options]
 addopts = "--ignore=__pypackages__/"
 
