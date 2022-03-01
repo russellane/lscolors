@@ -22,10 +22,8 @@ classifiers = [
 requires-python = ">=3.8,<4.0"
 dependencies = [
     "argcomplete>=2.0.0",
-    "mandown>=1.0.0",
     "pyyaml>=6.0",
-    "ansicolors>=1.1.8",
-]
+    "ansicolors>=1.1.8"]
 
 [project.urls]
 Homepage = "https://github.com/russellane/lscolors"
