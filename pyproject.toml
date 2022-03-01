@@ -65,7 +65,6 @@ publish.shell = "cp -pv dist/*.whl `pip config get global.find-links`"
 xinstall.shell = "pip install --user dist/*.whl"
 uninstall.shell = "pip uninstall lscolors"
 reinstall.shell = "pdm run uninstall; pdm run install"
-list.shell = "pdm plugin list; pdm run --list"
 docs.shell = "export COLUMNS=97; pdm run python -m lscolors docs --force docs/ansi >README.ansi"
 
 [tool.pytest.ini_options]

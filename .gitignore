@@ -1,11 +1,10 @@
 *.egg-info/
 *.swp
 .junk/
-.make.out
+.pdm.toml
 .pytest_cache/
 __pycache__/
 __pypackages__/
-build/
 dist/
 sample-files/
 tags
