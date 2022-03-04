@@ -1,6 +1,6 @@
 [project]
 name = "lscolors"
-dynamic = ["version"]
+version = "1.0.0"
 description = "dircolors utilities"
 authors = [
     {name = "Russel Lane", email = "russel@rlane.com"}
@@ -19,11 +19,12 @@ classifiers = [
     "Topic :: Terminals",
     "Topic :: Utilities"
 ]
-requires-python = ">=3.8,<4.0"
+requires-python = ">=3.8"
 dependencies = [
+    "ansicolors>=1.1.8",
     "argcomplete>=2.0.0",
     "pyyaml>=6.0",
-    "ansicolors>=1.1.8"]
+]
 
 [project.urls]
 Homepage = "https://github.com/russellane/lscolors"
@@ -33,37 +34,63 @@ lscolors = "lscolors.cli:main"
 
 [project.optional-dependencies]
 [tool.pdm]
-version = {from = "lscolors/__version__.py"}
 
 [tool.pdm.dev-dependencies]
 dev = [
     "black>=22.1.0",
-    "flake8>=4.0.1",
     "flake8-bugbear>=22.1.11",
     "flake8-pydocstyle>=0.2.0",
     "flake8-simplify>=0.18.0",
+    "flake8>=4.0.1",
     "isort>=5.10.1",
     "pylint>=2.12.2",
+    "pytest>=7.0.1",
 ]
 
 [tool.pdm.scripts]
-make.shell = "pdm run tags && pdm run lint && pdm run test && pdm run docs && pdm build"
-rebuild.shell = "pdm run clean-all && pdm install && pdm run make"
-clean-all.shell = "pdm run clean; rm -rf __pypackages__ dist"
-clean.shell = "find . -type f -name '*.py[co]' -delete && find . -type d -name __pycache__ -delete"
-tags.shell = "ctags -R ."
+_.env = {PKGNAME="lscolors", PKGDIRS = "lscolors tests", VERBOSE=""}
+
+rebuild.shell = "pdm run clean && pdm install && pdm build"
+# depends on: `pip install --user pdm-bump`
+bump-micro.shell = "pdm bump micro && pdm run rebuild"
+
+# .vimrc: set makeprg=pdm\ build
+pre_build.shell = "pdm run tags && pdm run lint && pdm run test"
+post_build.shell = "pdm run version"
+
+help.shell = "pdm run python -m $PKGNAME --help"
+version.shell = "pdm run python -m $PKGNAME --version"
+tags.shell = "ctags -R --languages=python $PKGDIRS __pypackages__"
+
 lint.shell = "pdm run black && pdm run flake8 && pdm run isort && pdm run pylint"
-black.shell = "pdm run python -m black -q lscolors"
-flake8.shell = "pdm run python -m flake8 lscolors"
-isort.shell = "pdm run python -m isort lscolors"
-pylint.shell = "pdm run python -m pylint lscolors"
-test.shell = "[ -d tests ] && pdm run pytest || true"
+black.shell = "pdm run python -m black -q $VERBOSE $PKGDIRS"
+flake8.shell = "pdm run python -m flake8 $VERBOSE $PKGDIRS"
+isort.shell = "pdm run python -m isort $VERBOSE $PKGDIRS"
+pylint.shell = "pdm run python -m pylint $VERBOSE $PKGDIRS"
+
+test.shell = "pdm run pytest"
 pytest.shell = "pdm run python -m pytest --exitfirst --showlocals --verbose tests"
-publish.shell = "cp -pv dist/*.whl `pip config get global.find-links`"
-xinstall.shell = "pip install --user dist/*.whl"
-uninstall.shell = "pip uninstall lscolors"
-reinstall.shell = "pdm run uninstall; pdm run install"
-docs.shell = "export COLUMNS=97; pdm run python -m lscolors docs --force docs/ansi >README.ansi"
+
+publish.shell = """
+cd dist; echo *.whl |
+cpio -pdmuv `pip config get global.find-links`
+"""
+
+clean.shell = """
+rm -rf ./__pypackages__ ./.pytest_cache ./dist ./tags;
+find . -type f -name '*.py[co]' -delete &&
+find . -type d -name __pycache__ -delete
+"""
+
+#doc.shell = """
+#export COLUMNS=97;
+#pdm run python -m $PKGNAME --help |
+#pdm run python -m mandown --width 89 --use-config >README.md
+#"""
+
+#xxinstall.shell = "pip install --user dist/*.whl"
+#uninstall.shell = "pip uninstall $PACKAGE"
+#reinstall.shell = "pdm run uninstall; pdm run xxinstall"
 
 [tool.pytest.ini_options]
 addopts = "--ignore=__pypackages__/"

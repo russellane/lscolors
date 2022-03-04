@@ -2,12 +2,13 @@
 # /usr/lib/python3.8/argparse.py
 
 import argparse
+import contextlib
+import importlib.metadata
 import sys
 
 import argcomplete
 
 import lscolors.command.commands
-from lscolors.__version__ import __version__
 from lscolors.external import subcommands
 
 
@@ -20,13 +21,10 @@ def main():
         epilog="See `%(prog)s COMMAND --help` for help on a specific command.",
     )
 
-    parser.add_argument(
-        "-V",
-        "--version",
-        help="show program's version number and exit",
-        action="version",
-        version=__version__,
-    )
+    version = "0.0.0"
+    with contextlib.suppress(importlib.metadata.PackageNotFoundError):
+        version = importlib.metadata.version(__package__)
+    parser.add_argument("-V", "--version", action="version", version=version)
 
     subparsers = subcommands.add_subcommands(parser, lscolors.command.commands.modules)
 
