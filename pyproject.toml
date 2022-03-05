@@ -47,9 +47,12 @@ dev = [
     "pytest>=7.0.1",
 ]
 
-[tool.pdm.scripts]
-_.env = {PKGNAME="lscolors", PKGDIRS = "lscolors tests", VERBOSE=""}
+[tool.pdm.scripts._.env]
+PKGNAME = "lscolors"
+PKGDIRS = "lscolors tests"
+VERBOSE = ""
 
+[tool.pdm.scripts]
 rebuild.shell = "pdm run clean && pdm install && pdm build"
 # depends on: `pip install --user pdm-bump`
 bump-micro.shell = "pdm bump micro && pdm run rebuild"
@@ -88,9 +91,10 @@ find . -type d -name __pycache__ -delete
 #pdm run python -m mandown --width 89 --use-config >README.md
 #"""
 
-#xxinstall.shell = "pip install --user dist/*.whl"
-#uninstall.shell = "pip uninstall $PACKAGE"
-#reinstall.shell = "pdm run uninstall; pdm run xxinstall"
+# Don't use `install` else `pre_install` and/or `post_install` will also run.
+xxinstall.shell = "pipx install $PKGNAME"
+uninstall.shell = "pipx uninstall $PKGNAME"
+reinstall.shell = "pdm run uninstall; pdm run xxinstall"
 
 [tool.pytest.ini_options]
 addopts = "--ignore=__pypackages__/"

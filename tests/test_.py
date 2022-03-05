@@ -1,5 +1,5 @@
 """Test."""
 
 
-def test_alpha():
+def test_():
     """Test."""
