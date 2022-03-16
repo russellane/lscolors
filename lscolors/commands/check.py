@@ -1,45 +1,35 @@
 """lscolors `check` command."""
 
-from lscolors.commands.base import BaseCommand
+from lscolors.commands.basecmd import BaseCommand
+from lscolors.commands.utils import colors as color_utils
+from lscolors.commands.utils import config as config_utils
 
 
 class Command(BaseCommand):
     """lscolors `check` command."""
-
-    #   arguments = BaseCommand.arguments + [
-    #       colors_option,
-    #       config_option,
-    #   ]
-
-    def add_arguments(self, parser: argparse.ArgumentParser) -> None:
-        pass
-
-    def handle(self, project: Project, options: argparse.Namespace) -> None:
-        pass
 
     def __init__(self):
         """Initialize lscolors `check` command."""
 
         parser = self.add_parser(
             "check",
-            formatter_class=self.formatter_class,
             help="check database for required items",
             description="Check database in `$LS_COLORS` for required items.",
             epilog="Exit Status: zero indicates success, nonzero indicates failure.",
         )
 
         parser.set_defaults(cmd=self.handle, prog="lscolors check")
-        lscolors.config.add_arguments(parser)
-        lscolors.colors.add_arguments(parser)
+        config_utils.add_arguments(parser)
+        color_utils.add_arguments(parser)
 
     @staticmethod
     def handle(args):
         """Handle command invocation."""
 
-        config, meta_config = lscolors.config.load(args)
+        config, meta_config = config_utils.load(args)
 
         try:
-            colors, meta_colors = lscolors.colors.load(args)
+            colors, meta_colors = color_utils.load(args)
         except RuntimeError as err:
             raise RuntimeError(
                 f"{args.prog}: failure; {err}\n" f"{args.prog}: {meta_config}"

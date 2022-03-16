@@ -6,7 +6,7 @@ from pathlib import Path
 
 from colors.colors import parse_rgb
 
-from lscolors.commands.base import BaseCommand
+from lscolors.commands.basecmd import BaseCommand
 
 
 class ColorGroup:
@@ -131,7 +131,6 @@ class Command(BaseCommand):
 
         parser = self.add_parser(
             "paint",
-            formatter_class=self.formatter_class,
             help="paint dircolors",
             description="Apply palette to dircolors.",
         )

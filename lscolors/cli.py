@@ -1,32 +1,27 @@
 """Command line interface."""
 
-import argparse
-import contextlib
-import importlib.metadata
 import sys
 from typing import List, Optional
 
-import argcomplete
+from lscolors.basecli import BaseCLI
+from lscolors.commands.basecmd import BaseCommand
+from lscolors.commands.chart import Command as ChartCommand
+from lscolors.commands.check import Command as CheckCommand
+from lscolors.commands.configs import Command as ConfigsCommand
+from lscolors.commands.docs import Command as DocsCommand
+from lscolors.commands.paint import Command as PaintCommand
+from lscolors.commands.report import Command as ReportCommand
+from lscolors.commands.samples import Command as SamplesCommand
+from lscolors.commands.sort import Command as SortCommand
 
-from lscolors import Lscolors
-
-modules = [
-    chart,
-    check,
-    configs,
-    # docs,
-    paint,
-    report,
-    samples,
-    sort,
-]
+# from lscolors.commands.doc?
 
 
-class CLI(CLIBase):
+class CLI(BaseCLI):
     """Command line interface."""
 
     def init_parser(self) -> None:
-        """Initialize argument parser."""
+        """Initialize main argument parser."""
 
         self.parser = self.ArgumentParser(
             prog=__package__,
@@ -35,51 +30,55 @@ class CLI(CLIBase):
         )
 
     def add_arguments(self) -> None:
-        """Add arguments to parser."""
+        """Add command arguments (subparsers) to main parser."""
 
         # passing `prog` is not necessary, but speeds things up for
         # add_subparsers to not have to determine a default value for it.
         # `dest` is not necessary.
 
+        # alternate design: self.parser.init_subparsers(...)
         self.subparsers = self.parser.add_subparsers(
             prog=self.parser.prog,
             metavar="COMMAND",
             title="Specify one of",
         )
 
-        print("type(self.parser.prog)", repr(type(self.parser.prog)))
+        # configure BaseCommand class
+        BaseCommand.cli = self
 
         self.parser.set_defaults(cmd=None)
-        for module in command_modules:
-            module.Command()
 
-    subparsers = subcommands.add_subcommands(parser, lscolors.command.commands.modules)
+        for command_class in (
+            ChartCommand,
+            CheckCommand,
+            ConfigsCommand,
+            DocsCommand,
+            PaintCommand,
+            ReportCommand,
+            SamplesCommand,
+            SortCommand,
+        ):
+            command_class()
+            # parser = cli.init_subparser(self)
+            # self.add_parser(parser)
+            # self.subparsers.add_parser(parser)
 
-    sub = subparsers.add_parser("help", help="same as `--help`")
-    sub.set_defaults(cmd=lambda x: parser.print_help())
-
-    argcomplete.autocomplete(parser)
-    args = parser.parse_args()
-
-    if not args.cmd:
-        parser.print_help()
-        parser.exit(2, "error: Missing COMMAND\n")
-
-    try:
-        args.cmd(args)
-    except RuntimeError as err:
-        print(err, file=sys.stderr)
-        sys.exit(1)
-
-    # -------------------------------------------------------------------------------
+        # equiv to module: lscolors.commands.help import Command as HelpCommand
+        sub = self.subparsers.add_parser("help", help="same as `--help`")
+        sub.set_defaults(cmd=lambda x: self.parser.print_help())
 
     def main(self) -> None:
         """Command line interface entry point (method)."""
 
-        Lscolors(options)
+        if not self.options.cmd:
+            self.parser.print_help()
+            self.parser.exit(2, "error: Missing COMMAND\n")
 
-
-# -------------------------------------------------------------------------------
+        try:
+            self.options.cmd(self.options)
+        except RuntimeError as err:
+            print(err, file=sys.stderr)
+            sys.exit(1)
 
 
 def main(args: Optional[List[str]] = None) -> None:

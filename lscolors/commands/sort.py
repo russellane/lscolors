@@ -3,7 +3,7 @@
 import sys
 from collections import defaultdict
 
-from lscolors.commands.base import BaseCommand
+from lscolors.commands.basecmd import BaseCommand
 
 
 class Command(BaseCommand):
@@ -14,7 +14,6 @@ class Command(BaseCommand):
 
         parser = self.add_parser(
             "sort",
-            formatter_class=self.formatter_class,
             help="sort lines of database file by color",
             description="""Filter `stdin` to `stdout` sorting
             lines of a `DIR_COLORS` file by color then filetype.

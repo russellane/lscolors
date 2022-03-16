@@ -1,6 +1,6 @@
 """lscolors `chart` command."""
 
-from lscolors.commands.base import BaseCommand
+from lscolors.commands.basecmd import BaseCommand
 
 
 class Command(BaseCommand):
@@ -11,7 +11,6 @@ class Command(BaseCommand):
 
         parser = self.add_parser(
             "chart",
-            formatter_class=self.formatter_class,
             help="print color chart",
             description="Print color-chart.",
         )

@@ -254,6 +254,11 @@ version = "2.2.0"
 summary = "This package provides 29 stemmers for 28 languages generated from Snowball algorithms."
 
 [[package]]
+name = "termui"
+version = "0.0.1"
+summary = "Terminal interaction utiilities"
+
+[[package]]
 name = "toml"
 version = "0.10.2"
 requires_python = ">=2.6, !=3.0.*, !=3.1.*, !=3.2.*"
@@ -279,7 +284,7 @@ summary = "Module for decorators, wrappers and monkey patching."
 
 [metadata]
 lock_version = "3.1"
-content_hash = "sha256:e0c351c0732076f8c3a7de9e60e6bdf8fdefe1d5c555fabb57f354d463aaab85"
+content_hash = "sha256:76142281b5c84731fe2b679dc635d821fd77c112713b596dab4a87156dde69c4"
 
 [metadata.files]
 "ansicolors 1.1.8" = [
@@ -500,6 +505,9 @@ content_hash = "sha256:e0c351c0732076f8c3a7de9e60e6bdf8fdefe1d5c555fabb57f354d46
 "snowballstemmer 2.2.0" = [
     {file = "snowballstemmer-2.2.0-py2.py3-none-any.whl", hash = "sha256:c8e1716e83cc398ae16824e5572ae04e0d9fc2c6b985fb0f900f5f0c96ecba1a"},
     {file = "snowballstemmer-2.2.0.tar.gz", hash = "sha256:09b16deb8547d3412ad7b590689584cd0fe25ec8db3be37788be3810cbf19cb1"},
+]
+"termui 0.0.1" = [
+    {file = "termui-0.0.1.tar.gz", hash = "sha256:bbae5781fc13dfd91f816d2c67bca48a05bbb00e1701ec61f467946ba9b67c3b"},
 ]
 "toml 0.10.2" = [
     {file = "toml-0.10.2-py2.py3-none-any.whl", hash = "sha256:806143ae5bfb6a3c6e736a764057db0e6a0e05e338b5630894a5f779cabb4f9b"},

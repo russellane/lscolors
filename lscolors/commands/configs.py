@@ -2,7 +2,7 @@
 
 import os.path
 
-from lscolors.commands.base import BaseCommand
+from lscolors.commands.basecmd import BaseCommand
 
 
 class Command(BaseCommand):
@@ -14,7 +14,6 @@ class Command(BaseCommand):
         parser = self.add_parser(
             "configs",
             help="print path to sample configuration files",
-            formatter_class=self.formatter_class,
             description="""Print path to sample `.lscolors.yml`
                             and `.dircolors` configuration files.""",
         )

@@ -1,21 +1,21 @@
-"""lscolors `docs` command."""
+"""Create documentation for Subcommands."""
 
-# move this into argformat
+import argparse
+import pathlib
+import textwrap
 
-from lscolors.commands.base import BaseCommand
-
-# from lscolors.external import argformat
+from lscolors.commands.basecmd import BaseCommand
+from lscolors.commands.utils import mkdir
 
 
 class Command(BaseCommand):
-    """lscolors `docs` command."""
+    """Create documentation for Subcommands."""
 
     def __init__(self):
-        """Initialize lscolors `docs` command."""
+        """Initialize create documentation for Subcommands."""
 
         parser = self.add_parser(
             "docs",
-            formatter_class=self.formatter_class,
             help="Create documentation.",
             description="Create documentation files for this application.",
             epilog="This is an internal command used during the packaging process.",
@@ -23,13 +23,14 @@ class Command(BaseCommand):
 
         parser.set_defaults(
             cmd=self.handle,
-            prog="lscolors docs",
+            prog=self.cli.parser.prog + " docs",
             format="markdown",
             docs="./docs",
         )
 
         parser.add_argument(
             "format",
+            # nargs="?",
             choices=["ansi", "md", "txt"],
             help="Output format",
         )
@@ -50,8 +51,43 @@ class Command(BaseCommand):
     def handle(self, args):
         """Handle command invocation."""
 
-        lscolors.mkdir(args.docs, args.force)
-        _ = self
-        # argformat.configure(format=args.format)
-        # argformat.print_main_page(self.main_parser)
-        # argformat.write_command_pages(self.main_parser, args.docs)
+        mkdir.mkdir(args.docs, args.force)
+        self.print_main_page(self.cli.parser)
+        self.write_command_pages(self.cli.parser, args.docs)
+
+    @staticmethod
+    def print_main_page(main_parser):
+        """Print main help page to `stdout`."""
+
+        print(main_parser.format_help())
+
+    def write_command_pages(self, main_parser, directory):
+        """Create separate help pages for each command in `directory`."""
+
+        # pylint: disable=protected-access
+        for action in main_parser._subparsers._actions:
+            if isinstance(action, argparse._SubParsersAction):
+                for name, parser in action.choices.items():
+                    helptext = parser.format_help() + self._see_also()
+                    pathlib.Path(directory, name + ".txt").write_text(helptext, encoding="utf-8")
+
+    def _see_also(self):
+        """Return string with refs to other pages."""
+
+        # pylint: disable=protected-access
+        parser = self.cli.parser
+        also = {}
+        for action in parser._subparsers._actions:
+            if isinstance(action, argparse._SubParsersAction):
+                for name in action.choices:
+                    also[name] = f"{parser.prog}-{name}"
+        if not also:
+            return ""
+
+        formatter = parser._get_formatter()
+        return "\n\nSee Also: \n" + textwrap.fill(
+            ", ".join(also.values()) + ".",
+            width=formatter._width,
+            initial_indent=" " * formatter._indent_increment,
+            subsequent_indent=" " * formatter._indent_increment,
+        )

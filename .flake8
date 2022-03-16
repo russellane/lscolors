@@ -7,3 +7,6 @@ ignore =
 # don't check docstrings in tests
 per-file-ignores = 
     tests/*:D,PLC
+
+#extend-exclude =
+#    argparse*,

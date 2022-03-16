@@ -4,7 +4,10 @@ import os
 import socket
 import stat
 
-from lscolors.commands.base import BaseCommand
+from lscolors.commands.basecmd import BaseCommand
+from lscolors.commands.utils import colors as color_utils
+from lscolors.commands.utils import config as config_utils
+from lscolors.commands.utils import mkdir
 
 
 class Command(BaseCommand):
@@ -15,7 +18,6 @@ class Command(BaseCommand):
 
         parser = self.add_parser(
             "samples",
-            formatter_class=self.formatter_class,
             help="create directory of sample filesystem items",
             description="""Create directory and populate with sample files,
             directories, etc., for each item in `$LS_COLORS`,
@@ -28,8 +30,8 @@ class Command(BaseCommand):
             samplesdir="./lscolors-samples",
         )
 
-        lscolors.colors.add_arguments(parser)
-        lscolors.config.add_arguments(parser)
+        color_utils.add_arguments(parser)
+        config_utils.add_arguments(parser)
 
         parser.add_argument(
             "--samplesdir",
@@ -50,10 +52,10 @@ class Command(BaseCommand):
     def handle(self, args):
         """Handle command invocation."""
 
-        colors, meta_colors = lscolors.colors.load(args)
-        config, meta_config = lscolors.config.load(args)
+        colors, meta_colors = color_utils.load(args)
+        config, meta_config = config_utils.load(args)
 
-        lscolors.mkdir(args.samplesdir, args.force)
+        mkdir.mkdir(args.samplesdir, args.force)
         print(
             args.prog,
             "creating directory",

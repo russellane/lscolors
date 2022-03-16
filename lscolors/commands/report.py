@@ -1,6 +1,7 @@
 """lscolors `report` command."""
 
-from lscolors.commands.base import BaseCommand
+from lscolors.commands.basecmd import BaseCommand
+from lscolors.commands.utils import colors as color_utils
 
 
 class Command(BaseCommand):
@@ -11,7 +12,6 @@ class Command(BaseCommand):
 
         parser = self.add_parser(
             "report",
-            formatter_class=self.formatter_class,
             help="print colorized database report",
             description="Print colorized report for database in `$LS_COLORS`.",
             epilog="A default format is produced when `--left/--right` is not given.",
@@ -27,7 +27,7 @@ class Command(BaseCommand):
             "--right", action="store_true", help="format report for display in right window"
         )
 
-        lscolors.colors.add_arguments(parser)
+        color_utils.add_arguments(parser)
 
     @staticmethod
     def handle(args):
@@ -57,7 +57,7 @@ class Command(BaseCommand):
         }
 
         try:
-            colors, meta_colors = lscolors.colors.load(args)
+            colors, meta_colors = color_utils.load(args)
         except RuntimeError as err:
             raise RuntimeError(f"{args.prog}: failure; {err}\n") from err
 

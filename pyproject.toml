@@ -24,6 +24,7 @@ dependencies = [
     "ansicolors>=1.1.8",
     "argcomplete>=2.0.0",
     "pyyaml>=6.0",
+    "termui>=0.0.1",
 ]
 
 [project.urls]
@@ -55,8 +56,8 @@ python -m black -q lscolors tests &&
 python -m isort lscolors tests &&
 python -m flake8 lscolors tests &&
 python -m pytest --exitfirst --showlocals --verbose tests;
-export COLUMNS=97;
-python -m lscolors --help | python -m mandown --width 89 --use-config >README.md;
+#export COLUMNS=97;
+#python -m lscolors --help | python -m mandown --width 89 --use-config >README.md;
 """
 rebuild.shell = "set -x; rm -f pdm.lock; pdm run clean && pdm install && pdm build"
 clean.shell = """set -x;
