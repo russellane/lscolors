@@ -6,7 +6,7 @@ from pathlib import Path
 
 from colors.colors import parse_rgb
 
-import lscolors
+from lscolors.commands.base import BaseCommand
 
 
 class ColorGroup:
@@ -87,7 +87,7 @@ class ColorGroup:
             self.ansi = color
 
 
-class Command(lscolors.Command):
+class Command(BaseCommand):
     """lscolors `paint` command."""
 
     # default groups

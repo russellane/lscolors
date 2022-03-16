@@ -2,12 +2,12 @@
 
 # move this into argformat
 
-import lscolors
+from lscolors.commands.base import BaseCommand
 
 # from lscolors.external import argformat
 
 
-class Command(lscolors.Command):
+class Command(BaseCommand):
     """lscolors `docs` command."""
 
     def __init__(self):

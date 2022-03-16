@@ -1,5 +1,2 @@
-"""Test."""
-
-
-def test_():
-    """Test."""
+def test_stub():
+    pass

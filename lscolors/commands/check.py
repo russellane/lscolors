@@ -1,10 +1,21 @@
 """lscolors `check` command."""
 
-import lscolors
+from lscolors.commands.base import BaseCommand
 
 
-class Command(lscolors.Command):
+class Command(BaseCommand):
     """lscolors `check` command."""
+
+    #   arguments = BaseCommand.arguments + [
+    #       colors_option,
+    #       config_option,
+    #   ]
+
+    def add_arguments(self, parser: argparse.ArgumentParser) -> None:
+        pass
+
+    def handle(self, project: Project, options: argparse.Namespace) -> None:
+        pass
 
     def __init__(self):
         """Initialize lscolors `check` command."""

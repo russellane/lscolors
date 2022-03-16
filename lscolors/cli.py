@@ -1,30 +1,57 @@
 """Command line interface."""
-# /usr/lib/python3.8/argparse.py
 
 import argparse
 import contextlib
 import importlib.metadata
 import sys
+from typing import List, Optional
 
 import argcomplete
 
-import lscolors.command.commands
-from lscolors.external import subcommands
+from lscolors import Lscolors
+
+modules = [
+    chart,
+    check,
+    configs,
+    # docs,
+    paint,
+    report,
+    samples,
+    sort,
+]
 
 
-def main():
-    """Entry point."""
+class CLI(CLIBase):
+    """Command line interface."""
 
-    parser = argparse.ArgumentParser(
-        prog=__package__,
-        description="Utilities for `dircolors(1)` and `dir_colors(5)`",
-        epilog="See `%(prog)s COMMAND --help` for help on a specific command.",
-    )
+    def init_parser(self) -> None:
+        """Initialize argument parser."""
 
-    version = "0.0.0"
-    with contextlib.suppress(importlib.metadata.PackageNotFoundError):
-        version = importlib.metadata.version(__package__)
-    parser.add_argument("-V", "--version", action="version", version=version)
+        self.parser = self.ArgumentParser(
+            prog=__package__,
+            description="Utilities for `dircolors(1)` and `dir_colors(5)`",
+            epilog="See `%(prog)s COMMAND --help` for help on a specific command.",
+        )
+
+    def add_arguments(self) -> None:
+        """Add arguments to parser."""
+
+        # passing `prog` is not necessary, but speeds things up for
+        # add_subparsers to not have to determine a default value for it.
+        # `dest` is not necessary.
+
+        self.subparsers = self.parser.add_subparsers(
+            prog=self.parser.prog,
+            metavar="COMMAND",
+            title="Specify one of",
+        )
+
+        print("type(self.parser.prog)", repr(type(self.parser.prog)))
+
+        self.parser.set_defaults(cmd=None)
+        for module in command_modules:
+            module.Command()
 
     subparsers = subcommands.add_subcommands(parser, lscolors.command.commands.modules)
 
@@ -43,3 +70,18 @@ def main():
     except RuntimeError as err:
         print(err, file=sys.stderr)
         sys.exit(1)
+
+    # -------------------------------------------------------------------------------
+
+    def main(self) -> None:
+        """Command line interface entry point (method)."""
+
+        Lscolors(options)
+
+
+# -------------------------------------------------------------------------------
+
+
+def main(args: Optional[List[str]] = None) -> None:
+    """Command line interface entry point (function)."""
+    return CLI(args).main()

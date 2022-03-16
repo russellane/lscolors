@@ -1,5 +1,5 @@
 """Enable running with `python -m`."""
-import lscolors.cli
+from lscolors.cli import main
 
 if __name__ == "__main__":
-    lscolors.cli.main()
+    main()

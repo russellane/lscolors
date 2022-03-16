@@ -4,8 +4,7 @@ import argparse
 import pathlib
 import textwrap
 
-from . import command
-from . import mkdir
+from . import command, mkdir
 
 
 class Command(command.Command):

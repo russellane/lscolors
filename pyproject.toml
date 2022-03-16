@@ -40,61 +40,42 @@ dev = [
     "black>=22.1.0",
     "flake8-bugbear>=22.1.11",
     "flake8-pydocstyle>=0.2.0",
+    "flake8-pylint>=0.1.3",
     "flake8-simplify>=0.18.0",
     "flake8>=4.0.1",
     "isort>=5.10.1",
-    "pylint>=2.12.2",
     "pytest>=7.0.1",
 ]
 
-[tool.pdm.scripts._.env]
-PKGNAME = "lscolors"
-PKGDIRS = "lscolors tests"
-VERBOSE = ""
-
 [tool.pdm.scripts]
-rebuild.shell = "pdm run clean && pdm install && pdm build"
-# depends on: `pip install --user pdm-bump`
-bump-micro.shell = "pdm bump micro && pdm run rebuild"
-
 # .vimrc: set makeprg=pdm\ build
-pre_build.shell = "pdm run tags && pdm run lint && pdm run test"
-post_build.shell = "pdm run version"
-
-help.shell = "pdm run python -m $PKGNAME --help"
-version.shell = "pdm run python -m $PKGNAME --version"
-tags.shell = "ctags -R --languages=python $PKGDIRS __pypackages__"
-
-lint.shell = "pdm run black && pdm run flake8 && pdm run isort && pdm run pylint"
-black.shell = "pdm run python -m black -q $VERBOSE $PKGDIRS"
-flake8.shell = "pdm run python -m flake8 $VERBOSE $PKGDIRS"
-isort.shell = "pdm run python -m isort $VERBOSE $PKGDIRS"
-pylint.shell = "pdm run python -m pylint $VERBOSE $PKGDIRS"
-
-test.shell = "pdm run pytest"
-pytest.shell = "pdm run python -m pytest --exitfirst --showlocals --verbose tests"
-
-publish.shell = """
-cd dist; echo *.whl |
-cpio -pdmuv `pip config get global.find-links`
+pre_build.shell = """set -x;
+ctags -R --languages=python __pypackages__ lscolors tests;
+python -m black -q lscolors tests &&
+python -m isort lscolors tests &&
+python -m flake8 lscolors tests &&
+python -m pytest --exitfirst --showlocals --verbose tests;
+export COLUMNS=97;
+python -m lscolors --help | python -m mandown --width 89 --use-config >README.md;
 """
-
-clean.shell = """
-rm -rf ./__pypackages__ ./.pytest_cache ./dist ./tags;
+rebuild.shell = "set -x; rm -f pdm.lock; pdm run clean && pdm install && pdm build"
+clean.shell = """set -x;
+rm -rf __pypackages__ .pytest_cache dist tags;
 find . -type f -name '*.py[co]' -delete &&
 find . -type d -name __pycache__ -delete
 """
+# bump depends on: `pip install --user pdm-bump`
+bump-micro.shell = "set -x; pdm bump micro && pdm run rebuild"
+publish.shell = """set -x; cd dist; echo *.whl |
+cpio -pdmuv `pip config get global.find-links`
+"""
 
-#doc.shell = """
-#export COLUMNS=97;
-#pdm run python -m $PKGNAME --help |
-#pdm run python -m mandown --width 89 --use-config >README.md
-#"""
-
-# Don't use `install` else `pre_install` and/or `post_install` will also run.
-xxinstall.shell = "pipx install $PKGNAME"
-uninstall.shell = "pipx uninstall $PKGNAME"
-reinstall.shell = "pdm run uninstall; pdm run xxinstall"
+# Don't name `install` else `pre_install` and/or `post_install` will also run.
+#xxinstall.shell = "set -x; unset PYTHONPATH; pip install --user lscolors"
+#uninstall.shell = "set -x; unset PYTHONPATH; pip uninstall lscolors"
+xxinstall.shell = "set -x; pipx install lscolors"
+uninstall.shell = "set -x; pipx uninstall lscolors"
+reinstall.shell = "set -x; pdm run uninstall; pdm run xxinstall"
 
 [tool.pytest.ini_options]
 addopts = "--ignore=__pypackages__/"
@@ -105,7 +86,6 @@ line-length = "97"
 [tool.isort]
 line_length = "97"
 profile = "black"
-force_single_line = "true"
 
 [tool.pylint.format]
 max-line-length = "97"

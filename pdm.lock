@@ -99,6 +99,16 @@ dependencies = [
 ]
 
 [[package]]
+name = "flake8-pylint"
+version = "0.1.3"
+requires_python = ">=3.6"
+summary = "Flake8 plugin that runs PyLint."
+dependencies = [
+    "flake8",
+    "pylint",
+]
+
+[[package]]
 name = "flake8-simplify"
 version = "0.18.1"
 requires_python = ">=3.6.1"
@@ -212,8 +222,8 @@ summary = "Python parsing module"
 
 [[package]]
 name = "pytest"
-version = "7.0.1"
-requires_python = ">=3.6"
+version = "7.1.0"
+requires_python = ">=3.7"
 summary = "pytest: simple powerful testing with Python"
 dependencies = [
     "atomicwrites>=1.0; sys_platform == \"win32\"",
@@ -269,7 +279,7 @@ summary = "Module for decorators, wrappers and monkey patching."
 
 [metadata]
 lock_version = "3.1"
-content_hash = "sha256:ff1ed621ab61f41ef19dab3d09ab02d0537a82d48aa1272fe96b9b5c430d530e"
+content_hash = "sha256:e0c351c0732076f8c3a7de9e60e6bdf8fdefe1d5c555fabb57f354d463aaab85"
 
 [metadata.files]
 "ansicolors 1.1.8" = [
@@ -340,6 +350,10 @@ content_hash = "sha256:ff1ed621ab61f41ef19dab3d09ab02d0537a82d48aa1272fe96b9b5c4
 "flake8-pydocstyle 0.2.0" = [
     {file = "flake8_pydocstyle-0.2.0-py3-none-any.whl", hash = "sha256:3872486de955621734e2e47dfaf711c640112ebbe9ef4289c9a4ae36c2420b69"},
     {file = "flake8-pydocstyle-0.2.0.tar.gz", hash = "sha256:d2553a22d6d255030b1f81e3059470efd075c544aeca81fee4be8558551f615a"},
+]
+"flake8-pylint 0.1.3" = [
+    {file = "flake8_pylint-0.1.3-py3-none-any.whl", hash = "sha256:af4f6633cfb7d4bb51311d62856c81df26ddc0d45a5c7f084cd7845d1af3c3b6"},
+    {file = "flake8-pylint-0.1.3.tar.gz", hash = "sha256:430e365d65ec088dd5aad85bf54690d802deec805c4c812a43cc30b75ed51beb"},
 ]
 "flake8-simplify 0.18.1" = [
     {file = "flake8_simplify-0.18.1-py3-none-any.whl", hash = "sha256:a4a0fcaad8fa0ad17634c6fa4ff62ebe4835bef48d78d3104eb528140cf0972b"},
@@ -440,9 +454,9 @@ content_hash = "sha256:ff1ed621ab61f41ef19dab3d09ab02d0537a82d48aa1272fe96b9b5c4
     {file = "pyparsing-3.0.7-py3-none-any.whl", hash = "sha256:a6c06a88f252e6c322f65faf8f418b16213b51bdfaece0524c1c1bc30c63c484"},
     {file = "pyparsing-3.0.7.tar.gz", hash = "sha256:18ee9022775d270c55187733956460083db60b37d0d0fb357445f3094eed3eea"},
 ]
-"pytest 7.0.1" = [
-    {file = "pytest-7.0.1-py3-none-any.whl", hash = "sha256:9ce3ff477af913ecf6321fe337b93a2c0dcf2a0a1439c43f5452112c1e4280db"},
-    {file = "pytest-7.0.1.tar.gz", hash = "sha256:e30905a0c131d3d94b89624a1cc5afec3e0ba2fbdb151867d8e0ebd49850f171"},
+"pytest 7.1.0" = [
+    {file = "pytest-7.1.0-py3-none-any.whl", hash = "sha256:b555252a95bbb2a37a97b5ac2eb050c436f7989993565f5e0c9128fcaacadd0e"},
+    {file = "pytest-7.1.0.tar.gz", hash = "sha256:f1089d218cfcc63a212c42896f1b7fbf096874d045e1988186861a1a87d27b47"},
 ]
 "pyyaml 6.0" = [
     {file = "PyYAML-6.0-cp310-cp310-macosx_10_9_x86_64.whl", hash = "sha256:d4db7c7aef085872ef65a8fd7d6d09a14ae91f691dec3e87ee5ee0539d516f53"},

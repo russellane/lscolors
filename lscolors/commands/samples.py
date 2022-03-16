@@ -4,10 +4,10 @@ import os
 import socket
 import stat
 
-import lscolors
+from lscolors.commands.base import BaseCommand
 
 
-class Command(lscolors.Command):
+class Command(BaseCommand):
     """lscolors `samples` command."""
 
     def __init__(self):

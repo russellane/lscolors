@@ -3,10 +3,10 @@
 import sys
 from collections import defaultdict
 
-import lscolors
+from lscolors.commands.base import BaseCommand
 
 
-class Command(lscolors.Command):
+class Command(BaseCommand):
     """lscolors `sort` command."""
 
     def __init__(self):
