@@ -27,7 +27,7 @@ def add_arguments(parser):
     )
 
 
-def load(args):
+def load(options):
     """Load `lscolors` configuration.
 
     Load the config file given on the command line, if given, or search for a
@@ -42,9 +42,9 @@ def load(args):
         meta: fully-qualified path of the loaded configuration file.
     """
 
-    if args.config != _DEFAULT_CONFIG_FILE:
-        with open(args.config, encoding="utf-8") as file:
-            meta = f"cfg={args.config!r}"
+    if options.config != _DEFAULT_CONFIG_FILE:
+        with open(options.config, encoding="utf-8") as file:
+            meta = f"cfg={options.config!r}"
             return yaml.load(file.read(), Loader=yaml.BaseLoader), meta
 
     # search each dir from CWD to HOME or ROOT
@@ -63,8 +63,8 @@ def load(args):
                 break
             here = os.path.dirname(here)
 
-    if not args.quiet:
-        print(f"{args.prog}: warning; no config file {_DEFAULT_CONFIG_FILE!r}", flush=True)
+    if not options.quiet:
+        print(f"{options.prog}: warning; no config file {_DEFAULT_CONFIG_FILE!r}", flush=True)
 
     return {
         "required_filenames": [],

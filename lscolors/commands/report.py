@@ -27,8 +27,7 @@ class Command(BaseCommand):
 
         color_utils.add_arguments(parser)
 
-    @staticmethod
-    def handle(args):
+    def handle(self):
         """Handle command invocation."""
 
         codes = {
@@ -55,11 +54,11 @@ class Command(BaseCommand):
         }
 
         try:
-            colors, meta_colors = color_utils.load(args)
+            colors, meta_colors = color_utils.load(self.options)
         except RuntimeError as err:
-            raise RuntimeError(f"{args.prog}: failure; {err}\n") from err
+            raise RuntimeError(f"{self.options.prog}: failure; {err}\n") from err
 
-        print(f"{args.prog} for {meta_colors}:")
+        print(f"{self.options.prog} for {meta_colors}:")
 
         for filetype, color in colors.items():
             type_color = f"{filetype:15} {color:20}"
@@ -70,12 +69,12 @@ class Command(BaseCommand):
                 text = filetype + " lorem ipsum dolor sit amet"
 
             scolor = color.ljust(10)
-            if args.left:
+            if self.options.left:
                 if color == "target":
                     print(f"{type_color} {scolor} {text:>44}")
                 else:
                     print(f"{type_color} [{color}m{scolor} {text:>44}[0m")
-            elif args.right:
+            elif self.options.right:
                 if color == "target":
                     print(f"{text:44} {type_color}")
                 else:

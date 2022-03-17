@@ -202,13 +202,13 @@ class Command(BaseCommand):
 
     # -------------------------------------------------------------------------------
 
-    def handle(self, args):
+    def handle(self):
         """Handle command invocation."""
 
-        if args.palette_file:
-            self._load_palette(args)
+        if self.options.palette_file:
+            self._load_palette()
 
-        for group_color in args.group_color or []:
+        for group_color in self.options.group_color or []:
             name, color = group_color.split("=")
             if (group := ColorGroup.get_by_name(name)) is not None:
                 group.set_color(color)
@@ -226,12 +226,12 @@ class Command(BaseCommand):
                 ]
             )
             print(f"\033[{color_group.ansi}m{line}\033[0m", file=sys.stderr)
-            if args.add_samples:
+            if self.options.add_samples:
                 print(line)
 
         group_color = None
-        # print("#", args.dir_colors)
-        for line in args.dir_colors.read_text(args.encoding).splitlines():
+        # print("#", self.options.dir_colors)
+        for line in self.options.dir_colors.read_text(self.options.encoding).splitlines():
 
             rstripped = line.rstrip()
             group_color = ColorGroup.get_by_comment(rstripped, group_color)
@@ -259,45 +259,46 @@ class Command(BaseCommand):
 
     # -------------------------------------------------------------------------------
 
-    def _load_palette(self, args):
+    def _load_palette(self):
 
-        rgb_colors = self._read_palette(args)
+        rgb_colors = self._read_palette()
         if len(rgb_colors) < len(ColorGroup.items()):
             raise RuntimeError(
                 f"Need {len(ColorGroup.items())} colors; "
-                f"palette {str(args.palette_file)!r} has only {len(rgb_colors)}."
+                f"palette {str(self.options.palette_file)!r} has only {len(rgb_colors)}."
             )
 
-        if args.pick:
-            rgb_colors = [rgb_colors[i - 1] for i in args.pick]
+        if self.options.pick:
+            rgb_colors = [rgb_colors[i - 1] for i in self.options.pick]
 
         for color_group, rgb in zip(ColorGroup.items(), rgb_colors):
             color_group.set_color(rgb)
 
     # -------------------------------------------------------------------------------
 
-    @staticmethod
-    def _read_palette(args):
+    def _read_palette(self):
         """Parse `coolors.co` palette file and return list of colors.
 
         It's all in the first line; e.g. 3 colors
             `/* Coolors Exported Palette - https://coolors.co/00111c-001523-001a2c */`
         """
 
-        if args.palette_num is not None:
-            args.palette_file = args.palettes_dir / f"palette ({args.palette_num}).txt"
+        if self.options.palette_num is not None:
+            self.options.palette_file = (
+                self.options.palettes_dir / f"palette ({self.options.palette_num}).txt"
+            )
 
-        palette = args.palette_file.read_text(args.encoding)
+        palette = self.options.palette_file.read_text(self.options.encoding)
         lines = palette.splitlines()
         line = lines[0]
 
         prefix = "/* Coolors Exported Palette - https://coolors.co/"
         if not line.startswith(prefix):
-            raise RuntimeError(f"Invalid prefix in palette `{str(args.palette_file)}`")
+            raise RuntimeError(f"Invalid prefix in palette `{str(self.options.palette_file)}`")
 
         suffix = " */"
         if not line.endswith(suffix):
-            raise RuntimeError(f"Invalid suffix in palette `{str(args.palette_file)}`")
+            raise RuntimeError(f"Invalid suffix in palette `{str(self.options.palette_file)}`")
 
         clrs = [x.upper() for x in line[len(prefix) : -len(suffix)].split("-")]
         print("#", line[3:-2])

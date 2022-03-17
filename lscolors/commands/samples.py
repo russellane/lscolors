@@ -45,23 +45,23 @@ class Command(BaseCommand):
         self._seqno += 1
         return f"{self._seqno:02}-{name}"
 
-    def handle(self, args):
+    def handle(self):
         """Handle command invocation."""
 
-        colors, meta_colors = color_utils.load(args)
-        config, meta_config = config_utils.load(args)
+        colors, meta_colors = color_utils.load(self.options)
+        config, meta_config = config_utils.load(self.options)
 
-        mkdir.mkdir(args.samplesdir, args.force)
+        mkdir.mkdir(self.options.samplesdir, self.options.force)
         print(
-            args.prog,
+            self.options.prog,
             "creating directory",
-            repr(args.samplesdir),
+            repr(self.options.samplesdir),
             "for",
             meta_colors,
             meta_config,
         )
 
-        os.chdir(args.samplesdir)
+        os.chdir(self.options.samplesdir)
         top = os.getcwd()
 
         # .../sample-files/colors/x.038-005-213.py

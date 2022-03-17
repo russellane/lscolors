@@ -21,11 +21,11 @@ class Command(BaseCommand):
             help="print color palette with given colors",
         )
 
-    def handle(self, args):
+    def handle(self):
         """Handle command invocation."""
 
-        if args.color:
-            self._print_palette(args)
+        if self.options.color:
+            self._print_palette()
             return
 
         self._chart_36x6_grey()
@@ -33,10 +33,9 @@ class Command(BaseCommand):
         # self._chart_6_squares()
         # self._chart_216_lines()
 
-    @staticmethod
-    def _print_palette(args):
+    def _print_palette(self):
         for i in range(1, 4):
-            for color in args.color:
+            for color in self.options.color:
                 for _ in range(i):
                     text = "Lots of long sample text lorem ipsum dolar sit amet"
                     print(f"\033[{color}m{text} {color}\033[0m")

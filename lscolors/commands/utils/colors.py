@@ -16,19 +16,19 @@ def add_arguments(parser):
     )
 
 
-def load(args):
-    """Load color database from `args.dir_colors`, if given, or `$LS_COLORS`.
+def load(options):
+    """Load color database from `options.dir_colors`, if given, or `$LS_COLORS`.
 
     Return multiple values:
         colors: dict, colors_by_filetype, k=filetype, v=color
         meta: str, identifies database loaded and, if relevant, the `$TERM` used.
     """
 
-    meta = f"dir_colors={args.dir_colors!r}" if args.dir_colors else "env=$LS_COLORS"
+    meta = f"dir_colors={options.dir_colors!r}" if options.dir_colors else "env=$LS_COLORS"
     meta_with_term = meta + "; TERM=" + os.environ.get("TERM", "")
 
-    if args.dir_colors:
-        ls_colors = _compile_dir_colors(args, meta_with_term)
+    if options.dir_colors:
+        ls_colors = _compile_dir_colors(options, meta_with_term)
     elif not (ls_colors := os.environ.get("LS_COLORS")):
         raise RuntimeError(f"missing `$LS_COLORS` environment variable; {meta}")
 
@@ -48,11 +48,11 @@ def load(args):
     return colors, meta
 
 
-def _compile_dir_colors(args, meta):
+def _compile_dir_colors(options, meta):
     """Run system `dircolors` (/usr/bin/dircolors) and return value of `LS_COLORS`."""
 
     proc = subprocess.run(
-        ["dircolors", "--bourne-shell", args.dir_colors],
+        ["dircolors", "--bourne-shell", options.dir_colors],
         capture_output=True,
         check=False,
         shell=False,

@@ -53,7 +53,7 @@ class CLI(BaseCLI):
 
         # equiv to module: lscolors.commands.help import Command as HelpCommand
         sub = self.subparsers.add_parser("help", help="same as `--help`")
-        sub.set_defaults(cmd=lambda x: self.parser.print_help())
+        sub.set_defaults(cmd=self.parser.print_help)
 
     def main(self) -> None:
         """Command line interface entry point (method)."""
@@ -63,7 +63,7 @@ class CLI(BaseCLI):
             self.parser.exit(2, "error: Missing COMMAND\n")
 
         try:
-            self.options.cmd(self.options)
+            self.options.cmd()
         except RuntimeError as err:
             print(err, file=sys.stderr)
             sys.exit(1)

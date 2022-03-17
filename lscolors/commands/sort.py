@@ -21,10 +21,9 @@ class Command(BaseCommand):
         )
 
     @staticmethod
-    def handle(args):
+    def handle():
         """`lscolors sort` command."""
 
-        _ = args  # unused
         # parse lines per https://github.com/coreutils/coreutils/blob/master/src/dircolors.c
         # which strips leading spaces, spaces between keyword and arg,
         # and trailing spaces after arg, which may contain spaces.

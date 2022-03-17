@@ -21,17 +21,16 @@ class Command(BaseCommand):
         config_utils.add_arguments(parser)
         color_utils.add_arguments(parser)
 
-    @staticmethod
-    def handle(args):
+    def handle(self):
         """Handle command invocation."""
 
-        config, meta_config = config_utils.load(args)
+        config, meta_config = config_utils.load(self.options)
 
         try:
-            colors, meta_colors = color_utils.load(args)
+            colors, meta_colors = color_utils.load(self.options)
         except RuntimeError as err:
             raise RuntimeError(
-                f"{args.prog}: failure; {err}\n" f"{args.prog}: {meta_config}"
+                f"{self.options.prog}: failure; {err}\n" f"{self.options.prog}: {meta_config}"
             ) from err
 
         required = (
@@ -48,14 +47,14 @@ class Command(BaseCommand):
 
         if (nmissing := len(missing)) > 0:
             raise RuntimeError(
-                f"{args.prog}: failure; {len(colors)} items; "
+                f"{self.options.prog}: failure; {len(colors)} items; "
                 f"{nrequired - nmissing}/{nrequired} required; "
                 f"{nmissing} missing {missing}\n"
-                f"{args.prog}: {meta_colors}; {meta_config}"
+                f"{self.options.prog}: {meta_colors}; {meta_config}"
             )
 
         print(
-            f"{args.prog}: success; {len(colors)} items; "
+            f"{self.options.prog}: success; {len(colors)} items; "
             f"{nrequired}/{nrequired} required.\n"
-            f"{args.prog}: {meta_colors}; {meta_config}"
+            f"{self.options.prog}: {meta_colors}; {meta_config}"
         )

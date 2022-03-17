@@ -13,6 +13,7 @@ class BaseCommand:  # noqa: SIM119 Use a dataclass
     def __init__(self, cli: BaseCLI) -> None:
         """Initialize command."""
         self.cli = cli
+        self.options = None
         self.init_command()
 
     def init_command(self) -> None:
@@ -26,10 +27,14 @@ class BaseCommand:  # noqa: SIM119 Use a dataclass
         parser = self.cli.subparsers.add_parser(name, **kwargs)
         self.cli.add_verbose_option(parser)
         self.cli.add_version_option(parser)
-        parser.set_defaults(cmd=self.handle, prog=name)
+        parser.set_defaults(cmd=lambda: self._promote_options(self.handle), prog=name)
         return parser
 
-    def handle(self, args):  # RENAME args to options
+    def _promote_options(self, handle):
+        self.options = self.cli.options
+        handle()
+
+    def handle(self):
         """Handle command invocation."""
         raise NotImplementedError
 

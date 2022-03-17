@@ -19,8 +19,7 @@ class Command(BaseCommand):
         )
 
     @staticmethod
-    def handle(args):
+    def handle():
         """Handle command invocation."""
 
-        _ = args  # unused
         print(os.path.join(os.path.dirname(os.path.dirname(__file__)), "sample-configs"))

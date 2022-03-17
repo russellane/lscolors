@@ -46,12 +46,12 @@ class Command(BaseCommand):
             help="Ok to clobber `DIR` if it exists",
         )
 
-    def handle(self, args):
+    def handle(self):
         """Handle command invocation."""
 
-        mkdir.mkdir(args.docs, args.force)
+        mkdir.mkdir(self.options.docs, self.options.force)
         self.print_main_page(self.cli.parser)
-        self.write_command_pages(self.cli.parser, args.docs)
+        self.write_command_pages(self.cli.parser, self.options.docs)
 
     @staticmethod
     def print_main_page(main_parser):
