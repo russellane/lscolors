@@ -8,17 +8,15 @@ from lscolors.commands.basecmd import BaseCommand
 class Command(BaseCommand):
     """lscolors `configs` command."""
 
-    def __init__(self):
+    def init_command(self) -> None:
         """Initialize lscolors `configs` command."""
 
-        parser = self.add_parser(
+        self.add_parser(
             "configs",
             help="print path to sample configuration files",
             description="""Print path to sample `.lscolors.yml`
                             and `.dircolors` configuration files.""",
         )
-
-        parser.set_defaults(cmd=self.handle, prog="lscolors configs")
 
     @staticmethod
     def handle(args):

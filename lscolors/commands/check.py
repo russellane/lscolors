@@ -8,7 +8,7 @@ from lscolors.commands.utils import config as config_utils
 class Command(BaseCommand):
     """lscolors `check` command."""
 
-    def __init__(self):
+    def init_command(self) -> None:
         """Initialize lscolors `check` command."""
 
         parser = self.add_parser(
@@ -18,7 +18,6 @@ class Command(BaseCommand):
             epilog="Exit Status: zero indicates success, nonzero indicates failure.",
         )
 
-        parser.set_defaults(cmd=self.handle, prog="lscolors check")
         config_utils.add_arguments(parser)
         color_utils.add_arguments(parser)
 

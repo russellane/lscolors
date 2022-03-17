@@ -9,18 +9,16 @@ from lscolors.commands.basecmd import BaseCommand
 class Command(BaseCommand):
     """lscolors `sort` command."""
 
-    def __init__(self):
+    def init_command(self) -> None:
         """Initialize lscolors `sort` command."""
 
-        parser = self.add_parser(
+        self.add_parser(
             "sort",
             help="sort lines of database file by color",
             description="""Filter `stdin` to `stdout` sorting
             lines of a `DIR_COLORS` file by color then filetype.
             Blank lines and comments are unsorted and moved to the end.""",
         )
-
-        parser.set_defaults(cmd=self.handle, prog="lscolors sort")
 
     @staticmethod
     def handle(args):

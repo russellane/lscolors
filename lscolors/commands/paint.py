@@ -126,7 +126,7 @@ class Command(BaseCommand):
     ]:
         ColorGroup(filetype)
 
-    def __init__(self):
+    def init_command(self) -> None:
         """Initialize lscolors `paint` command."""
 
         parser = self.add_parser(
@@ -134,8 +134,6 @@ class Command(BaseCommand):
             help="paint dircolors",
             description="Apply palette to dircolors.",
         )
-
-        parser.set_defaults(cmd=self.handle, prog="lscolors paint")
 
         default_config_path = Path.home() / ".dircolors"
         parser.add_argument(

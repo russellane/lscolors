@@ -4,7 +4,6 @@ import sys
 from typing import List, Optional
 
 from lscolors.basecli import BaseCLI
-from lscolors.commands.basecmd import BaseCommand
 from lscolors.commands.chart import Command as ChartCommand
 from lscolors.commands.check import Command as CheckCommand
 from lscolors.commands.configs import Command as ConfigsCommand
@@ -36,19 +35,11 @@ class CLI(BaseCLI):
         # add_subparsers to not have to determine a default value for it.
         # `dest` is not necessary.
 
-        # alternate design: self.parser.init_subparsers(...)
-        self.subparsers = self.parser.add_subparsers(
-            prog=self.parser.prog,
-            metavar="COMMAND",
-            title="Specify one of",
-        )
-
-        # configure BaseCommand class
-        BaseCommand.cli = self
+        self.add_subparsers(metavar="COMMAND", title="Specify one of")
 
         self.parser.set_defaults(cmd=None)
 
-        for command_class in (
+        for subcommand_class in (
             ChartCommand,
             CheckCommand,
             ConfigsCommand,
@@ -58,10 +49,7 @@ class CLI(BaseCLI):
             SamplesCommand,
             SortCommand,
         ):
-            command_class()
-            # parser = cli.init_subparser(self)
-            # self.add_parser(parser)
-            # self.subparsers.add_parser(parser)
+            subcommand_class(self)
 
         # equiv to module: lscolors.commands.help import Command as HelpCommand
         sub = self.subparsers.add_parser("help", help="same as `--help`")

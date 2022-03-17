@@ -5,7 +5,8 @@ import contextlib
 import functools
 import importlib.metadata
 import logging
-import os
+
+# import os
 import re
 import sys
 import textwrap
@@ -27,6 +28,7 @@ class BaseCLI:
     exclude_print_config: [str] = []
     parser: argparse.ArgumentParser = None
     options: argparse.Namespace = None
+    subparsers: argparse._ActionsContainer = None
 
     def __init__(self, argv: Optional[List[str]] = None) -> None:
         """Build and parse command line.
@@ -85,8 +87,8 @@ class BaseCLI:
 
         # create mini parser to get `--config FILE`.
         parser = argparse.ArgumentParser(add_help=False)
-        self._add_verbose_option(parser)
-        self._add_config_option(parser)
+        self.add_verbose_option(parser)
+        self.add_config_option(parser)
         options, _ = parser.parse_known_args(self.argv)
         self.init_logging(options.verbose)
 
@@ -132,35 +134,25 @@ class BaseCLI:
     def add_arguments(self) -> None:
         """Implement in subclass, if desired."""
 
-    # def add_subparsers(self, **kwargs) -> argparse._SubParsersAction:
-    #     """Init subparser factory method."""
-    #     self.subparsers = self.parser.add_subparsers(**kwargs)
-    #     print(f"TYPE SELF.SUBPARSERS = {type(self.subparsers)}")
-    #     return self.subparsers
-
-    # def add_parser(self, name, **kwargs) -> argparse.ArgumentParser:
-    #     """Add this CLI as a subparser to the given `cli`."""
-    #     parser = self.subparsers.add_parser(name, **kwargs)
-    #     return parser
-
     def ArgumentParser(self, **kwargs) -> argparse.ArgumentParser:  # noqa:
         """Initialize argument parser."""
 
         if "formatter_class" not in kwargs:
             # wide terminals are great, but not for reading/printing manuals.
             width = min(97, get_terminal_size((97, 24)).columns)
-            formatter = PdmFormatter if os.isatty(1) else argparse.RawDescriptionHelpFormatter
+            # formatter = PdmFormatter if os.isatty(1) else argparse.RawDescriptionHelpFormatter
+            formatter = argparse.RawDescriptionHelpFormatter
             kwargs["formatter_class"] = lambda prog: formatter(
                 prog, max_help_position=35, width=width
             )
 
         self.parser = argparse.ArgumentParser(**kwargs)
 
-        self._add_verbose_option(self.parser)
-        self._add_version_option(self.parser)
+        self.add_verbose_option(self.parser)
+        self.add_version_option(self.parser)
 
         if self.config.get("config-file"):
-            self._add_config_option(self.parser)
+            self.add_config_option(self.parser)
 
         self.parser.add_argument(
             "--print-config",
@@ -169,6 +161,11 @@ class BaseCLI:
         )
 
         return self.parser
+
+    def add_subparsers(self, **kwargs) -> argparse._SubParsersAction:
+        """Init subparser factory method."""
+        self.subparsers = self.parser.add_subparsers(**kwargs)
+        return self.subparsers
 
     def add_default_to_help(self, arg: argparse.Action) -> None:
         """Return helptext with an indication if it's the default."""
@@ -203,7 +200,8 @@ class BaseCLI:
         return options
 
     @staticmethod
-    def _add_verbose_option(parser: argparse.ArgumentParser) -> None:
+    def add_verbose_option(parser: argparse.ArgumentParser) -> None:
+        """Add `--verbose` to given `parser`."""
 
         parser.add_argument(
             "-v",
@@ -214,7 +212,8 @@ class BaseCLI:
         )
 
     @staticmethod
-    def _add_version_option(parser: argparse.ArgumentParser) -> None:
+    def add_version_option(parser: argparse.ArgumentParser) -> None:
+        """Add `--version` to given `parser`."""
 
         version = "0.0.0"
         with contextlib.suppress(importlib.metadata.PackageNotFoundError):
@@ -227,7 +226,8 @@ class BaseCLI:
             help=f"print `{version}` and exit",
         )
 
-    def _add_config_option(self, parser: argparse.ArgumentParser) -> None:
+    def add_config_option(self, parser: argparse.ArgumentParser) -> None:
+        """Add `--config FILE` to given `parser`."""
 
         text = "configuration file"
         if file := self.config.get("config-file"):

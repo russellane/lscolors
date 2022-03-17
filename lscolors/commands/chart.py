@@ -6,7 +6,7 @@ from lscolors.commands.basecmd import BaseCommand
 class Command(BaseCommand):
     """lscolors `chart` command."""
 
-    def __init__(self):
+    def init_command(self):
         """Initialize lscolors `chart` command."""
 
         parser = self.add_parser(
@@ -14,8 +14,6 @@ class Command(BaseCommand):
             help="print color chart",
             description="Print color-chart.",
         )
-
-        parser.set_defaults(cmd=self.handle, prog="lscolors chart")
 
         parser.add_argument(
             "color",

@@ -13,7 +13,7 @@ from lscolors.commands.utils import mkdir
 class Command(BaseCommand):
     """lscolors `samples` command."""
 
-    def __init__(self):
+    def init_command(self) -> None:
         """Initialize lscolors `samples` command."""
 
         parser = self.add_parser(
@@ -24,11 +24,7 @@ class Command(BaseCommand):
             and all required items in configuration file `CONFIG`.""",
         )
 
-        parser.set_defaults(
-            cmd=self.handle,
-            prog="lscolors samples",
-            samplesdir="./lscolors-samples",
-        )
+        parser.set_defaults(samplesdir="./lscolors-samples")
 
         color_utils.add_arguments(parser)
         config_utils.add_arguments(parser)

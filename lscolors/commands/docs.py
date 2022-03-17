@@ -11,19 +11,17 @@ from lscolors.commands.utils import mkdir
 class Command(BaseCommand):
     """Create documentation for Subcommands."""
 
-    def __init__(self):
+    def init_command(self) -> None:
         """Initialize create documentation for Subcommands."""
 
         parser = self.add_parser(
             "docs",
-            help="Create documentation.",
-            description="Create documentation files for this application.",
-            epilog="This is an internal command used during the packaging process.",
+            help="create documentation",
+            description="Create documentation files for this application",
+            epilog="This is an internal command used during the packaging process",
         )
 
         parser.set_defaults(
-            cmd=self.handle,
-            prog=self.cli.parser.prog + " docs",
             format="markdown",
             docs="./docs",
         )

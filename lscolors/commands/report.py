@@ -7,7 +7,7 @@ from lscolors.commands.utils import colors as color_utils
 class Command(BaseCommand):
     """lscolors `report` command."""
 
-    def __init__(self):
+    def init_command(self) -> None:
         """Initialize lscolors `report` command."""
 
         parser = self.add_parser(
@@ -16,8 +16,6 @@ class Command(BaseCommand):
             description="Print colorized report for database in `$LS_COLORS`.",
             epilog="A default format is produced when `--left/--right` is not given.",
         )
-
-        parser.set_defaults(cmd=self.handle, prog="lscolors report")
 
         grp = parser.add_mutually_exclusive_group()
         grp.add_argument(
