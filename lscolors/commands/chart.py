@@ -1,6 +1,6 @@
 """lscolors `chart` command."""
 
-from lscolors.commands.basecmd import BaseCommand
+from lscolors.basecli import BaseCommand
 
 
 class Command(BaseCommand):

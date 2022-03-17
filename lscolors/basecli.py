@@ -5,13 +5,11 @@ import contextlib
 import functools
 import importlib.metadata
 import logging
-
-# import os
+import os
 import re
 import sys
 import textwrap
 from pathlib import Path
-from shutil import get_terminal_size
 from typing import Iterable, List, Optional
 
 import argcomplete
@@ -51,7 +49,6 @@ class BaseCLI:
         self.add_arguments()
         argcomplete.autocomplete(self.parser)
         self.options = self._parse_args()
-        # self.subparsers: argparse._SubParsersAction = None
 
     def init_config(self) -> None:
         """Parse cmdline to load contents of `--config FILE` only.
@@ -88,7 +85,7 @@ class BaseCLI:
         # create mini parser to get `--config FILE`.
         parser = argparse.ArgumentParser(add_help=False)
         self.add_verbose_option(parser)
-        self.add_config_option(parser)
+        self._add_config_option(parser)
         options, _ = parser.parse_known_args(self.argv)
         self.init_logging(options.verbose)
 
@@ -139,20 +136,18 @@ class BaseCLI:
 
         if "formatter_class" not in kwargs:
             # wide terminals are great, but not for reading/printing manuals.
-            width = min(97, get_terminal_size((97, 24)).columns)
-            # formatter = PdmFormatter if os.isatty(1) else argparse.RawDescriptionHelpFormatter
-            formatter = argparse.RawDescriptionHelpFormatter
+            width = min(97, termui.get_terminal_size()[0])
+            formatter = PdmFormatter if os.isatty(1) else argparse.RawDescriptionHelpFormatter
             kwargs["formatter_class"] = lambda prog: formatter(
                 prog, max_help_position=35, width=width
             )
 
         self.parser = argparse.ArgumentParser(**kwargs)
-
         self.add_verbose_option(self.parser)
         self.add_version_option(self.parser)
 
         if self.config.get("config-file"):
-            self.add_config_option(self.parser)
+            self._add_config_option(self.parser)
 
         self.parser.add_argument(
             "--print-config",
@@ -226,7 +221,7 @@ class BaseCLI:
             help=f"print `{version}` and exit",
         )
 
-    def add_config_option(self, parser: argparse.ArgumentParser) -> None:
+    def _add_config_option(self, parser: argparse.ArgumentParser) -> None:
         """Add `--config FILE` to given `parser`."""
 
         text = "configuration file"
@@ -261,6 +256,40 @@ class BaseCLI:
         if (name := self.config.get("config-name")) is not None:
             config = {name: config}
         print(toml.dumps(config))
+
+
+class BaseCommand:
+    """Base class for all commands (subparsers)."""
+
+    add_period_to_help = True
+
+    def __init__(self, cli: BaseCLI) -> None:
+        """Initialize command."""
+        self.cli = cli
+        self.options = None
+        self.init_command()
+
+    def init_command(self) -> None:
+        """Implement in subclass, if desired."""
+
+    def add_parser(self, name, **kwargs) -> argparse.ArgumentParser:
+        """See /usr/lib/python3.8/argparse.py."""
+        kwargs["formatter_class"] = self.cli.parser.formatter_class
+        if self.add_period_to_help and (text := kwargs.get("help")) and not text.endswith("."):
+            kwargs["help"] += "."
+        parser = self.cli.subparsers.add_parser(name, **kwargs)
+        self.cli.add_verbose_option(parser)
+        self.cli.add_version_option(parser)
+        parser.set_defaults(cmd=lambda: self._promote_options(self.handle), prog=name)
+        return parser
+
+    def _promote_options(self, handle):
+        self.options = self.cli.options
+        handle()
+
+    def handle(self):
+        """Handle command invocation."""
+        raise NotImplementedError
 
 
 yellow = functools.partial(termui.style, fg="yellow")

@@ -3,7 +3,7 @@
 import sys
 from collections import defaultdict
 
-from lscolors.commands.basecmd import BaseCommand
+from lscolors.basecli import BaseCommand
 
 
 class Command(BaseCommand):

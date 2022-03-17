@@ -4,7 +4,7 @@ import argparse
 import pathlib
 import textwrap
 
-from lscolors.commands.basecmd import BaseCommand
+from lscolors.basecli import BaseCommand
 from lscolors.commands.utils import mkdir
 
 

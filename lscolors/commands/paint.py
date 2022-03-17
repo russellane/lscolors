@@ -6,7 +6,7 @@ from pathlib import Path
 
 from colors.colors import parse_rgb
 
-from lscolors.commands.basecmd import BaseCommand
+from lscolors.basecli import BaseCommand
 
 
 class ColorGroup:

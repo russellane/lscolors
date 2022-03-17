@@ -4,7 +4,7 @@ import os
 import socket
 import stat
 
-from lscolors.commands.basecmd import BaseCommand
+from lscolors.basecli import BaseCommand
 from lscolors.commands.utils import colors as color_utils
 from lscolors.commands.utils import config as config_utils
 from lscolors.commands.utils import mkdir
