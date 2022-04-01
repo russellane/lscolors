@@ -1,16 +1,16 @@
 """lscolors `report` command."""
 
-from lscolors.basecli import BaseCommand
+from lscolors.basecmd import BaseCmd
 from lscolors.commands.utils import colors as color_utils
 
 
-class Command(BaseCommand):
+class ReportCmd(BaseCmd):
     """lscolors `report` command."""
 
     def init_command(self) -> None:
         """Initialize lscolors `report` command."""
 
-        parser = self.add_parser(
+        parser = self.add_subcommand_parser(
             "report",
             help="print colorized database report",
             description="Print colorized report for database in `$LS_COLORS`.",
@@ -27,8 +27,8 @@ class Command(BaseCommand):
 
         color_utils.add_arguments(parser)
 
-    def handle(self):
-        """Handle command invocation."""
+    def run(self):
+        """Perform the command."""
 
         codes = {
             "no": ("NORMAL", "- Normal (nonfilename) text"),
@@ -73,14 +73,14 @@ class Command(BaseCommand):
                 if color == "target":
                     print(f"{type_color} {scolor} {text:>44}")
                 else:
-                    print(f"{type_color} [{color}m{scolor} {text:>44}[0m")
+                    print(f"{type_color} \x1B[{color}m{scolor} {text:>44}\x1B[0m")
             elif self.options.right:
                 if color == "target":
                     print(f"{text:44} {type_color}")
                 else:
-                    print(f"[{color}m{text:44}[0m {type_color}")
+                    print(f"\x1B[{color}m{text:44}\x1B[0m {type_color}")
             else:
                 if color == "target":
                     print(f"{type_color} {scolor} {text:44}")
                 else:
-                    print(f"{type_color} [{color}m{text:44}[0m")
+                    print(f"{type_color} \x1B[{color}m{text:44}\x1B[0m")

@@ -6,7 +6,7 @@ from pathlib import Path
 
 from colors.colors import parse_rgb
 
-from lscolors.basecli import BaseCommand
+from lscolors.basecmd import BaseCmd
 
 
 class ColorGroup:
@@ -87,7 +87,7 @@ class ColorGroup:
             self.ansi = color
 
 
-class Command(BaseCommand):
+class PaintCmd(BaseCmd):
     """lscolors `paint` command."""
 
     # default groups
@@ -129,7 +129,7 @@ class Command(BaseCommand):
     def init_command(self) -> None:
         """Initialize lscolors `paint` command."""
 
-        parser = self.add_parser(
+        parser = self.add_subcommand_parser(
             "paint",
             help="paint dircolors",
             description="Apply palette to dircolors.",
@@ -202,8 +202,8 @@ class Command(BaseCommand):
 
     # -------------------------------------------------------------------------------
 
-    def handle(self):
-        """Handle command invocation."""
+    def run(self):
+        """Perform the command."""
 
         if self.options.palette_file:
             self._load_palette()

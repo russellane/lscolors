@@ -4,19 +4,19 @@ import os
 import socket
 import stat
 
-from lscolors.basecli import BaseCommand
+from lscolors.basecmd import BaseCmd
 from lscolors.commands.utils import colors as color_utils
 from lscolors.commands.utils import config as config_utils
 from lscolors.commands.utils import mkdir
 
 
-class Command(BaseCommand):
+class SamplesCmd(BaseCmd):
     """lscolors `samples` command."""
 
     def init_command(self) -> None:
         """Initialize lscolors `samples` command."""
 
-        parser = self.add_parser(
+        parser = self.add_subcommand_parser(
             "samples",
             help="create directory of sample filesystem items",
             description="""Create directory and populate with sample files,
@@ -39,14 +39,14 @@ class Command(BaseCommand):
         )
 
         #
-        self._seqno = 0
+        self._seqno = 0  # noqa
 
     def _fname(self, name):
         self._seqno += 1
         return f"{self._seqno:02}-{name}"
 
-    def handle(self):
-        """Handle command invocation."""
+    def run(self):
+        """Perform the command."""
 
         colors, meta_colors = color_utils.load(self.options)
         config, meta_config = config_utils.load(self.options)

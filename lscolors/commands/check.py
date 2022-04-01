@@ -1,17 +1,17 @@
 """lscolors `check` command."""
 
-from lscolors.basecli import BaseCommand
+from lscolors.basecmd import BaseCmd
 from lscolors.commands.utils import colors as color_utils
 from lscolors.commands.utils import config as config_utils
 
 
-class Command(BaseCommand):
+class CheckCmd(BaseCmd):
     """lscolors `check` command."""
 
     def init_command(self) -> None:
         """Initialize lscolors `check` command."""
 
-        parser = self.add_parser(
+        parser = self.add_subcommand_parser(
             "check",
             help="check database for required items",
             description="Check database in `$LS_COLORS` for required items.",
@@ -21,8 +21,8 @@ class Command(BaseCommand):
         config_utils.add_arguments(parser)
         color_utils.add_arguments(parser)
 
-    def handle(self):
-        """Handle command invocation."""
+    def run(self):
+        """Perform the command."""
 
         config, meta_config = config_utils.load(self.options)
 

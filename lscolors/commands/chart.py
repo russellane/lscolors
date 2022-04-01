@@ -1,15 +1,15 @@
 """lscolors `chart` command."""
 
-from lscolors.basecli import BaseCommand
+from lscolors.basecmd import BaseCmd
 
 
-class Command(BaseCommand):
+class ChartCmd(BaseCmd):
     """lscolors `chart` command."""
 
     def init_command(self):
         """Initialize lscolors `chart` command."""
 
-        parser = self.add_parser(
+        parser = self.add_subcommand_parser(
             "chart",
             help="print color chart",
             description="Print color-chart.",
@@ -21,8 +21,8 @@ class Command(BaseCommand):
             help="print color palette with given colors",
         )
 
-    def handle(self):
-        """Handle command invocation."""
+    def run(self):
+        """Perform the command."""
 
         if self.options.color:
             self._print_palette()
@@ -66,7 +66,7 @@ class Command(BaseCommand):
                 ansi = f"{attr:02};{color + 30:03}"
                 if color > 0:
                     line += "    "
-                line += f"[{ansi}m{ansi}[0m"
+                line += f"\x1B[{ansi}m{ansi}\x1B[0m"
             print(line)
 
     @staticmethod

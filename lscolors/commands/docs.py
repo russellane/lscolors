@@ -4,17 +4,17 @@ import argparse
 import pathlib
 import textwrap
 
-from lscolors.basecli import BaseCommand
+from lscolors.basecmd import BaseCmd
 from lscolors.commands.utils import mkdir
 
 
-class Command(BaseCommand):
+class DocsCmd(BaseCmd):
     """Create documentation for Subcommands."""
 
-    def init_command(self) -> None:
+    def init_command(self):
         """Initialize create documentation for Subcommands."""
 
-        parser = self.add_parser(
+        parser = self.add_subcommand_parser(
             "docs",
             help="create documentation",
             description="Create documentation files for this application",
@@ -46,8 +46,8 @@ class Command(BaseCommand):
             help="Ok to clobber `DIR` if it exists",
         )
 
-    def handle(self):
-        """Handle command invocation."""
+    def run(self):
+        """Perform the command."""
 
         mkdir.mkdir(self.options.docs, self.options.force)
         self.print_main_page(self.cli.parser)

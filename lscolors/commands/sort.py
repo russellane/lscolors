@@ -1,18 +1,18 @@
-"""lscolors `sort` command."""
+"""lscolors `sort` command module."""
 
 import sys
 from collections import defaultdict
 
-from lscolors.basecli import BaseCommand
+from lscolors.basecmd import BaseCmd
 
 
-class Command(BaseCommand):
-    """lscolors `sort` command."""
+class SortCmd(BaseCmd):
+    """lscolors `sort` command class."""
 
     def init_command(self) -> None:
         """Initialize lscolors `sort` command."""
 
-        self.add_parser(
+        self.add_subcommand_parser(
             "sort",
             help="sort lines of database file by color",
             description="""Filter `stdin` to `stdout` sorting
@@ -20,9 +20,10 @@ class Command(BaseCommand):
             Blank lines and comments are unsorted and moved to the end.""",
         )
 
-    @staticmethod
-    def handle():
-        """`lscolors sort` command."""
+    def run(self):
+        """Perform the command."""
+
+        _ = self  # unused
 
         # parse lines per https://github.com/coreutils/coreutils/blob/master/src/dircolors.c
         # which strips leading spaces, spaces between keyword and arg,
