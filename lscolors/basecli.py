@@ -218,7 +218,7 @@ class BaseCLI:
             "--version",
             action="version",
             version=version,
-            help=f"print `{version}` and exit",
+            help="print version number and exit",
         )
 
     def _add_config_option(self, parser: argparse.ArgumentParser) -> None:
@@ -317,6 +317,11 @@ class PdmFormatter(argparse.HelpFormatter):
         if prefix:
             return result.replace(prefix, yellow(prefix, bold=True))
         return result
+
+    def _format_text(self, text):
+        text = super()._format_text(text)
+        text = re.sub(r"`([^`]*)`", yellow(r"`\1`"), text)
+        return text
 
     def _format_action(self, action: argparse.Action) -> str:
         # determine the required width and the entry label
