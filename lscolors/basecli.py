@@ -28,6 +28,7 @@ class BaseCLI:
     options: argparse.Namespace = None
     add_parser: Callable = None
     help_line_ending = "."
+    init_logging_called = False
 
     def __init__(self, argv: Optional[List[str]] = None) -> None:
         """Build and parse command line.
@@ -87,9 +88,11 @@ class BaseCLI:
 
     def init_logging(self, verbose: int) -> None:
         """Set stdlib logging level based on `--verbose`."""
-        # pylint: disable=no-self-use; needed by super in subclasses.
-        _ = [logging.WARNING, logging.INFO, logging.DEBUG]
-        logging.basicConfig(level=_[min(verbose, len(_) - 1)])
+
+        if not self.init_logging_called:
+            self.__class__.init_logging_called = True
+            _ = [logging.WARNING, logging.INFO, logging.DEBUG]
+            logging.basicConfig(level=_[min(verbose, len(_) - 1)])
 
     def init_parser(self) -> None:
         """Implement in subclass, if desired."""
