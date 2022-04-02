@@ -136,6 +136,8 @@ class BaseCLI:
     def add_subcommand_classes(self, subcommand_classes) -> None:
         """Add list of subcommands to parser."""
 
+        # https://docs.python.org/3/library/argparse.html#sub-commands
+
         self.init_subcommands(metavar="COMMAND", title="Specify one of")
         self.parser.set_defaults(cmd=None)
         for subcommand_class in subcommand_classes:
@@ -320,7 +322,7 @@ yellow = functools.partial(termui.style, fg="yellow")
 cyan = functools.partial(termui.style, fg="cyan")
 
 
-class PdmFormatter(argparse.HelpFormatter):
+class PdmFormatter(argparse.RawDescriptionHelpFormatter):
     """Colorize help."""
 
     def start_section(self, heading: str) -> None:

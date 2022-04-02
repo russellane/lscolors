@@ -27,7 +27,6 @@ class CLI(BaseCLI):
     def main(self) -> None:
         """Command line interface entry point (method)."""
 
-        # if not hasattr(self.options, "cmd") or not self.options.cmd:
         if not self.options.cmd:
             self.parser.print_help()
             self.parser.exit(2, "error: Missing COMMAND\n")
