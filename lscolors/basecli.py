@@ -29,6 +29,7 @@ class BaseCLI:
     add_parser: Callable = None
     help_line_ending = "."
     init_logging_called = False
+    _long_help_argument = None
 
     def __init__(self, argv: Optional[List[str]] = None) -> None:
         """Build and parse command line.
@@ -49,8 +50,17 @@ class BaseCLI:
         self.init_parser()
         self.set_defaults()
         self.add_arguments()
+        self._finalize()
         argcomplete.autocomplete(self.parser)
         self.options = self._parse_args()
+
+    def _finalize(self) -> None:
+        if not self.add_parser:
+            # we had to insert `--long-help` up front for it to be in the
+            # desired position/order; turns out we don't need it.
+            # self._long_help_argument.nargs = argparse.SUPPRESS
+            # self._long_help_argument.default = argparse.SUPPRESS
+            self._long_help_argument.help = argparse.SUPPRESS
 
     def init_config(self) -> None:
         """Parse cmdline to load contents of `--config FILE` only.
@@ -111,6 +121,8 @@ class BaseCLI:
 
             * color formatter_class when interactive
             * -X:  hidden option for our internal use
+            * --help option
+            * --long-help option
             * --verbose option
             * --version option
             * --config-file option
@@ -124,6 +136,8 @@ class BaseCLI:
             kwargs["formatter_class"] = lambda prog: formatter(
                 prog, max_help_position=35, width=width
             )
+
+        kwargs["add_help"] = False
 
         self.parser = argparse.ArgumentParser(**kwargs)
         self._add_common_options(self.parser)
@@ -163,6 +177,12 @@ class BaseCLI:
         if isinstance(arg.const, bool) and not arg.const:
             default = not default
         arg.help += f" (default: `{default}`)"
+
+    def format_help(self, text: str) -> str:
+        """Conform help text line-endings."""
+        if text and self.help_line_ending and not text.endswith(self.help_line_ending):
+            return text + self.help_line_ending
+        return text
 
     @staticmethod
     def dedent(text: str) -> str:
@@ -216,6 +236,24 @@ class BaseCLI:
             "-X",
             action="store_true",
             help=argparse.SUPPRESS,
+        )
+
+        # --help
+        parser.set_defaults(help=False)
+        parser.add_argument(
+            "-h",
+            "--help",
+            action="store_true",
+            help=self.format_help("show this help message and exit"),
+        )
+
+        # --long-help
+        parser.set_defaults(long_help=False)
+        self._long_help_argument = parser.add_argument(
+            "-H",
+            "--long-help",
+            action="store_true",
+            help=self.format_help("show help for all commands"),
         )
 
         self._add_verbose_option(self.parser)
@@ -281,6 +319,17 @@ class BaseCLI:
             # postponed from load_config
             self.parser.error(self.config["config-file"])
 
+        if hasattr(options, "help") and options.help:
+            self.parser.print_help()
+            sys.exit(0)
+
+        if hasattr(options, "long_help") and options.long_help:
+            if self.add_parser:
+                self._print_long_help()
+            else:
+                self.parser.error("no --long-help for this command.")
+            sys.exit(0)
+
         self._update_config_from_options(options)
 
         if hasattr(options, "print_config") and options.print_config:
@@ -314,12 +363,44 @@ class BaseCLI:
             config = {name: config}
         print(toml.dumps(config))
 
-    def format_help(self, text: str) -> str:
-        """Conform help text line-endings."""
-        if text and self.help_line_ending and not text.endswith(self.help_line_ending):
-            return text + self.help_line_ending
-        return text
+    def _print_long_help(self) -> None:
+        """Print help for all commands."""
 
+        def _title(parser) -> None:
+            return f" {parser.prog.upper()} ".center(80, "-") + "\n"
+
+        print(_title(self.parser))
+        print(self.parser.format_help())
+
+        # pylint: disable=protected-access
+        for action in self.parser._subparsers._actions:
+            if isinstance(action, argparse._SubParsersAction):
+                for subparser in action.choices.values():
+                    print(_title(subparser))
+                    print(subparser.format_help())  # + self._see_also(self.parser))
+
+
+#   @staticmethod
+#   def _see_also(parser) -> str:
+#
+#       # xylint: disable=protected-access
+#       also = {}
+#       for action in parser._subparsers._actions:
+#           if isinstance(action, argparse._SubParsersAction):
+#               for name in action.choices:
+#                   also[name] = f"{parser.prog}-{name}"
+#       if not also:
+#           return ""
+#
+#       formatter = parser._get_formatter()
+#       return "\n\nSee Also: \n" + textwrap.fill(
+#           ", ".join(also.values()) + ".",
+#           width=formatter._width,
+#           initial_indent=" " * formatter._indent_increment,
+#           subsequent_indent=" " * formatter._indent_increment,
+#       )
+
+# -------------------------------------------------------------------------------
 
 yellow = functools.partial(termui.style, fg="yellow")
 cyan = functools.partial(termui.style, fg="cyan")
