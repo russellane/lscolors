@@ -15,9 +15,15 @@ def test_help():
     assert err.value.code == 0
 
 
-def test_usage():
+def test_usage_option():
     with pytest.raises(SystemExit) as err:
-        main(["--bogus"])
+        main(["--bogus-option"])
+    assert err.value.code == 2
+
+
+def test_usage_argument():
+    with pytest.raises(SystemExit) as err:
+        main(["bogus-argument"])
     assert err.value.code == 2
 
 
