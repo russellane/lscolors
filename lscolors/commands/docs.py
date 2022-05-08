@@ -17,8 +17,8 @@ class DocsCmd(BaseCmd):
         parser = self.add_subcommand_parser(
             "docs",
             help="create documentation",
-            description="Create documentation files for this application",
-            epilog="This is an internal command used during the packaging process",
+            description="Create documentation files for this application.",
+            epilog="This is an internal command used during the packaging process.",
         )
 
         parser.set_defaults(

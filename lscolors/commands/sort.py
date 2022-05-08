@@ -15,9 +15,14 @@ class SortCmd(BaseCmd):
         self.add_subcommand_parser(
             "sort",
             help="sort lines of database file by color",
-            description="""Filter `stdin` to `stdout` sorting
-            lines of a `DIR_COLORS` file by color then filetype.
-            Blank lines and comments are unsorted and moved to the end.""",
+            description=self.cli.dedent(
+                """
+                Filter `stdin` to `stdout` sorting lines of a `DIR_COLORS` file
+                by color then filetype. Blank lines and comments are unsorted
+                and moved to the end.
+
+                """
+            ),
         )
 
     def run(self):

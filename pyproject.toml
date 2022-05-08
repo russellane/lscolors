@@ -25,6 +25,9 @@ dependencies = [
     "argcomplete>=2.0.0",
     "pyyaml>=6.0",
     "termui>=0.0.1",
+    "toml>=0.10.2",
+    "tomli>=2.0.1",
+    "icecream>=2.1.2",
 ]
 
 [project.urls]

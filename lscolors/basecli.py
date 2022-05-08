@@ -10,12 +10,20 @@ import re
 import sys
 import textwrap
 from pathlib import Path
+from pprint import pformat
 from typing import Callable, Iterable, List, Optional
 
 import argcomplete
+
+# import icecream
 import termui
 import toml
 import tomli
+
+# from icecream import ic
+
+# icecream.install()
+# icecream.ic.configureOutput(prefix="=====>\n", includeContext=True)
 
 
 class BaseCLI:
@@ -27,9 +35,9 @@ class BaseCLI:
     parser: argparse.ArgumentParser = None
     options: argparse.Namespace = None
     add_parser: Callable = None
+    help_first_char = "upper"
     help_line_ending = "."
     init_logging_called = False
-    _long_help_argument = None
 
     def __init__(self, argv: Optional[List[str]] = None) -> None:
         """Build and parse command line.
@@ -53,14 +61,6 @@ class BaseCLI:
         self._finalize()
         argcomplete.autocomplete(self.parser)
         self.options = self._parse_args()
-
-    def _finalize(self) -> None:
-        if not self.add_parser:
-            # we had to insert `--long-help` up front for it to be in the
-            # desired position/order; turns out we don't need it.
-            # self._long_help_argument.nargs = argparse.SUPPRESS
-            # self._long_help_argument.default = argparse.SUPPRESS
-            self._long_help_argument.help = argparse.SUPPRESS
 
     def init_config(self) -> None:
         """Parse cmdline to load contents of `--config FILE` only.
@@ -140,14 +140,11 @@ class BaseCLI:
         kwargs["add_help"] = False
 
         self.parser = argparse.ArgumentParser(**kwargs)
-        self._add_common_options(self.parser)
         return self.parser
 
     def add_argument(self, *args, **kwargs) -> argparse.Action:
-        """Wrap `add_argument` to conform help text line endings."""
+        """Wrap `add_argument` for no good reason anymore."""
 
-        if "help" in kwargs:
-            kwargs["help"] = self.format_help(kwargs["help"])
         return self.parser.add_argument(*args, **kwargs)
 
     def add_subcommand_classes(self, subcommand_classes) -> None:
@@ -170,24 +167,58 @@ class BaseCLI:
         subparsers = self.parser.add_subparsers(**kwargs)
         self.add_parser = subparsers.add_parser
 
-    def add_default_to_help(self, arg: argparse.Action) -> None:
+    def add_default_to_help(
+        self,
+        arg: argparse.Action,
+        parser: argparse.ArgumentParser = None,
+    ) -> None:
         """Show default value in help text."""
 
-        default = self.parser.get_default(arg.dest)
+        if parser is None:
+            parser = self.parser
+        default = parser.get_default(arg.dest)
+        if default is None:
+            return
         if isinstance(arg.const, bool) and not arg.const:
             default = not default
-        arg.help += f" (default: `{default}`)"
+        default = f" (default: `{default}`)"
 
-    def format_help(self, text: str) -> str:
-        """Conform help text line-endings."""
-        if text and self.help_line_ending and not text.endswith(self.help_line_ending):
-            return text + self.help_line_ending
+        if arg.help.endswith(self.help_line_ending):
+            arg.help = arg.help[: -len(self.help_line_ending)] + default + self.help_line_ending
+        else:
+            arg.help += default
+
+    def normalize_help_text(self, text: str) -> str:
+        """Return help `text` with normalized first-character and line-ending."""
+
+        if text and text != argparse.SUPPRESS:
+            if self.help_line_ending and not text.endswith(self.help_line_ending):
+                text += self.help_line_ending
+            if self.help_first_char == "upper":
+                text = text[0].upper() + text[1:]
+            elif self.help_first_char == "lower":
+                text = text[0].lower() + text[1:]
         return text
 
     @staticmethod
     def dedent(text: str) -> str:
         """Make `textwrap.dedent` convenient."""
-        return textwrap.dedent(text)
+        return textwrap.dedent(text).strip()
+
+    @staticmethod
+    def error(text: str) -> None:
+        """Print an ERROR message to `stdout`."""
+        termui.secho("ERROR: " + text, fg="red")
+
+    def info(self, text: str) -> None:
+        """Print an INFO message to `stdout`."""
+        if self.options.verbose > 0:
+            termui.secho("INFO: " + text, fg="cyan")
+
+    def debug(self, text: str) -> None:
+        """Print a DEBUG message to `stdout`."""
+        if self.options.verbose > 1:
+            termui.secho("DEBUG: " + text, fg="white")
 
     # public
     # -------------------------------------------------------------------------------
@@ -199,24 +230,24 @@ class BaseCLI:
         parser = argparse.ArgumentParser(add_help=False)
         self._add_verbose_option(parser)
         self._add_config_option(parser)
-        options, _ = parser.parse_known_args(self.argv)
+        self.options, _ = parser.parse_known_args(self.argv)
 
-        self.init_logging(options.verbose)
+        self.init_logging(self.options.verbose)
 
-        if not options.config_file:
-            logging.info("config-file not defined or given.")
+        if not self.options.config_file:
+            self.debug("config-file not defined or given.")
             return
 
-        logging.info("Reading config-file `%s`.", options.config_file)
+        self.debug(f"reading config-file `{self.options.config_file}`.")
 
         try:
-            config = tomli.loads(options.config_file.read_text())
+            config = tomli.loads(self.options.config_file.read_text())
         except FileNotFoundError as err:
-            if options.config_file != self.config["config-file"]:
+            if self.options.config_file != self.config["config-file"]:
                 # postpone calling `parser.error` to full parser.
                 self.config["config-file"] = err
             else:
-                logging.info("%s; ignoring.", err)
+                self.debug(f"{err}; ignoring.")
             return
 
         if (section := self.config.get("config-name")) is not None:
@@ -232,43 +263,47 @@ class BaseCLI:
     def _add_common_options(self, parser: argparse.ArgumentParser) -> None:
         """Add common options to given `parser`."""
 
-        parser.add_argument(
+        group = parser.add_argument_group("General options")
+
+        group.add_argument(
             "-X",
             action="store_true",
             help=argparse.SUPPRESS,
         )
 
         # --help
-        parser.set_defaults(help=False)
-        parser.add_argument(
+        group.set_defaults(help=False)
+        group.add_argument(
             "-h",
             "--help",
             action="store_true",
-            help=self.format_help("show this help message and exit"),
+            help="show this help message and exit",
         )
 
-        # --long-help
-        parser.set_defaults(long_help=False)
-        self._long_help_argument = parser.add_argument(
-            "-H",
-            "--long-help",
-            action="store_true",
-            help=self.format_help("show help for all commands"),
-        )
+        if self.add_parser:
+            # --long-help
+            group.set_defaults(long_help=False)
+            group.add_argument(
+                "-H",
+                "--long-help",
+                action="store_true",
+                help="show help for all commands",
+            )
 
-        self._add_verbose_option(self.parser)
-        self._add_version_option(self.parser)
+        self._add_verbose_option(group)
+        self._add_version_option(group)
 
         if self.config.get("config-file"):
-            self._add_config_option(self.parser)
+            self._add_config_option(group)
 
-        self.parser.add_argument(
+        group.add_argument(
             "--print-config",
             action="store_true",
-            help=self.format_help("print effective configuration and exit"),
+            help="print effective configuration and exit",
         )
 
-    def _add_verbose_option(self, parser: argparse.ArgumentParser) -> None:
+    @staticmethod
+    def _add_verbose_option(parser: argparse.ArgumentParser) -> None:
         """Add `--verbose` to given `parser`."""
 
         parser.add_argument(
@@ -276,10 +311,11 @@ class BaseCLI:
             "--verbose",
             default=0,
             action="count",
-            help=self.format_help("`-v` for detailed output and `-vv` for more detailed"),
+            help="`-v` for detailed output and `-vv` for more detailed",
         )
 
-    def _add_version_option(self, parser: argparse.ArgumentParser) -> None:
+    @staticmethod
+    def _add_version_option(parser: argparse.ArgumentParser) -> None:
         """Add `--version` to given `parser`."""
 
         version = "0.0.0"
@@ -291,24 +327,32 @@ class BaseCLI:
             "--version",
             action="version",
             version=version,
-            help=self.format_help("print version number and exit"),
+            help="print version number and exit",
         )
 
     def _add_config_option(self, parser: argparse.ArgumentParser) -> None:
         """Add `--config FILE` to given `parser`."""
 
-        text = "configuration file"
-        if file := self.config.get("config-file"):
-            text += f" (default: `{file}`)"
-
-        parser.add_argument(
+        arg = parser.add_argument(
             "--config",
             dest="config_file",
             metavar="FILE",
-            default=file,
+            default=self.config.get("config-file"),
             type=Path,
-            help=self.format_help(text),
+            help="configuration file",
         )
+        self.add_default_to_help(arg, parser)
+
+    def _finalize(self) -> None:
+        self._add_common_options(self.parser)
+        # pylint: disable=protected-access
+        for action in self.parser._subparsers._actions:
+            if isinstance(action, argparse._SubParsersAction):
+                for subparser in action.choices.values():
+                    for subact in subparser._actions:
+                        subact.help = self.normalize_help_text(subact.help)
+            else:
+                action.help = self.normalize_help_text(action.help)
 
     def _parse_args(self) -> argparse.Namespace:
         """Parse command line and return options."""
@@ -337,8 +381,8 @@ class BaseCLI:
             sys.exit(0)
 
         if hasattr(options, "X") and options.X:
-            print(self.__dict__)
-            print(self.options)
+            print(type(self), ":=", pformat(self.__dict__))
+            print("OPTIONS", ":=", pformat(options))
             sys.exit(0)
 
         return options
@@ -414,6 +458,12 @@ class PdmFormatter(argparse.RawDescriptionHelpFormatter):
 
         return super().start_section(yellow(heading.title() if heading else heading, bold=True))
 
+    def add_text(self, text):
+        """Colorize and add `text` to section."""
+        if text:
+            text = re.sub(r"`([^`]*)`", yellow(r"`\1`"), text)
+        super().add_text(text)
+
     def _format_usage(
         self,
         usage: str,
@@ -428,7 +478,7 @@ class PdmFormatter(argparse.RawDescriptionHelpFormatter):
             return result.replace(prefix, yellow(prefix, bold=True))
         return result
 
-    def _format_text(self, text):
+    def _format_text(self, text: str) -> str:
         text = super()._format_text(text)
         text = re.sub(r"`([^`]*)`", yellow(r"`\1`"), text)
         return text

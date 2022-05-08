@@ -14,8 +14,9 @@ class ConfigsCmd(BaseCmd):
         self.add_subcommand_parser(
             "configs",
             help="print path to sample configuration files",
-            description="""Print path to sample `.lscolors.yml`
-                            and `.dircolors` configuration files.""",
+            description=str(
+                "Print path to sample `.lscolors.yml` and `.dircolors` configuration files."
+            ),
         )
 
     def run(self):
