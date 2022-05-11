@@ -3,7 +3,6 @@
 import sys
 from typing import List, Optional
 
-import lscolors.commands
 from lscolors.basecli import BaseCLI
 
 
@@ -21,8 +20,7 @@ class CLI(BaseCLI):
 
     def add_arguments(self) -> None:
         """Add arguments to parser."""
-
-        self.add_subcommand_classes(lscolors.commands.CLASSES)
+        self.add_subcommand_modules("lscolors.commands", prefix="Lscolors", suffix="Cmd")
 
     def main(self) -> None:
         """Command line interface entry point (method)."""

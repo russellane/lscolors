@@ -3,9 +3,11 @@
 import argparse
 import contextlib
 import functools
+import importlib
 import importlib.metadata
 import logging
 import os
+import pkgutil
 import re
 import sys
 import textwrap
@@ -14,14 +16,12 @@ from pprint import pformat
 from typing import Callable, Iterable, List, Optional
 
 import argcomplete
-
-# import icecream
 import termui
 import toml
 import tomli
 
+# import icecream
 # from icecream import ic
-
 # icecream.install()
 # icecream.ic.configureOutput(prefix="=====>\n", includeContext=True)
 
@@ -58,6 +58,7 @@ class BaseCLI:
         self.init_parser()
         self.set_defaults()
         self.add_arguments()
+        self._add_common_options(self.parser)
         self._finalize()
         argcomplete.autocomplete(self.parser)
         self.options = self._parse_args()
@@ -115,30 +116,9 @@ class BaseCLI:
         """Implement in subclass, probably desired."""
 
     def ArgumentParser(self, **kwargs) -> argparse.ArgumentParser:  # noqa:
-        """Initialize argument parser.
-
-        This wraps `argparse.ArgumentParser` to provide common features to all CLI's:
-
-            * color formatter_class when interactive
-            * -X:  hidden option for our internal use
-            * --help option
-            * --long-help option
-            * --verbose option
-            * --version option
-            * --config-file option
-            * --print-config option
-        """
-
-        if "formatter_class" not in kwargs:
-            # wide terminals are great, but not for reading/printing manuals.
-            width = min(97, termui.get_terminal_size()[0])
-            formatter = PdmFormatter if os.isatty(1) else argparse.RawDescriptionHelpFormatter
-            kwargs["formatter_class"] = lambda prog: formatter(
-                prog, max_help_position=35, width=width
-            )
+        """Initialize `self.ArgumentParser`."""
 
         kwargs["add_help"] = False
-
         self.parser = argparse.ArgumentParser(**kwargs)
         return self.parser
 
@@ -147,19 +127,64 @@ class BaseCLI:
 
         return self.parser.add_argument(*args, **kwargs)
 
-    def add_subcommand_classes(self, subcommand_classes) -> None:
-        """Add list of subcommands to parser."""
+    def add_subcommand_modules(
+        self, modname: str, prefix: str = None, suffix: str = None
+    ) -> None:
+        """Add all subcommands in module `modname`.
 
-        # https://docs.python.org/3/library/argparse.html#sub-commands
+        e.g., cli.add_subcommand_modules("wumpus.commands")
+              cli.add_subcommand_modules("wumpus.cli.commands")
+
+        Load each module in containing module `modname`, instantiate an
+        instance each module's `Command` class, and add the command to this
+        cli.
+
+        If all command classes are not named `Command`, then they must all
+        begin and/or end with common tags. Pass `prefix` and/or `suffix` to
+        specify, and the longest matching class will be used. Multiple
+        command classes could be defined in one module this way.
+
+        e.g.,
+            wumpus/commands/left.py
+                class WumpusLeftCmd(BaseCmd):
+                    ...
+
+            wumpus/commands/right.py
+                class WumpusCmd(BaseCmd):
+                    ...
+                class WumpusRightCmd(WumpusCmd)
+                    ...
+
+            cli.add_subcommand_modules("wumpus.commands", prefix="Wumpus", suffix="Cmd")
+        """
 
         self.init_subcommands(metavar="COMMAND", title="Specify one of")
         self.parser.set_defaults(cmd=None)
-        for subcommand_class in subcommand_classes:
-            subcommand_class(self)
 
-        # equiv to module: .commands.help import Command as HelpCommand
-        # sub = self.add_subcommand_parser("help", help="same as `--help`")
-        # sub.set_defaults(cmd=self.parser.print_help)
+        commands_module_path = importlib.import_module(modname, __name__).__path__
+        base_name = prefix + suffix
+
+        for modinfo in pkgutil.iter_modules(commands_module_path):
+            module = importlib.import_module(f"{modname}.{modinfo.name}", __name__)
+
+            if prefix is None and suffix is None:
+                try:
+                    cmd_class = module.Command
+                except AttributeError:
+                    continue
+                cmd_class(self)
+                continue
+
+            for name in [x for x in dir(module) if x != base_name]:
+                if prefix and not name.startswith(prefix):
+                    continue
+                if suffix and not name.endswith(suffix):
+                    continue
+                try:
+                    cmd_class = getattr(module, name)
+                except AttributeError:
+                    continue
+                cmd_class(self)
 
     def init_subcommands(self, **kwargs):
         """Prepare to add subcommands to main parser."""
@@ -344,13 +369,27 @@ class BaseCLI:
         self.add_default_to_help(arg, parser)
 
     def _finalize(self) -> None:
-        self._add_common_options(self.parser)
+        """Normalize `formatter_class` and `help` text of all parsers."""
+
+        # wide terminals are great, but not for reading/printing manuals.
+        width = min(97, termui.get_terminal_size()[0])
+        formatter = PdmFormatter if os.isatty(1) else argparse.RawDescriptionHelpFormatter
+        formatter_class = lambda prog: formatter(prog, max_help_position=35, width=width)  # noqa
+
+        if self.parser.formatter_class == argparse.HelpFormatter:
+            self.parser.formatter_class = formatter_class
+
         # pylint: disable=protected-access
-        for action in self.parser._subparsers._actions:
+        for action in self.parser._actions:
             if isinstance(action, argparse._SubParsersAction):
+                for choice in action._choices_actions:
+                    choice.help = self.normalize_help_text(choice.help)
                 for subparser in action.choices.values():
-                    for subact in subparser._actions:
-                        subact.help = self.normalize_help_text(subact.help)
+                    if subparser.formatter_class == argparse.HelpFormatter:
+                        subparser.formatter_class = formatter_class
+                    if subparser._actions:
+                        for subact in subparser._actions:
+                            subact.help = self.normalize_help_text(subact.help)
             else:
                 action.help = self.normalize_help_text(action.help)
 
@@ -368,10 +407,7 @@ class BaseCLI:
             sys.exit(0)
 
         if hasattr(options, "long_help") and options.long_help:
-            if self.add_parser:
-                self._print_long_help()
-            else:
-                self.parser.error("no --long-help for this command.")
+            self._print_long_help()
             sys.exit(0)
 
         self._update_config_from_options(options)
@@ -410,6 +446,10 @@ class BaseCLI:
     def _print_long_help(self) -> None:
         """Print help for all commands."""
 
+        if not sys.stdout.isatty():
+            self._print_long_help_markdown()
+            return
+
         def _title(parser) -> None:
             return f" {parser.prog.upper()} ".center(80, "-") + "\n"
 
@@ -422,6 +462,23 @@ class BaseCLI:
                 for subparser in action.choices.values():
                     print(_title(subparser))
                     print(subparser.format_help())  # + self._see_also(self.parser))
+
+    def _print_long_help_markdown(self) -> None:
+
+        self._print_help_markdown("#", self.parser)
+
+        # pylint: disable=protected-access
+        for action in self.parser._subparsers._actions:
+            if isinstance(action, argparse._SubParsersAction):
+                for subparser in action.choices.values():
+                    self._print_help_markdown("##", subparser)
+
+    @staticmethod
+    def _print_help_markdown(tag: str, parser) -> None:
+        print(tag, parser.prog)
+        print("```")
+        print(parser.format_help().rstrip())
+        print("```\n")
 
 
 #   @staticmethod

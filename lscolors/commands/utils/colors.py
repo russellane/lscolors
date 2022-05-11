@@ -5,8 +5,10 @@ import subprocess
 import sys
 
 
-def add_arguments(parser):
+def add_colors_argument(cli, parser):
     """Add arguments to parser."""
+
+    _ = cli  # unused
 
     parser.add_argument(
         "dir_colors",

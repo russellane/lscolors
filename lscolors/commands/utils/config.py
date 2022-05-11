@@ -7,10 +7,8 @@ import yaml
 _DEFAULT_CONFIG_FILE = ".lscolors.yml"
 
 
-def add_arguments(parser):
+def add_config_option(cli, parser):
     """Add arguments to parser."""
-
-    parser.set_defaults(config=_DEFAULT_CONFIG_FILE)
 
     parser.add_argument(
         "-q",
@@ -19,12 +17,12 @@ def add_arguments(parser):
         help="suppress warning if default `CONFIG` cannot be found",
     )
 
-    parser.add_argument(
+    arg = parser.add_argument(
         "--config",
-        help="require filenames, directories and extensions "
-        "specified in `CONFIG` file. "
-        f"(default: {_DEFAULT_CONFIG_FILE!r})",
+        default=_DEFAULT_CONFIG_FILE,
+        help="require filenames, directories and extensions specified in `CONFIG` file",
     )
+    cli.add_default_to_help(arg)
 
 
 def load(options):

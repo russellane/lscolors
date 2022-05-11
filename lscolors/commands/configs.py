@@ -2,10 +2,10 @@
 
 import os.path
 
-from lscolors.basecmd import BaseCmd
+from lscolors.cmd import LscolorsCmd
 
 
-class ConfigsCmd(BaseCmd):
+class LscolorsConfigsCmd(LscolorsCmd):
     """lscolors `configs` command."""
 
     def init_command(self) -> None:

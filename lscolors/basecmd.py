@@ -2,7 +2,7 @@
 
 import argparse
 
-from .basecli import BaseCLI
+from lscolors.basecli import BaseCLI
 
 
 class BaseCmd:
@@ -25,12 +25,6 @@ class BaseCmd:
 
         Wrap `ArgumentParser.add_subparsers.add_parser`.
         """
-
-        if "formatter_class" not in kwargs:
-            kwargs["formatter_class"] = self.cli.parser.formatter_class
-
-        if "help" in kwargs:
-            kwargs["help"] = self.cli.normalize_help_text(kwargs["help"])
 
         parser = self.cli.add_parser(name, **kwargs)
         parser.set_defaults(cmd=lambda: self._promote_options(self.run), prog=name)

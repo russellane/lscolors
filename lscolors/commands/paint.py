@@ -6,7 +6,7 @@ from pathlib import Path
 
 from colors.colors import parse_rgb
 
-from lscolors.basecmd import BaseCmd
+from lscolors.cmd import LscolorsCmd
 
 
 class ColorGroup:
@@ -87,7 +87,7 @@ class ColorGroup:
             self.ansi = color
 
 
-class PaintCmd(BaseCmd):
+class LscolorsPaintCmd(LscolorsCmd):
     """lscolors `paint` command."""
 
     # default groups
@@ -135,32 +135,32 @@ class PaintCmd(BaseCmd):
             description="Apply palette to dircolors.",
         )
 
-        default_config_path = Path.home() / ".dircolors"
-        parser.add_argument(
+        arg = parser.add_argument(
             "dir_colors",
             nargs="?",
             metavar="DIR_COLORS",
             type=Path,
-            default=default_config_path,
-            help=f"read `DIR_COLORS` file (default: `{default_config_path}`)",
+            default=Path.home() / ".dircolors",
+            help="read `DIR_COLORS` file",
         )
+        self.cli.add_default_to_help(arg)
 
-        default_encoding = "utf-8"
-        parser.add_argument(
+        arg = parser.add_argument(
             "--encoding",
             metavar="NAME",
-            default=default_encoding,
-            help=f"file encoding (default: `{default_encoding}`)",
+            default="utf-8",
+            help="file encoding",
         )
+        self.cli.add_default_to_help(arg)
 
-        default_palettes_dir = Path.home() / ".palettes"
-        parser.add_argument(
+        arg = parser.add_argument(
             "--palettes-dir",
             metavar="DIR",
             type=Path,
-            default=default_palettes_dir,
-            help=f"directory of `coloors.co` palettes (default: `{default_palettes_dir}`)",
+            default=Path.home() / ".palettes",
+            help="directory of `coloors.co` palettes",
         )
+        self.cli.add_default_to_help(arg)
 
         parser.add_argument(
             "--palette-num",
@@ -184,13 +184,13 @@ class PaintCmd(BaseCmd):
             help="select and order colors by palette-`COLORNUM`",
         )
 
-        default_add_samples = False
-        parser.add_argument(
+        arg = parser.add_argument(
             "--add-samples",
-            action="store_false" if default_add_samples else "store_true",
-            default=default_add_samples,
-            help=f"add color samples (default: {default_add_samples})",
+            action="store_true",
+            default=False,
+            help="add color samples",
         )
+        self.cli.add_default_to_help(arg)
 
         group_names = ", ".join([f"`{x.group_name}`" for x in ColorGroup.items()])
         parser.add_argument(

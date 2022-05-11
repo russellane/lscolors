@@ -1,10 +1,10 @@
 """lscolors `report` command."""
 
-from lscolors.basecmd import BaseCmd
-from lscolors.commands.utils import colors as color_utils
+from lscolors.cmd import LscolorsCmd
+from lscolors.commands.utils import colors as colors_utils
 
 
-class ReportCmd(BaseCmd):
+class LscolorsReportCmd(LscolorsCmd):
     """lscolors `report` command."""
 
     def init_command(self) -> None:
@@ -25,7 +25,7 @@ class ReportCmd(BaseCmd):
             "--right", action="store_true", help="format report for display in right window"
         )
 
-        color_utils.add_arguments(parser)
+        self.add_colors_argument(parser)
 
     def run(self):
         """Perform the command."""
@@ -54,7 +54,7 @@ class ReportCmd(BaseCmd):
         }
 
         try:
-            colors, meta_colors = color_utils.load(self.options)
+            colors, meta_colors = colors_utils.load(self.options)
         except RuntimeError as err:
             raise RuntimeError(f"{self.options.prog}: failure; {err}\n") from err
 

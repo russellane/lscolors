@@ -4,13 +4,13 @@ import os
 import socket
 import stat
 
-from lscolors.basecmd import BaseCmd
-from lscolors.commands.utils import colors as color_utils
+from lscolors.cmd import LscolorsCmd
+from lscolors.commands.utils import colors as colors_utils
 from lscolors.commands.utils import config as config_utils
 from lscolors.commands.utils import mkdir
 
 
-class SamplesCmd(BaseCmd):
+class LscolorsSamplesCmd(LscolorsCmd):
     """lscolors `samples` command."""
 
     def init_command(self) -> None:
@@ -28,16 +28,17 @@ class SamplesCmd(BaseCmd):
             ),
         )
 
-        parser.set_defaults(samplesdir="./lscolors-samples")
+        self.add_config_option(parser)
+        self.add_colors_argument(parser)
 
-        color_utils.add_arguments(parser)
-        config_utils.add_arguments(parser)
-
-        parser.add_argument(
+        arg = parser.add_argument(
             "--samplesdir",
             metavar="DIR",
-            help="create directory `DIR`. " f"(default: {parser.get_default('samplesdir')!r})",
+            default="./lscolors-samples",
+            help="create directory `DIR`",
         )
+        self.cli.add_default_to_help(arg)
+
         parser.add_argument(
             "-f", "--force", action="store_true", help="Ok to clobber `DIR` if it exists"
         )
@@ -52,7 +53,7 @@ class SamplesCmd(BaseCmd):
     def run(self):
         """Perform the command."""
 
-        colors, meta_colors = color_utils.load(self.options)
+        colors, meta_colors = colors_utils.load(self.options)
         config, meta_config = config_utils.load(self.options)
 
         mkdir.mkdir(self.options.samplesdir, self.options.force)

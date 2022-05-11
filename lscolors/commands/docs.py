@@ -4,11 +4,11 @@ import argparse
 import pathlib
 import textwrap
 
-from lscolors.basecmd import BaseCmd
+from lscolors.cmd import LscolorsCmd
 from lscolors.commands.utils import mkdir
 
 
-class DocsCmd(BaseCmd):
+class LscolorsDocsCmd(LscolorsCmd):
     """Create documentation for Subcommands."""
 
     def init_command(self):

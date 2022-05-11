@@ -1,11 +1,11 @@
 """lscolors `check` command."""
 
-from lscolors.basecmd import BaseCmd
-from lscolors.commands.utils import colors as color_utils
-from lscolors.commands.utils import config as config_utils
+import lscolors.commands.utils.colors as colors_utils
+import lscolors.commands.utils.config as config_utils
+from lscolors.cmd import LscolorsCmd
 
 
-class CheckCmd(BaseCmd):
+class LscolorsCheckCmd(LscolorsCmd):
     """lscolors `check` command."""
 
     def init_command(self) -> None:
@@ -18,8 +18,8 @@ class CheckCmd(BaseCmd):
             epilog="Exit Status: zero indicates success, nonzero indicates failure.",
         )
 
-        config_utils.add_arguments(parser)
-        color_utils.add_arguments(parser)
+        self.add_config_option(parser)
+        self.add_colors_argument(parser)
 
     def run(self):
         """Perform the command."""
@@ -27,7 +27,7 @@ class CheckCmd(BaseCmd):
         config, meta_config = config_utils.load(self.options)
 
         try:
-            colors, meta_colors = color_utils.load(self.options)
+            colors, meta_colors = colors_utils.load(self.options)
         except RuntimeError as err:
             raise RuntimeError(
                 f"{self.options.prog}: failure; {err}\n" f"{self.options.prog}: {meta_config}"

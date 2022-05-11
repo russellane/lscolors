@@ -1,9 +1,9 @@
 """lscolors `chart` command."""
 
-from lscolors.basecmd import BaseCmd
+from lscolors.cmd import LscolorsCmd
 
 
-class ChartCmd(BaseCmd):
+class LscolorsChartCmd(LscolorsCmd):
     """lscolors `chart` command."""
 
     def init_command(self):
