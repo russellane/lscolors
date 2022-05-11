@@ -6,7 +6,7 @@ from typing import List, Optional
 from lscolors.basecli import BaseCLI
 
 
-class CLI(BaseCLI):
+class LscolorsCLI(BaseCLI):
     """Command line interface."""
 
     def init_parser(self) -> None:
@@ -38,4 +38,4 @@ class CLI(BaseCLI):
 
 def main(args: Optional[List[str]] = None) -> None:
     """Command line interface entry point (function)."""
-    return CLI(args).main()
+    return LscolorsCLI(args).main()

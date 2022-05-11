@@ -223,6 +223,11 @@ class BaseCLI:
             return
         if isinstance(arg.const, bool) and not arg.const:
             default = not default
+        else:
+            default = str(default)
+            home = str(Path.home())
+            if default.startswith(home):
+                default = "~" + default[len(home) :]
         default = f" (default: `{default}`)"
 
         if arg.help.endswith(self.help_line_ending):
