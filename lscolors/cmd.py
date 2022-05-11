@@ -4,7 +4,7 @@ import argparse
 
 import lscolors.commands.utils.colors
 import lscolors.commands.utils.config
-from lscolors.basecmd import BaseCmd
+from lscolors.basecli import BaseCmd
 
 
 class LscolorsCmd(BaseCmd):
