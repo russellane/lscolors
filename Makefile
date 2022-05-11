@@ -6,7 +6,7 @@ include Python.mk
 
 .PHONY:		docs
 docs:
-		COLUMNS=97 $(PYTHON) -m $(PACKAGE) --long-help >README.txt
+		COLUMNS=97 $(PYTHON) -m $(PACKAGE) --long-help >README.md
 		# COLUMNS=97 $(PYTHON) -m $(PACKAGE) docs --force docs/ansi >README.txt
 
 #-------------------------------------------------------------------------------

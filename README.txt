@@ -1,5 +1,5 @@
------------------------------------ LSCOLORS -----------------------------------
-
+# lscolors
+```
 usage: lscolors [-h] [-H] [-v] [-V] [--print-config] COMMAND ...
 
 Utilities for `dircolors(1)` and `dir_colors(5)`.
@@ -23,9 +23,10 @@ General options:
   --print-config   Print effective configuration and exit.
 
 See `lscolors COMMAND --help` for help on a specific command.
+```
 
--------------------------------- LSCOLORS CHART --------------------------------
-
+## lscolors chart
+```
 usage: lscolors chart [-h] [color ...]
 
 Print color-chart.
@@ -35,9 +36,10 @@ positional arguments:
 
 options:
   -h, --help  Show this help message and exit.
+```
 
--------------------------------- LSCOLORS CHECK --------------------------------
-
+## lscolors check
+```
 usage: lscolors check [-h] [-q] [--config CONFIG] [DIR_COLORS]
 
 Check database in `$LS_COLORS` for required items.
@@ -49,21 +51,22 @@ options:
   -h, --help       Show this help message and exit.
   -q, --quiet      Suppress warning if default `CONFIG` cannot be found.
   --config CONFIG  Require filenames, directories and extensions specified in `CONFIG` file.
-                   (default: '.lscolors.yml').
 
 Exit Status: zero indicates success, nonzero indicates failure.
+```
 
-------------------------------- LSCOLORS CONFIGS -------------------------------
-
+## lscolors configs
+```
 usage: lscolors configs [-h]
 
 Print path to sample `.lscolors.yml` and `.dircolors` configuration files.
 
 options:
   -h, --help  Show this help message and exit.
+```
 
--------------------------------- LSCOLORS DOCS ---------------------------------
-
+## lscolors docs
+```
 usage: lscolors docs [-h] [-f] {ansi,md,txt} DIR
 
 Create documentation files for this application.
@@ -77,9 +80,10 @@ options:
   -f, --force    Ok to clobber `DIR` if it exists.
 
 This is an internal command used during the packaging process.
+```
 
--------------------------------- LSCOLORS PAINT --------------------------------
-
+## lscolors paint
+```
 usage: lscolors paint [-h] [--encoding NAME] [--palettes-dir DIR] [--palette-num NUMBER]
                       [--palette-file FILE] [--pick COLORNUM [COLORNUM ...]] [--add-samples]
                       [--group-color GROUP=COLOR [GROUP=COLOR ...]]
@@ -88,17 +92,16 @@ usage: lscolors paint [-h] [--encoding NAME] [--palettes-dir DIR] [--palette-num
 Apply palette to dircolors.
 
 positional arguments:
-  DIR_COLORS                       Read `DIR_COLORS` file (default: `/home/russel/.dircolors`).
+  DIR_COLORS                       Read `DIR_COLORS` file.
 
 options:
   -h, --help                       Show this help message and exit.
-  --encoding NAME                  File encoding (default: `utf-8`).
-  --palettes-dir DIR               Directory of `coloors.co` palettes (default:
-                                   `/home/russel/.palettes`).
+  --encoding NAME                  File encoding.
+  --palettes-dir DIR               Directory of `coloors.co` palettes.
   --palette-num NUMBER             Id of `coloors.co` palette file to apply.
   --palette-file FILE              `coloors.co` palette file to apply.
   --pick COLORNUM [COLORNUM ...]   Select and order colors by palette-`COLORNUM`.
-  --add-samples                    Add color samples (default: False).
+  --add-samples                    Add color samples.
   --group-color GROUP=COLOR [GROUP=COLOR ...]
                                    Paint `GROUP` with `COLOR`, where `GROUP` is one of `archive`,
                                    `image`, `audio`, `data`, `source`, `config`, `history`,
@@ -106,9 +109,10 @@ options:
                                    `MULTIHARDLINK`, `FIFO`, `SOCK`, `DOOR`, `BLK`, `CHR`,
                                    `ORPHAN`, `MISSING`, `SETUID`, `SETGID`, `CAPABILITY`,
                                    `STICKY_OTHER_WRITABLE`, `OTHER_WRITABLE`, `STICKY`, `EXEC`.
+```
 
-------------------------------- LSCOLORS REPORT --------------------------------
-
+## lscolors report
+```
 usage: lscolors report [-h] [--left | --right] [DIR_COLORS]
 
 Print colorized report for database in `$LS_COLORS`.
@@ -122,9 +126,10 @@ options:
   --right     Format report for display in right window.
 
 A default format is produced when `--left/--right` is not given.
+```
 
-------------------------------- LSCOLORS SAMPLES -------------------------------
-
+## lscolors samples
+```
 usage: lscolors samples [-h] [-q] [--config CONFIG] [--samplesdir DIR] [-f] [DIR_COLORS]
 
 Create directory and populate with sample files, directories, etc.,
@@ -138,12 +143,12 @@ options:
   -h, --help        Show this help message and exit.
   -q, --quiet       Suppress warning if default `CONFIG` cannot be found.
   --config CONFIG   Require filenames, directories and extensions specified in `CONFIG` file.
-                    (default: '.lscolors.yml').
-  --samplesdir DIR  Create directory `DIR`. (default: './lscolors-samples').
+  --samplesdir DIR  Create directory `DIR`.
   -f, --force       Ok to clobber `DIR` if it exists.
+```
 
--------------------------------- LSCOLORS SORT ---------------------------------
-
+## lscolors sort
+```
 usage: lscolors sort [-h]
 
 Filter `stdin` to `stdout` sorting lines of a `DIR_COLORS` file
@@ -152,4 +157,5 @@ and moved to the end.
 
 options:
   -h, --help  Show this help message and exit.
+```
 
