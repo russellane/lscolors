@@ -1,6 +1,6 @@
 # lscolors
 ```
-usage: lscolors [-h] [-H] [-v] [-V] [--print-config] COMMAND ...
+usage: lscolors [-h] [-H] [-v] [-V] [--print-config] [--print-url] COMMAND ...
 
 Utilities for `dircolors(1)` and `dir_colors(5)`.
 
@@ -17,10 +17,11 @@ Specify one of:
 
 General options:
   -h, --help       Show this help message and exit.
-  -H, --long-help  Show help for all commands.
+  -H, --long-help  Show help for all commands and exit.
   -v, --verbose    `-v` for detailed output and `-vv` for more detailed.
   -V, --version    Print version number and exit.
-  --print-config   Print effective configuration and exit.
+  --print-config   Print effective config and exit.
+  --print-url      Print project url and exit.
 
 See `lscolors COMMAND --help` for help on a specific command.
 ```
@@ -50,7 +51,8 @@ positional arguments:
 options:
   -h, --help       Show this help message and exit.
   -q, --quiet      Suppress warning if default `CONFIG` cannot be found.
-  --config CONFIG  Require filenames, directories and extensions specified in `CONFIG` file.
+  --config CONFIG  Require filenames, directories and extensions specified in
+                   `CONFIG` file.
 
 Exit Status: zero indicates success, nonzero indicates failure.
 ```
@@ -84,8 +86,9 @@ This is an internal command used during the packaging process.
 
 ## lscolors paint
 ```
-usage: lscolors paint [-h] [--encoding NAME] [--palettes-dir DIR] [--palette-num NUMBER]
-                      [--palette-file FILE] [--pick COLORNUM [COLORNUM ...]] [--add-samples]
+usage: lscolors paint [-h] [--encoding NAME] [--palettes-dir DIR]
+                      [--palette-num NUMBER] [--palette-file FILE]
+                      [--pick COLORNUM [COLORNUM ...]] [--add-samples]
                       [--group-color GROUP=COLOR [GROUP=COLOR ...]]
                       [DIR_COLORS]
 
@@ -100,15 +103,19 @@ options:
   --palettes-dir DIR               Directory of `coloors.co` palettes.
   --palette-num NUMBER             Id of `coloors.co` palette file to apply.
   --palette-file FILE              `coloors.co` palette file to apply.
-  --pick COLORNUM [COLORNUM ...]   Select and order colors by palette-`COLORNUM`.
+  --pick COLORNUM [COLORNUM ...]   Select and order colors by
+                                   palette-`COLORNUM`.
   --add-samples                    Add color samples.
   --group-color GROUP=COLOR [GROUP=COLOR ...]
-                                   Paint `GROUP` with `COLOR`, where `GROUP` is one of `archive`,
-                                   `image`, `audio`, `data`, `source`, `config`, `history`,
-                                   `doc`, `NORMAL`, `FILE`, `RESET`, `DIR`, `LINK`,
-                                   `MULTIHARDLINK`, `FIFO`, `SOCK`, `DOOR`, `BLK`, `CHR`,
-                                   `ORPHAN`, `MISSING`, `SETUID`, `SETGID`, `CAPABILITY`,
-                                   `STICKY_OTHER_WRITABLE`, `OTHER_WRITABLE`, `STICKY`, `EXEC`.
+                                   Paint `GROUP` with `COLOR`, where `GROUP` is
+                                   one of `archive`, `image`, `audio`, `data`,
+                                   `source`, `config`, `history`, `doc`,
+                                   `NORMAL`, `FILE`, `RESET`, `DIR`, `LINK`,
+                                   `MULTIHARDLINK`, `FIFO`, `SOCK`, `DOOR`,
+                                   `BLK`, `CHR`, `ORPHAN`, `MISSING`, `SETUID`,
+                                   `SETGID`, `CAPABILITY`,
+                                   `STICKY_OTHER_WRITABLE`, `OTHER_WRITABLE`,
+                                   `STICKY`, `EXEC`.
 ```
 
 ## lscolors report
@@ -130,7 +137,8 @@ A default format is produced when `--left/--right` is not given.
 
 ## lscolors samples
 ```
-usage: lscolors samples [-h] [-q] [--config CONFIG] [--samplesdir DIR] [-f] [DIR_COLORS]
+usage: lscolors samples [-h] [-q] [--config CONFIG] [--samplesdir DIR] [-f]
+                        [DIR_COLORS]
 
 Create directory and populate with sample files, directories, etc.,
 for each item in `$LS_COLORS`, and all required items in
@@ -142,7 +150,8 @@ positional arguments:
 options:
   -h, --help        Show this help message and exit.
   -q, --quiet       Suppress warning if default `CONFIG` cannot be found.
-  --config CONFIG   Require filenames, directories and extensions specified in `CONFIG` file.
+  --config CONFIG   Require filenames, directories and extensions specified in
+                    `CONFIG` file.
   --samplesdir DIR  Create directory `DIR`.
   -f, --force       Ok to clobber `DIR` if it exists.
 ```

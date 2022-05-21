@@ -1,13 +1,42 @@
-PACKAGE := lscolors
-BUILD += docs
-include Python.mk
+PROJECT	:=	lscolors
 
-#-------------------------------------------------------------------------------
+build:		__pypackages__ ctags black isort flake8 pytest README.md
+		pdm build
 
-.PHONY:		docs
-docs:
-		COLUMNS=97 $(PYTHON) -m $(PACKAGE) --long-help >README.md
-		# COLUMNS=97 $(PYTHON) -m $(PACKAGE) docs --force docs/ansi >README.txt
+.PHONY:		README.md
+README.md:
+		python -m $(PROJECT) --long-help >$@
 
-#-------------------------------------------------------------------------------
-# vim: set ts=8 sw=8 noet:
+publish:
+		cd dist; echo *.whl | cpio -pdmuv `pip config get global.find-links`
+
+install:
+		-pipx uninstall $(PROJECT)
+		pipx install $(PROJECT)
+
+bump_micro:	_bump_micro clean build
+_bump_micro:
+		pdm bump micro
+
+__pypackages__:
+		pdm install
+
+ctags:
+		ctags -R $(PROJECT) tests __pypackages__ 
+
+black:
+		python -m black -q $(PROJECT) tests
+
+isort:
+		python -m isort $(PROJECT) tests
+
+flake8:
+		python -m flake8 $(PROJECT) tests
+
+pytest:
+		python -m pytest --exitfirst --showlocals --verbose tests
+
+clean:
+		rm -rf __pypackages__ .pytest_cache dist tags
+		find . -type f -name '*.py[co]' -delete
+		find . -type d -name __pycache__ -delete

@@ -6,7 +6,6 @@ import functools
 import importlib
 import importlib.metadata
 import logging
-import os
 import pkgutil
 import re
 import sys
@@ -17,13 +16,24 @@ from typing import Callable, Iterable, List, Optional
 
 import argcomplete
 import termui
-import toml
 import tomli
 
-# import icecream
-# from icecream import ic
-# icecream.install()
-# icecream.ic.configureOutput(prefix="=====>\n", includeContext=True)
+with contextlib.suppress(ImportError):
+    from loguru import logger  # noqa
+
+with contextlib.suppress(ImportError):
+    import icecream  # noqa
+    from icecream import ic  # noqa
+
+    icecream.install()
+    icecream.ic.configureOutput(prefix="=====>\n", includeContext=True)
+
+# pylint: disable=protected-access
+
+
+class BaseHelpAction(argparse._HelpAction):
+    # pylint: disable=too-few-public-methods
+    """Base class for our help actions."""
 
 
 class BaseCLI:
@@ -64,7 +74,7 @@ class BaseCLI:
         self.options = self._parse_args()
 
     def init_config(self) -> None:
-        """Parse cmdline to load contents of `--config FILE` only.
+        """Parse command line to load contents of `--config FILE` only.
 
         Reads `--config FILE` if given, else `self.config["config-file"]`
         if present, making the effective configuration available to
@@ -98,12 +108,23 @@ class BaseCLI:
         self._update_config_from_file()
 
     def init_logging(self, verbose: int) -> None:
-        """Set stdlib logging level based on `--verbose`."""
+        """Set logging levels based on `--verbose`."""
 
         if not self.init_logging_called:
             self.__class__.init_logging_called = True
+
+            # stdlib:
+            #    (dflt)           -v            -vv
             _ = [logging.WARNING, logging.INFO, logging.DEBUG]
             logging.basicConfig(level=_[min(verbose, len(_) - 1)])
+
+            if "logger" in globals():
+                # loguru:
+                #    (dflt)  -v       -vv
+                _ = ["INFO", "DEBUG", "TRACE"]
+                level = _[min(verbose, len(_) - 1)]
+                logger.remove()
+                logger.add(sys.stderr, level=level)
 
     def init_parser(self) -> None:
         """Implement in subclass, if desired."""
@@ -115,23 +136,22 @@ class BaseCLI:
     def add_arguments(self) -> None:
         """Implement in subclass, probably desired."""
 
-    def ArgumentParser(self, **kwargs) -> argparse.ArgumentParser:  # noqa:
-        """Initialize `self.ArgumentParser`."""
+    def ArgumentParser(self, **kwargs) -> argparse.ArgumentParser:  # noqa: snake-case
+        """Initialize `self.parser`."""
 
         kwargs["add_help"] = False
         self.parser = argparse.ArgumentParser(**kwargs)
+        self.parser.set_defaults(cli=self)
         return self.parser
 
-    def add_argument(self, *args, **kwargs) -> argparse.Action:
-        """Wrap `add_argument` for no good reason anymore."""
-
-        return self.parser.add_argument(*args, **kwargs)
+    # def add_argument(self, *args, **kwargs) -> argparse.Action:
+    #     """Wrap `add_argument` for no good reason anymore."""
+    #     return self.parser.add_argument(*args, **kwargs)
 
     def add_subcommand_classes(self, subcommand_classes) -> None:
-        """Add list of subcommands to parser."""
+        """Add list of subcommands to this parser."""
 
         # https://docs.python.org/3/library/argparse.html#sub-commands
-
         self.init_subcommands(metavar="COMMAND", title="Specify one of")
         self.parser.set_defaults(cmd=None)
         for subcommand_class in subcommand_classes:
@@ -150,11 +170,12 @@ class BaseCLI:
         """Add all subcommands in module `modname`.
 
         e.g., cli.add_subcommand_modules("wumpus.commands")
-              cli.add_subcommand_modules("wumpus.cli.commands")
+        or,   cli.add_subcommand_modules("wumpus.cli.commands")
+        or wherever your command modules are.
 
-        Load each module in containing module `modname`, instantiate an
-        instance each module's `Command` class, and add the command to this
-        cli.
+        1. Load each module in containing module `modname`,
+        2. Instantiate an instance each module's `Command` class, and
+        3. Add the command to this cli.
 
         If all command classes are not named `Command`, then they must all
         begin and/or end with common tags. Pass `prefix` and/or `suffix` to
@@ -214,7 +235,7 @@ class BaseCLI:
         arg: argparse.Action,
         parser: argparse.ArgumentParser = None,
     ) -> None:
-        """Show default value in help text."""
+        """Add default value to help text for `arg` in `parser`."""
 
         if parser is None:
             parser = self.parser
@@ -252,9 +273,9 @@ class BaseCLI:
         """Make `textwrap.dedent` convenient."""
         return textwrap.dedent(text).strip()
 
-    @staticmethod
-    def error(text: str) -> None:
+    def error(self, text: str) -> None:
         """Print an ERROR message to `stdout`."""
+        _ = self  # unused; avoiding @staticmethod
         termui.secho("ERROR: " + text, fg="red")
 
     def info(self, text: str) -> None:
@@ -314,28 +335,33 @@ class BaseCLI:
 
         group.add_argument(
             "-X",
-            action="store_true",
+            action=DebugAction,
             help=argparse.SUPPRESS,
         )
 
-        # --help
-        group.set_defaults(help=False)
         group.add_argument(
             "-h",
             "--help",
-            action="store_true",
+            action=BaseHelpAction,
             help="show this help message and exit",
         )
 
         if self.add_parser:
-            # --long-help
-            group.set_defaults(long_help=False)
             group.add_argument(
                 "-H",
                 "--long-help",
-                action="store_true",
-                help="show help for all commands",
+                action=LongHelpAction,
+                help="show help for all commands and exit",
             )
+
+        # Only really needs to be added when `not self.add_parser`;
+        # adding regardless, for muscle-memoried developers at the cli.
+        group.add_argument(
+            "--md-help",
+            action=MarkdownHelpAction,
+            help=argparse.SUPPRESS,
+            # help="show this help message in markdown format and exit",
+        )
 
         self._add_verbose_option(group)
         self._add_version_option(group)
@@ -345,8 +371,14 @@ class BaseCLI:
 
         group.add_argument(
             "--print-config",
-            action="store_true",
-            help="print effective configuration and exit",
+            action=PrintConfigAction,
+            help="print effective config and exit",
+        )
+
+        group.add_argument(
+            "--print-url",
+            action=PrintUrlAction,
+            help="print project url and exit",
         )
 
     @staticmethod
@@ -367,6 +399,7 @@ class BaseCLI:
 
         version = "0.0.0"
         with contextlib.suppress(importlib.metadata.PackageNotFoundError):
+            # https://docs.python.org/3/library/importlib.metadata.html#distribution-versions
             version = importlib.metadata.version(__package__)
 
         parser.add_argument(
@@ -386,7 +419,7 @@ class BaseCLI:
             metavar="FILE",
             default=self.config.get("config-file"),
             type=Path,
-            help="configuration file",
+            help="use config `FILE`",
         )
         self.add_default_to_help(arg, parser)
 
@@ -395,13 +428,15 @@ class BaseCLI:
 
         # wide terminals are great, but not for reading/printing manuals.
         width = min(97, termui.get_terminal_size()[0])
-        formatter = PdmFormatter if os.isatty(1) else argparse.RawDescriptionHelpFormatter
+        if sys.stdout.isatty():
+            formatter = ColorHelpFormatter
+        else:
+            formatter = argparse.RawDescriptionHelpFormatter
         formatter_class = lambda prog: formatter(prog, max_help_position=35, width=width)  # noqa
 
         if self.parser.formatter_class == argparse.HelpFormatter:
             self.parser.formatter_class = formatter_class
 
-        # pylint: disable=protected-access
         for action in self.parser._actions:
             if isinstance(action, argparse._SubParsersAction):
                 for choice in action._choices_actions:
@@ -424,25 +459,7 @@ class BaseCLI:
             # postponed from load_config
             self.parser.error(self.config["config-file"])
 
-        if hasattr(options, "help") and options.help:
-            self.parser.print_help()
-            sys.exit(0)
-
-        if hasattr(options, "long_help") and options.long_help:
-            self._print_long_help()
-            sys.exit(0)
-
         self._update_config_from_options(options)
-
-        if hasattr(options, "print_config") and options.print_config:
-            self._print_config(options)
-            sys.exit(0)
-
-        if hasattr(options, "X") and options.X:
-            print(type(self), ":=", pformat(self.__dict__))
-            print("OPTIONS", ":=", pformat(options))
-            sys.exit(0)
-
         return options
 
     def _update_config_from_options(self, options):
@@ -463,44 +480,76 @@ class BaseCLI:
 
         if (name := self.config.get("config-name")) is not None:
             config = {name: config}
-        print(toml.dumps(config))
-
-    def _print_long_help(self) -> None:
-        """Print help for all commands."""
-
-        if not sys.stdout.isatty():
-            self._print_long_help_markdown()
-            return
-
-        def _title(parser) -> None:
-            return f" {parser.prog.upper()} ".center(80, "-") + "\n"
-
-        print(_title(self.parser))
-        print(self.parser.format_help())
-
-        # pylint: disable=protected-access
-        for action in self.parser._subparsers._actions:
-            if isinstance(action, argparse._SubParsersAction):
-                for subparser in action.choices.values():
-                    print(_title(subparser))
-                    print(subparser.format_help())  # + self._see_also(self.parser))
-
-    def _print_long_help_markdown(self) -> None:
-
-        self._print_help_markdown("#", self.parser)
-
-        # pylint: disable=protected-access
-        for action in self.parser._subparsers._actions:
-            if isinstance(action, argparse._SubParsersAction):
-                for subparser in action.choices.values():
-                    self._print_help_markdown("##", subparser)
+        print(pformat(config))
 
     @staticmethod
-    def _print_help_markdown(tag: str, parser) -> None:
-        print(tag, parser.prog)
-        print("```")
-        print(parser.format_help().rstrip())
-        print("```\n")
+    def _print_url() -> None:
+
+        # https://packaging.python.org/en/latest/specifications/core-metadata/#project-url-multiple-use
+        distro = importlib.metadata.distribution(__package__)
+        project_url = distro.metadata.get("Project-URL")
+        print(project_url)
+
+
+class DebugAction(BaseHelpAction):
+    """Print internal data structures."""
+
+    def __call__(self, parser, namespace, values, option_string=None):
+        """Print internal data structures."""
+
+        if "ic" in globals():
+            ic(namespace.cli.__dict__)
+            ic(parser.__dict__)
+            ic(namespace)
+        else:
+            print(pformat(namespace.cli.__dict__))
+            print(pformat(parser.__dict__))
+            print(pformat(namespace))
+        parser.exit()
+
+
+class PrintConfigAction(BaseHelpAction):
+    """Print effective config and exit."""
+
+    def __call__(self, parser, namespace, values, option_string=None):
+        """Print effective config and exit."""
+
+        namespace.cli._print_config(namespace)
+        parser.exit()
+
+
+class PrintUrlAction(BaseHelpAction):
+    """Print project url and exit."""
+
+    def __call__(self, parser, namespace, values, option_string=None):
+        """Print project url and exit."""
+
+        namespace.cli._print_url()
+        parser.exit()
+
+
+class LongHelpAction(BaseHelpAction):
+    """Print help for all commands in color or markdown."""
+
+    def __call__(self, parser, namespace, values, option_string=None):
+        """Print help for all commands in color or markdown."""
+
+        def _print_help(atx: str, parser) -> None:
+            if sys.stdout.isatty():
+                print(f" {parser.prog.upper()} ".center(80, "-") + "\n")
+                print(parser.format_help())
+            else:
+                print(atx, parser.prog)
+                print("```\n" + parser.format_help().rstrip() + "\n```\n")
+
+        _print_help("#", parser)
+
+        for action in parser._subparsers._actions:
+            if isinstance(action, argparse._SubParsersAction):
+                for subparser in action.choices.values():
+                    _print_help("##", subparser)
+
+        parser.exit()
 
 
 #   @staticmethod
@@ -539,7 +588,7 @@ class BaseCmd:
 
     def init_command(self):
         """Implement in subclass to call `add_parser` and `add_argument`."""
-        raise NotImplementedError
+        # raise NotImplementedError
 
     def add_subcommand_parser(self, name, **kwargs) -> argparse._SubParsersAction:
         """Add subcommand to main parser and return subcommand's subparser.
@@ -557,16 +606,14 @@ class BaseCmd:
 
     def run(self) -> None:
         """Perform the command."""
-        raise NotImplementedError
+        # raise NotImplementedError
 
-
-# -------------------------------------------------------------------------------
 
 yellow = functools.partial(termui.style, fg="yellow")
 cyan = functools.partial(termui.style, fg="cyan")
 
 
-class PdmFormatter(argparse.RawDescriptionHelpFormatter):
+class ColorHelpFormatter(argparse.RawDescriptionHelpFormatter):
     """Colorize help."""
 
     def start_section(self, heading: str) -> None:
@@ -645,3 +692,131 @@ class PdmFormatter(argparse.RawDescriptionHelpFormatter):
 
         # return a single string
         return self._join_parts(parts)
+
+
+class MarkdownHelpAction(BaseHelpAction):
+    """Docstring."""
+
+    def __call__(self, parser, namespace, values, option_string=None):
+        """Docstring."""
+
+        parser.formatter_class = MarkdownHelpFormatter
+        parser.print_help()
+        parser.exit()
+
+
+class MarkdownHelpFormatter(argparse.RawDescriptionHelpFormatter):
+    """Render help in `markdown` format."""
+
+    # pylint: disable=consider-using-f-string
+
+    @classmethod
+    def _md_code(cls, raw_text, language=None):
+        return (
+            f"```{language or ''}\n"
+            + cls._md_escape(raw_text.rstrip(), characters="`")
+            + "\n```\n\n"
+        )
+
+    @staticmethod
+    def _md_escape(raw_text, characters="*_"):
+        def _escape_char(match):
+            return "\\%s" % match.group(0)
+
+        pattern = "[%s]" % re.escape(characters)
+        return re.sub(pattern, _escape_char, raw_text)
+
+    @staticmethod
+    def _md_heading(raw_text, level):
+        adjusted_level = min(max(level, 0), 6)
+        return "%s%s%s" % ("#" * adjusted_level, " " if adjusted_level > 0 else "", raw_text)
+
+    # def md_inline_code(raw_text):
+    #     return "`%s`" % _md_escape(raw_text, characters="`")
+    #
+    # def md_bold(raw_text):
+    #     return "**%s**" % _md_escape(raw_text, characters="*")
+    #
+    # def md_italic(raw_text):
+    #     return "*%s*" % _md_escape(raw_text, characters="*")
+    #
+    # def md_link(link_text, link_target):
+    #     return "[%s](%s)" % (
+    #         _md_escape(link_text, characters="]"),
+    #         _md_escape(link_target, characters=")"),
+    #     )
+
+    def __init__(
+        self,
+        prog,
+        indent_increment=2,
+        max_help_position=24,
+        width=None,
+    ):
+        """Initialize MarkdownHelpFormatter."""
+        max_help_position = 35
+        width = 97
+        self._md_level = {
+            "title": 3,  # 1 and 2 render <hr/> on github
+            "heading": 4,
+        }
+
+        super().__init__(prog, indent_increment, max_help_position, width)
+
+        self._md_title = self._prog
+        path = Path("pyproject.toml")
+        if (
+            path.exists()
+            and (config := tomli.loads(path.read_text(encoding="utf-8")))
+            and (project := config.get("project"))
+            and (description := project.get("description"))
+        ):
+            self._md_title += " - " + description
+
+    def _format_usage(self, usage, actions, groups, prefix):
+
+        usage_text = super()._format_usage(usage, actions, groups, prefix)
+
+        str_usage = "usage: "
+        if not usage_text.startswith(str_usage):
+            return self._md_code(usage_text)
+
+        # Replace 1st len("usage: ") chars with 4 spaces on all lines.
+        lines = usage_text.splitlines(keepends=True)
+        lines = ["    " + x[len(str_usage) :] for x in lines]
+        return (
+            "\n"
+            + self._md_heading("Usage", level=self._md_level["heading"])
+            + "\n"
+            + "".join(lines)
+            + "\n"
+        )
+
+    def format_help(self):
+        """Format help."""
+        self._root_section.heading = self._md_heading(
+            self._md_title, level=self._md_level["title"]
+        )
+        return super().format_help()
+
+    def start_section(self, heading):
+        """Start section."""
+        if heading.startswith("options") or heading.startswith("positional arguments"):
+            heading = heading.title()
+        super().start_section(self._md_heading(heading, level=self._md_level["heading"]))
+
+    def _format_action(self, action: argparse.Action) -> str:
+        # indent at least 4 for code block
+        _save_indent = self._current_indent
+        self._current_indent = max(4, min(4, self._current_indent))
+        action_help = super()._format_action(action)
+        self._current_indent = _save_indent
+        return action_help
+
+    class _Section(argparse.HelpFormatter._Section):
+        # pylint: disable=too-few-public-methods
+        def format_help(self) -> str:
+            # remove trailing colon from header line
+            section_text = super().format_help()
+            section_text = re.sub(r"^(\s*#+ [^\n]+):\n", "\\1\n", section_text)
+            return section_text
