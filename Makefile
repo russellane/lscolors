@@ -1,6 +1,6 @@
 PROJECT	:=	lscolors
 
-build:		__pypackages__ ctags black isort flake8 pytest pycov README.md
+build:		__pypackages__ ctags lint test coverage README.md
 		pdm build
 
 .PHONY:		README.md
@@ -25,6 +25,8 @@ __pypackages__:
 ctags:
 		ctags -R $(PROJECT) tests __pypackages__ 
 
+lint:		black isort flake8
+
 black:
 		python -m black -q $(PROJECT) tests
 
@@ -34,19 +36,19 @@ isort:
 flake8:
 		python -m flake8 $(PROJECT) tests
 
-pytest:
+test:
 		python -m pytest --exitfirst --showlocals --verbose tests
 
-pytest_debug:
+test_debug:
 		python -m pytest --exitfirst --showlocals --verbose --capture=no tests
 
-pycov:
+coverage:
 		python -m pytest --cov=$(PROJECT) tests
 
-pycov_html:
+cov_html:
 		python -m pytest --cov=$(PROJECT) --cov-report=html tests
 
 clean:
-		rm -rf __pypackages__ .pytest_cache dist tags htmlcov
+		rm -rf .coverage .pytest_cache __pypackages__ dist htmlcov tags 
 		find . -type f -name '*.py[co]' -delete
 		find . -type d -name __pycache__ -delete

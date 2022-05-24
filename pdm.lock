@@ -516,7 +516,7 @@ content_hash = "sha256:8479de0c14595b2d24ac1567376f9acc77d65340d5d03f43caa946aad
     {file = "lazy-object-proxy-1.7.1.tar.gz", hash = "sha256:d609c75b986def706743cdebe5e47553f4a5a1da9c5ff66d76013ef396b5a8a4"},
 ]
 "libcli 1.0.0" = [
-    {file = "libcli-1.0.0-py3-none-any.whl", hash = "sha256:1634ef477de675d0bd0c53a69375075a613d80e97004ad990de22f5789243d5b"},
+    {file = "libcli-1.0.0-py3-none-any.whl", hash = "sha256:66d580e31c14423b13e77fbfac5a540027e4f93d0b5e7535e4798853f22c72d4"},
 ]
 "mccabe 0.6.1" = [
     {file = "mccabe-0.6.1-py2.py3-none-any.whl", hash = "sha256:ab8a6258860da4b6677da4bd2fe5dc2c659cff31b3ee4f7f5d64e79735b80d42"},
