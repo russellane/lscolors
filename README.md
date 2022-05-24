@@ -95,27 +95,25 @@ usage: lscolors paint [-h] [--encoding NAME] [--palettes-dir DIR]
 Apply palette to dircolors.
 
 positional arguments:
-  DIR_COLORS                       Read `DIR_COLORS` file.
+  DIR_COLORS            Read `DIR_COLORS` file.
 
 options:
-  -h, --help                       Show this help message and exit.
-  --encoding NAME                  File encoding.
-  --palettes-dir DIR               Directory of `coloors.co` palettes.
-  --palette-num NUMBER             Id of `coloors.co` palette file to apply.
-  --palette-file FILE              `coloors.co` palette file to apply.
-  --pick COLORNUM [COLORNUM ...]   Select and order colors by
-                                   palette-`COLORNUM`.
-  --add-samples                    Add color samples.
+  -h, --help            Show this help message and exit.
+  --encoding NAME       File encoding.
+  --palettes-dir DIR    Directory of `coloors.co` palettes.
+  --palette-num NUMBER  Id of `coloors.co` palette file to apply.
+  --palette-file FILE   `coloors.co` palette file to apply.
+  --pick COLORNUM [COLORNUM ...]
+                        Select and order colors by palette-`COLORNUM`.
+  --add-samples         Add color samples.
   --group-color GROUP=COLOR [GROUP=COLOR ...]
-                                   Paint `GROUP` with `COLOR`, where `GROUP` is
-                                   one of `archive`, `image`, `audio`, `data`,
-                                   `source`, `config`, `history`, `doc`,
-                                   `NORMAL`, `FILE`, `RESET`, `DIR`, `LINK`,
-                                   `MULTIHARDLINK`, `FIFO`, `SOCK`, `DOOR`,
-                                   `BLK`, `CHR`, `ORPHAN`, `MISSING`, `SETUID`,
-                                   `SETGID`, `CAPABILITY`,
-                                   `STICKY_OTHER_WRITABLE`, `OTHER_WRITABLE`,
-                                   `STICKY`, `EXEC`.
+                        Paint `GROUP` with `COLOR`, where `GROUP` is one of
+                        `archive`, `image`, `audio`, `data`, `source`,
+                        `config`, `history`, `doc`, `NORMAL`, `FILE`, `RESET`,
+                        `DIR`, `LINK`, `MULTIHARDLINK`, `FIFO`, `SOCK`,
+                        `DOOR`, `BLK`, `CHR`, `ORPHAN`, `MISSING`, `SETUID`,
+                        `SETGID`, `CAPABILITY`, `STICKY_OTHER_WRITABLE`,
+                        `OTHER_WRITABLE`, `STICKY`, `EXEC`.
 ```
 
 ## lscolors report

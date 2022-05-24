@@ -3,7 +3,7 @@
 import sys
 from typing import List, Optional
 
-from lscolors.basecli import BaseCLI
+from libcli import BaseCLI
 
 
 class LscolorsCLI(BaseCLI):

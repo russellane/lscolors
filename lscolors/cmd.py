@@ -2,9 +2,10 @@
 
 import argparse
 
+from libcli import BaseCmd
+
 import lscolors.commands.utils.colors
 import lscolors.commands.utils.config
-from lscolors.basecli import BaseCmd
 
 
 class LscolorsCmd(BaseCmd):
