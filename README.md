@@ -1,27 +1,31 @@
 # lscolors
 ```
-usage: lscolors [-h] [-H] [-v] [-V] [--print-config] [--print-url] COMMAND ...
+usage: lscolors [-h] [-H] [-v] [-V] [--print-config] [--print-url]
+                [--completion [SHELL]]
+                COMMAND ...
 
 Utilities for `dircolors(1)` and `dir_colors(5)`.
 
 Specify one of:
   COMMAND
-    chart          Print color chart.
-    check          Check database for required items.
-    configs        Print path to sample configuration files.
-    docs           Create documentation.
-    paint          Paint dircolors.
-    report         Print colorized database report.
-    samples        Create directory of sample filesystem items.
-    sort           Sort lines of database file by color.
+    chart               Print color chart.
+    check               Check database for required items.
+    configs             Print path to sample configuration files.
+    docs                Create documentation.
+    paint               Paint dircolors.
+    report              Print colorized database report.
+    samples             Create directory of sample filesystem items.
+    sort                Sort lines of database file by color.
 
 General options:
-  -h, --help       Show this help message and exit.
-  -H, --long-help  Show help for all commands and exit.
-  -v, --verbose    `-v` for detailed output and `-vv` for more detailed.
-  -V, --version    Print version number and exit.
-  --print-config   Print effective config and exit.
-  --print-url      Print project url and exit.
+  -h, --help            Show this help message and exit.
+  -H, --long-help       Show help for all commands and exit.
+  -v, --verbose         `-v` for detailed output and `-vv` for more detailed.
+  -V, --version         Print version number and exit.
+  --print-config        Print effective config and exit.
+  --print-url           Print project url and exit.
+  --completion [SHELL]  Print completion scripts for `SHELL` and exit
+                        (default: `bash`).
 
 See `lscolors COMMAND --help` for help on a specific command.
 ```
