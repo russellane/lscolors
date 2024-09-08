@@ -1,7 +1,6 @@
 """Command line interface."""
 
 import sys
-from typing import List, Optional
 
 from libcli import BaseCLI
 
@@ -36,6 +35,6 @@ class LscolorsCLI(BaseCLI):
             sys.exit(1)
 
 
-def main(args: Optional[List[str]] = None) -> None:
+def main(args: list[str] | None = None) -> None:
     """Command line interface entry point (function)."""
-    return LscolorsCLI(args).main()
+    LscolorsCLI(args).main()

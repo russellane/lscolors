@@ -1,10 +1,13 @@
 """lscolors `paint` command."""
 
+from __future__ import annotations
+
 import re
 import sys
 from pathlib import Path
+from typing import Iterable
 
-from colors.colors import parse_rgb
+from colors.colors import parse_rgb  # type: ignore
 
 from lscolors.cmd import LscolorsCmd
 
@@ -12,21 +15,29 @@ from lscolors.cmd import LscolorsCmd
 class ColorGroup:
     """Color for collection of files."""
 
-    _group_by_name = {}
-    _group_by_comment = {}
+    _group_by_name: dict[str, ColorGroup] = {}
+    _group_by_comment: dict[str, ColorGroup] = {}
 
     @classmethod
-    def get_by_name(cls, name, default=None):
+    def get_by_name(
+        cls,
+        name: str,
+        default: ColorGroup | None = None,
+    ) -> ColorGroup | None:
         """Return ColorGroup with matching `name`."""
         return cls._group_by_name.get(name, default)
 
     @classmethod
-    def get_by_comment(cls, comment, default=None):
+    def get_by_comment(
+        cls,
+        comment: str,
+        default: ColorGroup | None = None,
+    ) -> ColorGroup | None:
         """Return ColorGroup with matching `comment`."""
         return cls._group_by_comment.get(comment, default)
 
     @classmethod
-    def items(cls):
+    def items(cls) -> Iterable[ColorGroup]:
         """Return list of ColorGroup's in insertion order."""
         yield from cls._group_by_name.values()
 
