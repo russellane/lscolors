@@ -11,7 +11,7 @@ from lscolors.commands.utils import mkdir
 class LscolorsDocsCmd(LscolorsCmd):
     """Create documentation for Subcommands."""
 
-    def init_command(self):
+    def init_command(self) -> None:
         """Initialize create documentation for Subcommands."""
 
         parser = self.add_subcommand_parser(
@@ -46,7 +46,7 @@ class LscolorsDocsCmd(LscolorsCmd):
             help="Ok to clobber `DIR` if it exists",
         )
 
-    def run(self):
+    def run(self) -> None:
         """Perform the command."""
 
         mkdir.mkdir(self.options.docs, self.options.force)
@@ -54,27 +54,29 @@ class LscolorsDocsCmd(LscolorsCmd):
         self.write_command_pages(self.cli.parser, self.options.docs)
 
     @staticmethod
-    def print_main_page(main_parser):
+    def print_main_page(main_parser: argparse.ArgumentParser) -> None:
         """Print main help page to `stdout`."""
 
         print(main_parser.format_help())
 
-    def write_command_pages(self, main_parser, directory):
+    def write_command_pages(self, main_parser: argparse.ArgumentParser, directory: str) -> None:
         """Create separate help pages for each command in `directory`."""
 
         # pylint: disable=protected-access
+        assert main_parser._subparsers
         for action in main_parser._subparsers._actions:
             if isinstance(action, argparse._SubParsersAction):
                 for name, parser in action.choices.items():
                     helptext = parser.format_help() + self._see_also()
                     pathlib.Path(directory, name + ".txt").write_text(helptext, encoding="utf-8")
 
-    def _see_also(self):
+    def _see_also(self) -> str:
         """Return string with refs to other pages."""
 
         # pylint: disable=protected-access
         parser = self.cli.parser
         also = {}
+        assert parser._subparsers
         for action in parser._subparsers._actions:
             if isinstance(action, argparse._SubParsersAction):
                 for name in action.choices:

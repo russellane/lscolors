@@ -46,11 +46,11 @@ class LscolorsSamplesCmd(LscolorsCmd):
         #
         self._seqno = 0  # noqa
 
-    def _fname(self, name):
+    def _fname(self, name: str) -> str:
         self._seqno += 1
         return f"{self._seqno:02}-{name}"
 
-    def run(self):
+    def run(self) -> None:
         """Perform the command."""
 
         colors, meta_colors = colors_utils.load(self.options)
@@ -87,7 +87,7 @@ class LscolorsSamplesCmd(LscolorsCmd):
         os.chdir(path)
         self._samples(colors, config, "x{name}.{color}{name}")
 
-    def _samples(self, colors, config, fmt):
+    def _samples(self, colors: dict[str, str], config: dict[str, list[str]], fmt: str) -> None:
 
         for name in config["required_filenames"]:
             if name[0] == "*":
@@ -111,7 +111,7 @@ class LscolorsSamplesCmd(LscolorsCmd):
         for alpha in [".A", ".z", "A"]:
             os.mkdir(f"{alpha}-directory")
 
-    def _create_basic_filetypes(self):
+    def _create_basic_filetypes(self) -> None:
         """Create filesystem object for each "basic" filetype.
 
         Output from `dircolors --print-database`:
@@ -279,7 +279,7 @@ class LscolorsSamplesCmd(LscolorsCmd):
         os.symlink(exec_file, self._fname("LINK-symlink-to-exec_file"))
 
     @staticmethod
-    def _create_extension_samples(colors, fmt):
+    def _create_extension_samples(colors: dict[str, str], fmt: str) -> None:
 
         for name in [
             x

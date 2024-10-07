@@ -16,7 +16,7 @@ from lscolors.cli import main
         ("sort"),
     ],
 )
-def test_help(command):
+def test_help(command: str) -> None:
     with pytest.raises(SystemExit) as err:
         main([command, "--help"])
     assert err.value.code == 0

@@ -3,9 +3,12 @@
 import os
 import subprocess
 import sys
+from argparse import ArgumentParser, Namespace
+
+from libcli import BaseCLI
 
 
-def add_colors_argument(cli, parser):
+def add_colors_argument(cli: BaseCLI, parser: ArgumentParser) -> None:
     """Add arguments to parser."""
 
     _ = cli  # unused
@@ -18,7 +21,7 @@ def add_colors_argument(cli, parser):
     )
 
 
-def load(options):
+def load(options: Namespace) -> tuple[dict[str, str], str]:
     """Load color database from `options.dir_colors`, if given, or `$LS_COLORS`.
 
     Return multiple values:
@@ -31,8 +34,10 @@ def load(options):
 
     if options.dir_colors:
         ls_colors = _compile_dir_colors(options, meta_with_term)
-    elif not (ls_colors := os.environ.get("LS_COLORS")):
+    elif not (_ls_colors := os.environ.get("LS_COLORS")):
         raise RuntimeError(f"missing `$LS_COLORS` environment variable; {meta}")
+    else:
+        ls_colors = _ls_colors
 
     if ls_colors:
         ls_colors = ls_colors.strip(":")
@@ -50,7 +55,7 @@ def load(options):
     return colors, meta
 
 
-def _compile_dir_colors(options, meta):
+def _compile_dir_colors(options: Namespace, meta: str) -> str:
     """Run system `dircolors` (/usr/bin/dircolors) and return value of `LS_COLORS`."""
 
     proc = subprocess.run(

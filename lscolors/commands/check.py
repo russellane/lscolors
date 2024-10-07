@@ -21,7 +21,7 @@ class LscolorsCheckCmd(LscolorsCmd):
         self.add_config_option(parser)
         self.add_colors_argument(parser)
 
-    def run(self):
+    def run(self) -> None:
         """Perform the command."""
 
         config, meta_config = config_utils.load(self.options)

@@ -48,7 +48,7 @@ class ColorGroup:
     _re_rgb = re.compile(r"[0-9A-Fa-f]{6}")
 
     @classmethod
-    def rgb_to_xterm(cls, rgb):
+    def rgb_to_xterm(cls, rgb: tuple[int, int, int]) -> int:
         """Return xterm color index from rgb tuple."""
 
         red = rgb[0]
@@ -69,7 +69,7 @@ class ColorGroup:
             + cls._closest_colors[blue]
         )
 
-    def __init__(self, name, comment=None):
+    def __init__(self, name: str, comment: str | None = None) -> None:
         """Add new ColorGroup to pool.
 
         Args:
@@ -80,14 +80,14 @@ class ColorGroup:
         self.group_name = name
         self.comment = comment
         self.color_name = None
-        self.ansi = None
-        self.rgb = None
+        self.ansi: str | None = None
+        self.rgb: tuple[int, int, int] | None = None
 
         self.__class__._group_by_name[self.group_name] = self
         if self.comment:
             self.__class__._group_by_comment[self.comment] = self
 
-    def set_color(self, color):
+    def set_color(self, color: tuple[int, int, int]) -> None:
         """Assign `color` to this ColorGroup."""
 
         try:
@@ -95,7 +95,7 @@ class ColorGroup:
             rgb = parse_rgb(self.rgb)
             self.ansi = "38;5;" + str(ColorGroup.rgb_to_xterm(rgb))
         except ValueError:
-            self.ansi = color
+            self.ansi = str(color)
 
 
 class LscolorsPaintCmd(LscolorsCmd):
@@ -213,7 +213,7 @@ class LscolorsPaintCmd(LscolorsCmd):
 
     # -------------------------------------------------------------------------------
 
-    def run(self):
+    def run(self) -> None:
         """Perform the command."""
 
         if self.options.palette_file:
@@ -231,7 +231,7 @@ class LscolorsPaintCmd(LscolorsCmd):
                 [
                     f".COLOR-{i}",
                     f"{color_group.ansi:16}",
-                    "#" + (color_group.rgb or ""),
+                    "#" + (str(color_group.rgb) or ""),
                     color_group.group_name,
                     color_group.comment or "",
                 ]
@@ -270,24 +270,27 @@ class LscolorsPaintCmd(LscolorsCmd):
 
     # -------------------------------------------------------------------------------
 
-    def _load_palette(self):
+    def _load_palette(self) -> None:
 
         rgb_colors = self._read_palette()
-        if len(rgb_colors) < len(ColorGroup.items()):
+        _len_rgb_colors = len(list(rgb_colors))
+        _len_color_groups = len(list(ColorGroup.items()))
+
+        if _len_rgb_colors < _len_color_groups:
             raise RuntimeError(
-                f"Need {len(ColorGroup.items())} colors; "
-                f"palette {str(self.options.palette_file)!r} has only {len(rgb_colors)}."
+                f"Need {_len_color_groups} colors; "
+                f"palette {str(self.options.palette_file)!r} has only {_len_rgb_colors}."
             )
 
         if self.options.pick:
-            rgb_colors = [rgb_colors[i - 1] for i in self.options.pick]
+            rgb_colors = [list(rgb_colors)[i - 1] for i in self.options.pick]
 
         for color_group, rgb in zip(ColorGroup.items(), rgb_colors):
             color_group.set_color(rgb)
 
     # -------------------------------------------------------------------------------
 
-    def _read_palette(self):
+    def _read_palette(self) -> Iterable[tuple[int, int, int]]:
         """Parse `coolors.co` palette file and return list of colors.
 
         It's all in the first line; e.g. 3 colors

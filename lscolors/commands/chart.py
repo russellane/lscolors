@@ -6,7 +6,7 @@ from lscolors.cmd import LscolorsCmd
 class LscolorsChartCmd(LscolorsCmd):
     """lscolors `chart` command."""
 
-    def init_command(self):
+    def init_command(self) -> None:
         """Initialize lscolors `chart` command."""
 
         parser = self.add_subcommand_parser(
@@ -21,7 +21,7 @@ class LscolorsChartCmd(LscolorsCmd):
             help="print color palette with given colors",
         )
 
-    def run(self):
+    def run(self) -> None:
         """Perform the command."""
 
         if self.options.color:
@@ -33,7 +33,7 @@ class LscolorsChartCmd(LscolorsCmd):
         # self._chart_6_squares()
         # self._chart_216_lines()
 
-    def _print_palette(self):
+    def _print_palette(self) -> None:
         for i in range(1, 4):
             for color in self.options.color:
                 for _ in range(i):
@@ -41,7 +41,7 @@ class LscolorsChartCmd(LscolorsCmd):
                     print(f"\033[{color}m{text} {color}\033[0m")
 
     @staticmethod
-    def _chart_36x6_grey():
+    def _chart_36x6_grey() -> None:
         offset = 16
         nlines, ncols = 36, 7
         maxcolor = 255  # nlines * ncols + offset - 1
@@ -59,7 +59,7 @@ class LscolorsChartCmd(LscolorsCmd):
             print(line)
 
     @staticmethod
-    def _chart2():
+    def _chart2() -> None:
         for attr in range(8):
             line = ""
             for color in range(8):
@@ -70,9 +70,9 @@ class LscolorsChartCmd(LscolorsCmd):
             print(line)
 
     @staticmethod
-    def _chart_6_squares():
-        def _6_squares():
-            squares = [[], [], [], [], [], []]
+    def _chart_6_squares() -> None:
+        def _6_squares() -> list[list[int]]:
+            squares: list[list[int]] = [[], [], [], [], [], []]
             j = 0
             for i in range(216):
                 if i > 0 and (i % 6) == 0:
@@ -86,7 +86,7 @@ class LscolorsChartCmd(LscolorsCmd):
                 print(f"\033[{ansi}m{ansi}\033[0m")
 
     @staticmethod
-    def _chart_216_lines():
+    def _chart_216_lines() -> None:
         # /usr/share/vim/vim81/syntax/dircolors.vim
         xterm_palette = ["00", "5f", "87", "af", "d7", "ff"]
         color = 16

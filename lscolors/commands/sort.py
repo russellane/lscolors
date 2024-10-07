@@ -25,7 +25,7 @@ class LscolorsSortCmd(LscolorsCmd):
             ),
         )
 
-    def run(self):
+    def run(self) -> None:
         """Perform the command."""
 
         _ = self  # unused

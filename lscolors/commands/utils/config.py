@@ -1,13 +1,15 @@
 """lscolors config."""
 
 import os
+from argparse import ArgumentParser, Namespace
 
 import yaml
+from libcli import BaseCLI
 
 _DEFAULT_CONFIG_FILE = ".lscolors.yml"
 
 
-def add_config_option(cli, parser):
+def add_config_option(cli: BaseCLI, parser: ArgumentParser) -> None:
     """Add arguments to parser."""
 
     parser.add_argument(
@@ -25,7 +27,7 @@ def add_config_option(cli, parser):
     cli.add_default_to_help(arg)
 
 
-def load(options):
+def load(options: Namespace) -> tuple[dict[str, list[str]], str]:
     """Load `lscolors` configuration.
 
     Load the config file given on the command line, if given, or search for a

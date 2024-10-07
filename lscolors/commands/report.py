@@ -27,7 +27,7 @@ class LscolorsReportCmd(LscolorsCmd):
 
         self.add_colors_argument(parser)
 
-    def run(self):
+    def run(self) -> None:
         """Perform the command."""
 
         codes = {
