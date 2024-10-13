@@ -1,6 +1,6 @@
 [project]
 name = "lscolors"
-version = "1.0.0"
+version = "1.0.1"
 description = "dircolors utilities"
 authors = [
     {name = "Russel Lane", email = "russel@rlane.com"},
