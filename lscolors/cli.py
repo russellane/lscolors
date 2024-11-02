@@ -4,6 +4,8 @@ import sys
 
 from libcli import BaseCLI
 
+__all__ = ["LscolorsCLI"]
+
 
 class LscolorsCLI(BaseCLI):
     """Command line interface."""
@@ -11,7 +13,7 @@ class LscolorsCLI(BaseCLI):
     def init_parser(self) -> None:
         """Initialize argument parser."""
 
-        self.parser = self.ArgumentParser(
+        self.ArgumentParser(
             prog=__package__,
             description="Utilities for `dircolors(1)` and `dir_colors(5)`.",
             epilog="See `%(prog)s COMMAND --help` for help on a specific command.",
@@ -19,6 +21,7 @@ class LscolorsCLI(BaseCLI):
 
     def add_arguments(self) -> None:
         """Add arguments to parser."""
+
         self.add_subcommand_modules("lscolors.commands", prefix="Lscolors", suffix="Cmd")
 
     def main(self) -> None:
