@@ -1,6 +1,6 @@
 [project]
 name = "lscolors"
-version = "1.0.3"
+version = "1.0.5"
 description = "dircolors utilities"
 authors = [
     {name = "Russel Lane", email = "russel@rlane.com"},
@@ -23,7 +23,7 @@ requires-python = ">=3.10"
 dependencies = [
     "ansicolors>=1.1.8",
     "pyyaml>=6.0.2",
-    "rlane-libcli>=1.0.8",
+    "rlane-libcli>=1.0.10",
 ]
 
 [project.urls]
@@ -32,22 +32,24 @@ Homepage = "https://github.com/russellane/lscolors"
 [project.scripts]
 lscolors = "lscolors.cli:main"
 
-[tool.pdm]
-
-[tool.pdm.dev-dependencies]
+[dependency-groups]
 dev = [
     "black>=24.10.0",
-    "flake8-bugbear>=24.10.31",
-    "flake8-pydocstyle>=0.2.4",
+    "flake8-bugbear>=24.12.12",
+    "flake8-pydocstyle>=0.2.5",
     "flake8-pylint>=0.2.1",
-    "flake8-pytest-style>=2.0.0",
+    "flake8-pytest-style>=2.1.0",
     "flake8-simplify>=0.21.0",
     "flake8>=7.1.1",
     "isort>=5.13.2",
-    "mypy>=1.13.0",
+    "mypy>=1.14.1",
     "pytest-cov>=6.0.0",
-    "pytest>=8.3.3",
+    "pytest>=8.3.4",
+    "types-PyYAML>=6.0.12",
 ]
+
+[tool.coverage.run]
+omit = ["lscolors/__main__.py"]
 
 [tool.black]
 line-length = "97"

@@ -263,7 +263,7 @@ class LscolorsPaintCmd(LscolorsCmd):
 
             parts = [keyword, color.ansi]
             if color.rgb:
-                parts.append("#" + color.rgb)
+                parts.append("#" + str(color.rgb))
             if comment:
                 parts.append(comment)
             print(" ".join(parts))

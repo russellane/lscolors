@@ -66,7 +66,7 @@ class LscolorsChartCmd(LscolorsCmd):
                 ansi = f"{attr:02};{color + 30:03}"
                 if color > 0:
                     line += "    "
-                line += f"\x1B[{ansi}m{ansi}\x1B[0m"
+                line += f"\x1b[{ansi}m{ansi}\x1b[0m"
             print(line)
 
     @staticmethod

@@ -73,14 +73,14 @@ class LscolorsReportCmd(LscolorsCmd):
                 if color == "target":
                     print(f"{type_color} {scolor} {text:>44}")
                 else:
-                    print(f"{type_color} \x1B[{color}m{scolor} {text:>44}\x1B[0m")
+                    print(f"{type_color} \x1b[{color}m{scolor} {text:>44}\x1b[0m")
             elif self.options.right:
                 if color == "target":
                     print(f"{text:44} {type_color}")
                 else:
-                    print(f"\x1B[{color}m{text:44}\x1B[0m {type_color}")
+                    print(f"\x1b[{color}m{text:44}\x1b[0m {type_color}")
             else:
                 if color == "target":
                     print(f"{type_color} {scolor} {text:44}")
                 else:
-                    print(f"{type_color} \x1B[{color}m{text:44}\x1B[0m")
+                    print(f"{type_color} \x1b[{color}m{text:44}\x1b[0m")

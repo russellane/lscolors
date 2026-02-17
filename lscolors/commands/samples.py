@@ -19,13 +19,11 @@ class LscolorsSamplesCmd(LscolorsCmd):
         parser = self.add_subcommand_parser(
             "samples",
             help="create directory of sample filesystem items",
-            description=self.cli.dedent(
-                """
+            description=self.cli.dedent("""
                 Create directory and populate with sample files, directories, etc.,
                 for each item in `$LS_COLORS`, and all required items in
                 configuration file `CONFIG`.
-                """
-            ),
+                """),
         )
 
         self.add_config_option(parser)
