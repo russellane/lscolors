@@ -63,7 +63,8 @@ class LscolorsReportCmd(LscolorsCmd):
         for filetype, color in colors.items():
             type_color = f"{filetype:15} {color:20}"
             _ = codes.get(filetype)
-            if _:
+            # SIM108: two-branch assignment with meaningful names; ternary reduces readability.
+            if _:  # noqa: SIM108
                 text = f"{_[0]} {_[1]}"
             else:
                 text = filetype + " lorem ipsum dolor sit amet"
@@ -79,8 +80,7 @@ class LscolorsReportCmd(LscolorsCmd):
                     print(f"{text:44} {type_color}")
                 else:
                     print(f"\x1b[{color}m{text:44}\x1b[0m {type_color}")
+            elif color == "target":
+                print(f"{type_color} {scolor} {text:44}")
             else:
-                if color == "target":
-                    print(f"{type_color} {scolor} {text:44}")
-                else:
-                    print(f"{type_color} \x1b[{color}m{text:44}\x1b[0m")
+                print(f"{type_color} \x1b[{color}m{text:44}\x1b[0m")

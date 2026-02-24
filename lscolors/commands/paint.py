@@ -243,7 +243,6 @@ class LscolorsPaintCmd(LscolorsCmd):
         group_color = None
         # print("#", self.options.dir_colors)
         for line in self.options.dir_colors.read_text(self.options.encoding).splitlines():
-
             rstripped = line.rstrip()
             group_color = ColorGroup.get_by_comment(rstripped, group_color)
 
@@ -271,7 +270,6 @@ class LscolorsPaintCmd(LscolorsCmd):
     # -------------------------------------------------------------------------------
 
     def _load_palette(self) -> None:
-
         rgb_colors = self._read_palette()
         _len_rgb_colors = len(list(rgb_colors))
         _len_color_groups = len(list(ColorGroup.items()))
@@ -285,7 +283,7 @@ class LscolorsPaintCmd(LscolorsCmd):
         if self.options.pick:
             rgb_colors = [list(rgb_colors)[i - 1] for i in self.options.pick]
 
-        for color_group, rgb in zip(ColorGroup.items(), rgb_colors):
+        for color_group, rgb in zip(ColorGroup.items(), rgb_colors, strict=False):
             color_group.set_color(rgb)
 
     # -------------------------------------------------------------------------------

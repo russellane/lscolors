@@ -26,7 +26,6 @@ class MarkdownHelpFormatter(argparse.HelpFormatter):
 
     def add_argument(self, action):
         """Override."""
-        # pylint: disable=protected-access
         if isinstance(action, argparse._SubParsersAction):
             if self._debug:
                 print("ADD_ARGUMENT: action=_SubParsersAction", flush=True)
@@ -38,7 +37,6 @@ class MarkdownHelpFormatter(argparse.HelpFormatter):
     def _add_item(self, func, args):
         if isinstance(args, tuple):
             action = args[1]  # line 265: args = usage, actions, groups, prefix
-            # pylint: disable=protected-access
             if isinstance(action, argparse._SubParsersAction):
                 if self._debug:
                     print("_ADD_ITEM: args.action=_SubParsersAction", flush=True)

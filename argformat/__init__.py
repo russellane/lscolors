@@ -38,7 +38,6 @@ class Argformat:
         parser.formatter_class = self.formatter_class
         parser._check_value = ansi.AnsiArgumentParser._check_value  # monkey patch
 
-    # pylint: disable=redefined-builtin
     @classmethod
     def configure(cls, format):
         """Configure argparse help formatting."""
@@ -66,7 +65,6 @@ class Argformat:
 
         also = cls._see_also(main_parser)
 
-        # pylint: disable=protected-access
         for action in main_parser._subparsers._actions:
             if isinstance(action, argparse._SubParsersAction):
                 for name, parser in action.choices.items():
@@ -92,7 +90,6 @@ class Argformat:
 
         also = {}
 
-        # pylint: disable=protected-access
         for action in main_parser._subparsers._actions:
             if isinstance(action, argparse._SubParsersAction):
                 for name in action.choices:

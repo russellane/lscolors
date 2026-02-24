@@ -38,7 +38,8 @@ class LscolorsSortCmd(LscolorsCmd):
         comments = []
 
         for line in sys.stdin:
-            line = line.strip()
+            # PLW2901: line is stripped in-place before parsing.
+            line = line.strip()  # noqa: PLW2901
             if not line or line[0] == "#":
                 comments.append(line)
                 continue

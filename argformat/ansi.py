@@ -20,7 +20,6 @@ ic.configureOutput(prefix="\nic ===> ", includeContext=True)
 class Colors:
     """Colors."""
 
-    # pylint: disable=too-few-public-methods
 
     # from https://ethanschoonover.com/solarized/
     #                    SOLARIZED HEX     16/8 TERMCOL  XTERM/HEX
@@ -135,10 +134,6 @@ class AnsiHelpFormatter(argparse.HelpFormatter):
     #     return string
 
     def _format_usage(self, usage, actions, groups, prefix):
-        # pylint: disable=consider-using-f-string
-        # pylint: disable=too-many-branches
-        # pylint: disable=too-many-locals
-        # pylint: disable=too-many-statements
         _ = gettext.gettext
 
         if prefix is None:
@@ -170,7 +165,7 @@ class AnsiHelpFormatter(argparse.HelpFormatter):
                     positionals.append(action)
 
             # build full usage string - colored
-            format = self._format_actions_usage  # pylint: disable=redefined-builtin
+            format = self._format_actions_usage
             action_usage = format(optionals + positionals, groups)
             colored_usage = " ".join([s for s in [prog, action_usage] if s])
             # ic(colored_usage)
@@ -188,7 +183,6 @@ class AnsiHelpFormatter(argparse.HelpFormatter):
             if len(prefix) + len(usage) > text_width:
 
                 # break usage into wrappable parts
-                # pylint: disable=implicit-str-concat
                 part_regexp = r"\(.*?\)+(?=\s|$)|" r"\[.*?\]+(?=\s|$)|" r"\S+"
                 self._is_color_disabled += 1
                 opt_usage = format(optionals, groups)
@@ -335,7 +329,6 @@ class AnsiHelpFormatter(argparse.HelpFormatter):
             self._add_item(self._format_action, [action])
 
     def _format_action_invocation(self, action):
-        # pylint: disable=no-else-return
         if not action.option_strings:
             default = self._get_default_metavar_for_positional(action)
             (metavar,) = self._metavar_formatter(action, default)(1)
@@ -356,7 +349,6 @@ class AnsiHelpFormatter(argparse.HelpFormatter):
                 args_string = ic(self._format_args(action, default))
                 for option_string in action.option_strings:
                     ic(option_string)
-                    # pylint: disable=consider-using-f-string
                     parts.append("%s %s" % (option_string, args_string))
 
             return ", ".join(parts)
@@ -380,7 +372,7 @@ class AnsiHelpFormatter(argparse.HelpFormatter):
         else:
             result = Colors.metavar(default_metavar)
 
-        def format(tuple_size):  # pylint: disable=redefined-builtin
+        def format(tuple_size):
             if isinstance(result, tuple):
                 return result
             return (result,) * tuple_size
@@ -425,8 +417,6 @@ class AnsiHelpFormatter(argparse.HelpFormatter):
     # -------------------------------------------------------------------------------
 
     def _format_action(self, action):
-        # pylint: disable=too-many-locals
-        # pylint: disable=consider-using-f-string
 
         # determine the required width and the entry label
         help_position = ic(min(self._action_max_length + 2, self._max_help_position))
@@ -495,7 +485,6 @@ class AnsiHelpFormatter(argparse.HelpFormatter):
 class AnsiArgumentParser:
     """See /usr/lib/python3.8/argparse.py."""
 
-    # pylint: disable=too-few-public-methods
 
     @staticmethod
     def _check_value(action, value):

@@ -41,7 +41,6 @@ class LscolorsSamplesCmd(LscolorsCmd):
             "-f", "--force", action="store_true", help="Ok to clobber `DIR` if it exists"
         )
 
-        #
         self._seqno = 0  # noqa
 
     def _fname(self, name: str) -> str:
@@ -86,10 +85,10 @@ class LscolorsSamplesCmd(LscolorsCmd):
         self._samples(colors, config, "x{name}.{color}{name}")
 
     def _samples(self, colors: dict[str, str], config: dict[str, list[str]], fmt: str) -> None:
-
         for name in config["required_filenames"]:
             if name[0] == "*":
-                name = name[1:]
+                # PLW2901: name is stripped of its leading '*' wildcard marker.
+                name = name[1:]  # noqa: PLW2901
                 with open(name, mode="w", encoding="utf-8"):
                     pass
 
@@ -109,7 +108,8 @@ class LscolorsSamplesCmd(LscolorsCmd):
         for alpha in [".A", ".z", "A"]:
             os.mkdir(f"{alpha}-directory")
 
-    def _create_basic_filetypes(self) -> None:
+    # Too many statements; creates filesystem objects for many basic filetypes sequentially.
+    def _create_basic_filetypes(self) -> None:  # noqa: PLR0915
         """Create filesystem object for each "basic" filetype.
 
         Output from `dircolors --print-database`:
@@ -139,9 +139,6 @@ class LscolorsSamplesCmd(LscolorsCmd):
 
         Objects are named for `ls -l` to display in same order as template.
         """
-
-        # pylint: disable=too-many-locals
-        # pylint: disable=too-many-statements
 
         # NORMAL 00 # no color code at all
         normal_text = self._fname("NORMAL")
@@ -278,7 +275,6 @@ class LscolorsSamplesCmd(LscolorsCmd):
 
     @staticmethod
     def _create_extension_samples(colors: dict[str, str], fmt: str) -> None:
-
         for name in [
             x
             for x in colors

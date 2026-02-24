@@ -44,7 +44,6 @@ def load(options: Namespace) -> tuple[dict[str, str], str]:
     if not ls_colors:
         raise RuntimeError(f"empty database; {meta_with_term}")
 
-    #
     colors = {}
     for item in ls_colors.split(":"):
         filetype, color = item.split("=")

@@ -30,7 +30,7 @@ class LscolorsCheckCmd(LscolorsCmd):
             colors, meta_colors = colors_utils.load(self.options)
         except RuntimeError as err:
             raise RuntimeError(
-                f"{self.options.prog}: failure; {err}\n" f"{self.options.prog}: {meta_config}"
+                f"{self.options.prog}: failure; {err}\n{self.options.prog}: {meta_config}"
             ) from err
 
         required = (

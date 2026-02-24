@@ -36,7 +36,7 @@ class LscolorsDocsCmd(LscolorsCmd):
         parser.add_argument(
             "docs",
             metavar="DIR",
-            help="create directory `DIR`. " f"(default: {parser.get_default('docs')!r})",
+            help=f"create directory `DIR`. (default: {parser.get_default('docs')!r})",
         )
 
         parser.add_argument(
@@ -62,7 +62,6 @@ class LscolorsDocsCmd(LscolorsCmd):
     def write_command_pages(self, main_parser: argparse.ArgumentParser, directory: str) -> None:
         """Create separate help pages for each command in `directory`."""
 
-        # pylint: disable=protected-access
         assert main_parser._subparsers
         for action in main_parser._subparsers._actions:
             if isinstance(action, argparse._SubParsersAction):
@@ -73,7 +72,6 @@ class LscolorsDocsCmd(LscolorsCmd):
     def _see_also(self) -> str:
         """Return string with refs to other pages."""
 
-        # pylint: disable=protected-access
         parser = self.cli.parser
         also = {}
         assert parser._subparsers

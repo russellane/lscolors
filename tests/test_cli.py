@@ -7,7 +7,6 @@ from lscolors.cli import main
 
 
 def test_main() -> None:
-
     def _main() -> None:
         run(["python", "-m", "lscolors", "--version"], check=True)
         sys.exit(0)
